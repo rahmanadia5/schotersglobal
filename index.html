@@ -928,13 +928,7 @@ V.billing=()=>{const pk=S.packages;const refundMonths=S.billing==='annual'?S.mon
     <tr><td>Top-up</td>${Object.keys(pk).map(()=>'<td class="c">Sessions only</td>').join('')}</tr>
   </tbody></table></div><p class="hint" style="margin:0">*Universities and scholarships that match your profile.</p></section>
   <div class="grid">
-    <section class="panel span-6"><div class="panel-h"><h2>How you pay</h2><div class="tabs">${[['annual','Yearly upfront'],['monthly','Monthly']].map(([k,l])=>`<button aria-selected="${S.billing===k}" data-bill="${k}">${l}</button>`).join('')}</div></div>
-      ${S.billing==='annual'?`<p>Paid for 12 months on 12 Sep 2026, with the yearly discount.</p>
-        <div class="row"><span class="pill accent num">Month ${S.monthsUsed} of 12</span><span class="pill good num">${refundMonths} full months refundable</span></div>
-        <p class="note">If you stop the program, unused full months are refunded according to the terms. The current month is not refunded. <span class="assume">Assumption, terms to confirm</span></p>`
-      :`<p>Pay each month. No refund needed when you stop; you can cancel before the next month starts.</p><p class="note">Switching to yearly saves the annual discount (rate to be set).</p>`}
-    </section>
-    <section class="panel span-6"><div class="panel-h"><h2>Top-ups</h2><button class="btn sm primary" data-act="topup">Top up sessions</button></div>
+    <section class="panel span-12"><div class="panel-h"><h2>Top-ups</h2><button class="btn sm primary" data-act="topup">Top up sessions</button></div>
       <p class="hint">Only video sessions can be topped up. QnA tokens are not sold as top-ups.</p>
       <div class="list">${S.topups.length?S.topups.map(t=>`<div class="item"><div class="grow"><div class="title">+${t.n} sessions</div><div class="meta">Today</div></div><span class="num">${fmt(t.price)}</span></div>`).join(''):'<p class="hint">No top-ups yet.</p>'}</div>
     </section>
