@@ -921,8 +921,10 @@ V.billing=()=>{const pk=S.packages;const refundMonths=S.billing==='annual'?S.mon
     <tr class="hl"><td><b>QnA tokens (mentor, Vietnamese)</b></td>${Object.values(pk).map(p=>`<td class="c num"><b>${p.tokens}</b></td>`).join('')}</tr>
     ${['Learning plan'].map(f=>`<tr><td>${f}</td>${Object.keys(pk).map(()=>'<td class="c">Yes</td>').join('')}</tr>`).join('')}
     <tr><td>Document review (essay, CV, letters)</td>${Object.keys(pk).map(()=>'<td class="c">Yes</td>').join('')}</tr>
+    <tr><td>University applications</td>${Object.keys(pk).map(()=>'<td class="c">Unlimited*</td>').join('')}</tr>
+    <tr><td>Scholarship applications</td>${Object.keys(pk).map(()=>'<td class="c">Unlimited*</td>').join('')}</tr>
     <tr><td>Top-up</td>${Object.keys(pk).map(()=>'<td class="c">Sessions only</td>').join('')}</tr>
-  </tbody></table></div></section>
+  </tbody></table></div><p class="hint" style="margin:0">*Universities and scholarships that match your profile.</p></section>
   <div class="grid">
     <section class="panel span-6"><div class="panel-h"><h2>How you pay</h2><div class="tabs">${[['annual','Yearly upfront'],['monthly','Monthly']].map(([k,l])=>`<button aria-selected="${S.billing===k}" data-bill="${k}">${l}</button>`).join('')}</div></div>
       ${S.billing==='annual'?`<p>Paid for 12 months on 12 Sep 2026, with the yearly discount.</p>
