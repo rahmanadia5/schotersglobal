@@ -394,6 +394,12 @@ button.g-row:hover,button.g-row:hover .g-name{background:var(--surface-2)}
 .mp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
 .mp-m{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:9px 0;font-weight:600;cursor:pointer;font:inherit;font-weight:600}.mp-m:hover{background:var(--surface-2)}
 .mp-m.now{border-color:var(--accent);color:var(--accent)}.mp-m.sel{background:var(--accent);border-color:var(--accent);color:#fff}
+.cal-bar{display:flex;justify-content:space-between;align-items:center;gap:10px 16px;flex-wrap:wrap}
+.gc-ico{width:18px;height:18px;flex:none}.gc-btn{gap:8px}.gc-btn.on{background:#eef7f0;border-color:#bfe3c8;color:#11805a}
+.gc-add{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:#1a64ad;text-decoration:none;padding:6px 10px;border-radius:10px;border:1px solid var(--line);white-space:nowrap}.gc-add:hover{background:var(--surface-2)}.gc-add .gc-ico{width:15px;height:15px}
+.gc-big .gc-ico{width:36px;height:36px}@media (max-width:760px){.gc-add span{display:none}.gc-add{padding:7px}}
+.gc-acct{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;background:var(--surface-2)}.gc-acct .grow{display:flex;flex-direction:column;gap:2px}
+.gc-opt{display:flex;gap:10px;align-items:flex-start;padding:8px 0;cursor:pointer;border-top:1px solid var(--line)}.gc-opt:first-of-type{border-top:none}.gc-opt input{margin-top:3px;width:16px;height:16px;accent-color:var(--accent)}.gc-opt>span{display:flex;flex-direction:column;gap:2px}
 .back-today{color:#1a64ad;background:var(--accent-soft);border-color:color-mix(in srgb,var(--accent) 35%,transparent)}
 .month-pill{cursor:pointer;gap:6px;font:inherit;font-weight:700;display:inline-flex;align-items:center;justify-content:center;min-width:150px;padding:9px 16px;border-radius:12px;background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);color:#1a64ad;font-weight:700;white-space:nowrap}
 @media (prefers-reduced-motion: no-preference){.cal .day.flash{animation:flash 1.2s ease-out}@keyframes flash{0%{box-shadow:inset 0 0 0 2px var(--accent),0 0 0 6px color-mix(in srgb,var(--accent) 35%,transparent)}100%{box-shadow:inset 0 0 0 2px var(--accent),0 0 0 0 transparent}}}
@@ -706,6 +712,7 @@ function todayVN(){const n=new Date(Date.now()+7*3600e3);return {y:n.getUTCFullY
 const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const MONL=['January','February','March','April','May','June','July','August','September','October','November','December'];
 function yr(mi){return mi>=8?2026:2027;}
+S.gcal=S.gcal||{on:false,sync:{s:true,d:true,m:true},last:''};
 function calEvents(){const ev=[];const add=(d,m,y,o)=>ev.push(Object.assign({key:y+'-'+m+'-'+d,y,m,d},o));
   S.past.forEach(p=>{const[d,mm]=p.date.split(' ');const mi=MON.indexOf(mm);add(+d,mi,yr(mi),{t:p.title,c:'s',past:true,time:'',with:p.with});});
   S.upcoming.forEach(u=>{const mi=MON.indexOf(u.m);add(u.d,mi,yr(mi),{t:u.title,c:'s',id:u.id,time:u.time,with:u.with});});
@@ -713,6 +720,17 @@ function calEvents(){const ev=[];const add=(d,m,y,o)=>ev.push(Object.assign({key
   S.apps.forEach(a=>{const[d,mm,y]=a.deadline.split(' ');add(+d,MON.indexOf(mm),+y,{t:'Deadline: '+a.name,c:'d',past:a.days<0});});
   add(6,11,2026,{t:'Personal statement draft due',c:'m'});
   return ev;}
+function gcalLink(e){const p=n=>String(n).padStart(2,'0');const ds=`${e.y}${p(e.m+1)}${p(e.d)}`;let dates;
+  if(e.time){const [a,b]=e.time.split('–');const t=x=>{const[h,mi]=x.split(':').map(Number);const u=new Date(Date.UTC(e.y,e.m,e.d,h-7,mi));return u.toISOString().replace(/[-:]/g,'').slice(0,15)+'Z';};dates=t(a)+'/'+t(b||a);}
+  else{const n=new Date(Date.UTC(e.y,e.m,e.d+1));dates=ds+'/'+`${n.getUTCFullYear()}${p(n.getUTCMonth()+1)}${p(n.getUTCDate())}`;}
+  return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(e.t)+'&dates='+dates+'&details='+encodeURIComponent('From Schoters Mentoring'+(e.with?' · with '+e.with:''));}
+function gcalModal(){const G=S.gcal;const opts=[['s','Sessions','1-on-1 sessions with your mentor, with the video link'],['d','Application deadlines','Deadlines from your Applications tracker'],['m','Milestones','Learning plan milestones']];
+  modal(`<div class="row" style="gap:12px;align-items:center"><span class="gc-big"><svg class="gc-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="3" fill="#fff" stroke="#4285f4" stroke-width="1.8"/><path d="M3 9h18" stroke="#4285f4" stroke-width="1.8"/><path d="M8 2.5v3M16 2.5v3" stroke="#4285f4" stroke-width="1.8" stroke-linecap="round"/><rect x="7" y="12" width="4" height="3.5" rx=".8" fill="#34a853"/><rect x="13" y="12" width="4" height="3.5" rx=".8" fill="#fbbc04"/><rect x="7" y="16.5" width="4" height="2.5" rx=".8" fill="#ea4335"/></svg></span><div><div class="eyebrow">Google Calendar</div><h2 style="font-size:1.2rem">${G.on?'Synced with Google Calendar':'Sync to Google Calendar'}</h2></div></div>
+    ${G.on?`<div class="gc-acct"><span class="avatar">N</span><div class="grow"><b>Nadia</b><span class="hint">Calendar: Schoters Mentoring · Last synced ${G.last}</span></div><span class="pill good">Connected</span></div>`
+      :`<p class="hint" style="margin:0">We add a separate "Schoters Mentoring" calendar to your Google account and keep it up to date. Changes like a moved session show up there automatically. We only write to that calendar and never read your other events.</p>`}
+    <div><div class="eyebrow" style="margin-bottom:6px">What to sync</div>${opts.map(([k,l,h])=>`<label class="gc-opt"><input type="checkbox" data-gc="${k}" ${G.sync[k]?'checked':''}><span><b>${l}</b><span class="hint">${h}</span></span></label>`).join('')}</div>
+    <div class="row" style="justify-content:space-between;flex-wrap:wrap;gap:8px">${G.on?`<button class="btn ghost" data-act="gcal-off">Disconnect</button><div class="row"><button class="btn" data-act="gcal-now">Sync now</button><button class="btn primary" data-close>Done</button></div>`
+      :`<button class="btn" data-close>Cancel</button><button class="btn primary" data-act="gcal-on">Connect Google account</button>`}</div>`);}
 V.calendar=()=>{const T=todayVN();if(!S.cal)S.cal={y:T.y,m:T.m};const {y,m}=S.cal;const onToday=y===T.y&&m===T.m;const ev=calEvents();const first=new Date(Date.UTC(y,m,1));const lead=(first.getUTCDay()+6)%7;const start=Date.UTC(y,m,1-lead);
   const cells=[];for(let i=0;i<42;i++){const dt=new Date(start+i*864e5);cells.push({d:dt.getUTCDate(),m:dt.getUTCMonth(),y:dt.getUTCFullYear()});}
   const rows=cells[35].m!==m?35:42;
@@ -720,13 +738,14 @@ V.calendar=()=>{const T=todayVN();if(!S.cal)S.cal={y:T.y,m:T.m};const {y,m}=S.ca
   return `<div class="topbar"><div><div class="eyebrow">Calendar</div><h1>${MONL[m]} ${y}</h1><p class="sub">Your sessions, deadlines and milestones. Times in GMT+7.</p></div>
     <div class="row"><button class="btn" data-calnav="-1" aria-label="Previous month">‹</button><span class="mp-wrap"><button class="month-pill" data-mp aria-haspopup="dialog" aria-expanded="${!!S.mpOpen}" aria-live="polite">${MONL[m]} ${y}</button>${S.mpOpen?`<div class="mp-pop" role="dialog" aria-label="Pick month and year"><div class="mp-year"><button class="btn sm" data-mpy="-1" aria-label="Previous year">‹</button><b>${S.mpYear}</b><button class="btn sm" data-mpy="1" aria-label="Next year">›</button></div><div class="mp-grid">${MON.map((mn,i)=>`<button class="mp-m ${S.mpYear===y&&i===m?'sel':''} ${S.mpYear===T.y&&i===T.m?'now':''}" data-mpm="${i}">${mn}</button>`).join('')}</div></div>`:''}</span><button class="btn" data-calnav="1" aria-label="Next month">›</button>${onToday?'':`<button class="btn back-today" data-calnav="0" title="Go to ${T.d} ${MON[T.m]} ${T.y}"><svg viewBox="0 0 24 24" width="15" height="15"><path d="M4 12a8 8 0 1 0 2.3-5.6M4 4v4h4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Back to today</button>`}<button class="btn primary" data-act="book" ${sessLeft()<1?'disabled':''}>Book a session</button></div></div>
   <section class="panel">
-    <div class="legend"><span><i style="background:var(--accent)"></i>Session</span><span><i style="background:var(--warn)"></i>Application deadline</span><span><i style="background:var(--good)"></i>Milestone</span></div>
+    <div class="cal-bar"><div class="legend"><span><i style="background:var(--accent)"></i>Session</span><span><i style="background:var(--warn)"></i>Application deadline</span><span><i style="background:var(--good)"></i>Milestone</span></div>
+      <button class="btn gc-btn ${S.gcal.on?'on':''}" data-act="gcal"><svg class="gc-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="3" fill="#fff" stroke="#4285f4" stroke-width="1.8"/><path d="M3 9h18" stroke="#4285f4" stroke-width="1.8"/><path d="M8 2.5v3M16 2.5v3" stroke="#4285f4" stroke-width="1.8" stroke-linecap="round"/><rect x="7" y="12" width="4" height="3.5" rx=".8" fill="#34a853"/><rect x="13" y="12" width="4" height="3.5" rx=".8" fill="#fbbc04"/><rect x="7" y="16.5" width="4" height="2.5" rx=".8" fill="#ea4335"/></svg>${S.gcal.on?'Google Calendar · Synced':'Sync to Google Calendar'}</button></div>
     <div class="table-wrap"><div class="cal">${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d=>`<div class="dow">${d}</div>`).join('')}
     ${cells.slice(0,rows).map(c=>{const es=ev.filter(e=>e.y===c.y&&e.m===c.m&&e.d===c.d);const today=c.y===T.y&&c.m===T.m&&c.d===T.d;
       return `<div class="day ${c.m!==m?'out':''} ${today?'today':''}" ${today?'id="cal-today"':''}><span class="dn">${c.d}</span>${today?'<span class="today-tag">Today</span>':''}${es.map(e=>`<button class="ev ${e.c} ${e.past?'past':''}" ${e.id?`data-act="join" data-id="${e.id}"`:'data-act="evinfo"'} data-info="${esc(e.t+(e.time?' · '+e.time:''))}" title="${esc(e.t+(e.time?' · '+e.time:''))}">${e.time?e.time.slice(0,5)+' ':''}${esc(e.t)}</button>`).join('')}</div>`;}).join('')}
     </div></div></section>
   <section class="panel"><div class="panel-h"><h2>This month</h2><span class="hint">${monthEv.length} items</span></div>
-    <div class="list">${monthEv.map(e=>`<div class="item"><div class="datebox"><b>${e.d}</b><span>${MON[e.m]}</span></div><div class="grow"><div class="title">${esc(e.t)}</div><div class="meta">${[e.time,e.with].filter(Boolean).map(esc).join(' · ')||'&nbsp;'}</div></div>${e.past?'<span class="pill">Done</span>':e.id?`<button class="btn sm primary" data-act="join" data-id="${e.id}">Join</button>`:''}</div>`).join('')||'<p class="hint">Nothing this month.</p>'}</div></section>`;};
+    <div class="list">${monthEv.map(e=>`<div class="item"><div class="datebox"><b>${e.d}</b><span>${MON[e.m]}</span></div><div class="grow"><div class="title">${esc(e.t)}</div><div class="meta">${[e.time,e.with].filter(Boolean).map(esc).join(' · ')||'&nbsp;'}</div></div>${e.past?'<span class="pill">Done</span>':`<a class="gc-add" href="${gcalLink(e)}" target="_blank" rel="noopener noreferrer" title="Add to Google Calendar"><svg class="gc-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="3" fill="#fff" stroke="#4285f4" stroke-width="1.8"/><path d="M3 9h18" stroke="#4285f4" stroke-width="1.8"/><path d="M8 2.5v3M16 2.5v3" stroke="#4285f4" stroke-width="1.8" stroke-linecap="round"/><rect x="7" y="12" width="4" height="3.5" rx=".8" fill="#34a853"/><rect x="13" y="12" width="4" height="3.5" rx=".8" fill="#fbbc04"/><rect x="7" y="16.5" width="4" height="2.5" rx=".8" fill="#ea4335"/></svg><span>Add</span></a>`+(e.id?`<button class="btn sm primary" data-act="join" data-id="${e.id}">Join</button>`:'')}</div>`).join('')||'<p class="hint">Nothing this month.</p>'}</div></section>`;};
 const APP_ST={'Not started':'','In progress':'accent','Submitted':'good','Accepted':'good','Not accepted':'bad'};
 V.applications=()=>`
   <div class="topbar"><div><div class="eyebrow">Applications</div><h1>${S.apps.length} applications, one place</h1><p class="sub">Your tracker. You apply on each official portal yourself, then update the status here so your mentor can follow along.</p></div><button class="btn primary" data-act="addapp">Add application</button></div>
@@ -1156,6 +1175,10 @@ document.addEventListener('click',e=>{
     case 'join':close();openCall(t.dataset.id);break;
     case 'catchup':S.tasks.forEach(k=>{if(k.due==='over'&&!k.done)k.due='today';});render();toast('Overdue tasks moved to today.');break;
     case 'cal':location.hash='calendar';break;
+    case 'gcal':gcalModal();break;
+    case 'gcal-on':{const n=new Date(Date.now()+7*3600e3);S.gcal.on=true;S.gcal.last='today, '+String(n.getUTCHours()).padStart(2,'0')+':'+String(n.getUTCMinutes()).padStart(2,'0');close();render();toast('Connected. Your calendar is syncing to Google Calendar.');break;}
+    case 'gcal-now':{const n=new Date(Date.now()+7*3600e3);S.gcal.last='today, '+String(n.getUTCHours()).padStart(2,'0')+':'+String(n.getUTCMinutes()).padStart(2,'0');gcalModal();toast('Synced just now');break;}
+    case 'gcal-off':S.gcal.on=false;close();render();toast('Google Calendar disconnected');break;
     case 'evinfo':toast(t.dataset.info);break;
     case 'skip':C.start=Date.now()-45*60*1000;tickCall();toast('Jumped to minute 45.');break;
     case 'endcall':endCall();break;
@@ -1165,6 +1188,7 @@ document.addEventListener('click',e=>{
   }
 });
 document.addEventListener('change',e=>{const ds=e.target.dataset||{};
+  if(ds.gc){S.gcal.sync[ds.gc]=e.target.checked;return;}
   if(ds.appst!==undefined){const a=S.apps.find(x=>x.name===ds.appst);a.status=e.target.value;a.tone=APP_ST[a.status];render();toast(a.name+': '+a.status);return;}
   if(ds.task){const k=S.tasks.find(x=>x.id==ds.task);k.done=e.target.checked;render();if(k.done)toast('Nice! Task done.');return;}
   if(e.target.dataset&&e.target.dataset.ag!==undefined){C.agenda[+e.target.dataset.ag][1]=e.target.checked;return;}const ms=e.target.dataset&&e.target.dataset.ms;if(ms){const[p,i]=ms.split('-').map(Number);S.plan[p].items[i][1]=e.target.checked;render();}});
