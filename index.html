@@ -240,6 +240,8 @@ th,td{text-align:left;padding:10px 10px;border-bottom:1px solid var(--line);vert
 th{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600}
 td.c,th.c{text-align:center}
 tr.hl td{background:var(--accent-soft)}
+.pk-table th.c{vertical-align:bottom}.cur-badge{display:block;width:max-content;margin:0 auto 8px;padding:4px 10px;line-height:1.3;font-weight:700;border-radius:99px;background:linear-gradient(135deg,#3d9de8,#1a64ad);color:#fff;font-size:10px;letter-spacing:.04em;white-space:nowrap}
+.pk-cur-2 :is(th,td):nth-child(2){background:#e8f3fd!important;box-shadow:inset 2px 0 0 var(--accent),inset -2px 0 0 var(--accent);color:#14548f}.pk-cur-2 th:nth-child(2){box-shadow:inset 2px 0 0 var(--accent),inset -2px 0 0 var(--accent),inset 0 2px 0 var(--accent);border-radius:10px 10px 0 0;font-weight:800}.pk-cur-2 tbody tr:last-child td:nth-child(2){box-shadow:inset 2px 0 0 var(--accent),inset -2px 0 0 var(--accent),inset 0 -2px 0 var(--accent)}.pk-cur-3 :is(th,td):nth-child(3){background:#e8f3fd!important;box-shadow:inset 2px 0 0 var(--accent),inset -2px 0 0 var(--accent);color:#14548f}.pk-cur-3 th:nth-child(3){box-shadow:inset 2px 0 0 var(--accent),inset -2px 0 0 var(--accent),inset 0 2px 0 var(--accent);border-radius:10px 10px 0 0;font-weight:800}.pk-cur-3 tbody tr:last-child td:nth-child(3){box-shadow:inset 2px 0 0 var(--accent),inset -2px 0 0 var(--accent),inset 0 -2px 0 var(--accent)}.pk-cur-4 :is(th,td):nth-child(4){background:#e8f3fd!important;box-shadow:inset 2px 0 0 var(--accent),inset -2px 0 0 var(--accent);color:#14548f}.pk-cur-4 th:nth-child(4){box-shadow:inset 2px 0 0 var(--accent),inset -2px 0 0 var(--accent),inset 0 2px 0 var(--accent);border-radius:10px 10px 0 0;font-weight:800}.pk-cur-4 tbody tr:last-child td:nth-child(4){box-shadow:inset 2px 0 0 var(--accent),inset -2px 0 0 var(--accent),inset 0 -2px 0 var(--accent)}
 
 .tabs{display:flex;gap:4px;background:var(--surface-2);padding:4px;border-radius:10px;flex-wrap:wrap}
 .tabs button{border:none;background:transparent;padding:7px 12px;border-radius:7px;font-weight:600;color:var(--muted);cursor:pointer}
@@ -916,7 +918,7 @@ V.parents=()=>`
 
 V.billing=()=>{const pk=S.packages;const refundMonths=S.billing==='annual'?S.monthsPaid-S.monthsUsed-1:0;return `
   <div class="topbar"><div><div class="eyebrow">Plan &amp; billing</div><h1>${S.pkg} package</h1></div><span class="proto">Prices to be set</span></div>
-  <section class="panel"><div class="table-wrap"><table><thead><tr><th>Feature</th>${Object.keys(pk).map(k=>`<th class="c">${k}${k===S.pkg?' · yours':''}</th>`).join('')}</tr></thead><tbody>
+  <section class="panel"><div class="table-wrap"><table class="pk-table pk-cur-${Object.keys(pk).indexOf(S.pkg)+2}"><thead><tr><th>Feature</th>${Object.keys(pk).map(k=>`<th class="c">${k===S.pkg?'<span class="cur-badge">Current plan</span>':''}${k}</th>`).join('')}</tr></thead><tbody>
     <tr class="hl"><td><b>Video sessions (50 min)</b></td>${Object.values(pk).map(p=>`<td class="c num"><b>${p.sessions}</b></td>`).join('')}</tr>
     <tr class="hl"><td><b>QnA tokens (mentor, Vietnamese)</b></td>${Object.values(pk).map(p=>`<td class="c num"><b>${p.tokens}</b></td>`).join('')}</tr>
     ${['Learning plan'].map(f=>`<tr><td>${f}</td>${Object.keys(pk).map(()=>'<td class="c">Yes</td>').join('')}</tr>`).join('')}
