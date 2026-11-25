@@ -809,7 +809,7 @@ V.plan=()=>{const P=S.profile,f=S.recFilter;
         <span class="g-dot ${cls}"></span>
         <span class="rec-main"><b>${esc(r.name)}</b><span class="hint">${r.kind}${r.prog?' · '+esc(r.prog):''} · ${r.country}</span></span>
         <span class="rec-tags">${r.grade?`<span class="grade g-${r.grade.replace('+','p')}" title="Fit grade">Fit ${r.grade}</span>`:''}${r.fund?`<span class="pill ${r.fund==='Fully funded'?'good':''}">${r.fund}</span>`:''}</span>
-        <span class="rec-dl"><b class="num">${recDate(r)}</b>${days(r)}</span>
+        <span class="rec-dl"><b class="num">${recDate(r)}</b></span>
         <span class="rec-chev" aria-hidden="true">›</span></button>`;}).join('')}</div>
       <p class="hint" style="margin:0">Deadlines are based on last year and your mentor double-checks them. Fit grade: A+ is the strongest match, C is a stretch.</p></section>
   </div>`;};
