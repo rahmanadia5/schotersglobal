@@ -56,6 +56,15 @@ button,input,select,textarea{font:inherit;color:inherit}
 }
 .topic h2{font-size:1.1rem}
 .t-ico{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:15px}
+.m-counts{display:flex;flex-wrap:wrap;gap:6px;align-items:flex-start;align-content:flex-start;flex:0 0 auto}
+.topic>.btn{margin-top:auto}
+.m-count{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;padding:3px 9px;border-radius:99px;background:var(--surface-2);color:var(--muted)}.m-count svg{width:13px;height:13px}
+.m-row{display:flex;gap:14px;align-items:center;padding:14px 20px}.m-row .grow{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}.m-row b{font-size:15px}
+.m-ico{flex:none;width:40px;height:40px;border-radius:12px;display:grid;place-items:center}.m-ico svg{width:20px;height:20px}
+.m-ico.mk-video{background:#efe7fe;color:var(--violet)}.m-ico.mk-file{background:#fde6ea;color:#c22a43}.m-ico.mk-doc{background:var(--accent-soft);color:#1a64ad}
+.vplayer{position:relative;aspect-ratio:16/9;border-radius:12px;background:linear-gradient(135deg,#1d3557,#0f2238);display:grid;place-items:center}
+.vplay{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.92);color:#1d3557;display:grid;place-items:center}.vplay svg{width:28px;height:28px;margin-left:4px}
+.vbar{position:absolute;left:16px;right:16px;bottom:14px;height:4px;border-radius:2px;background:rgba(255,255,255,.25)}.vbar i{display:block;width:8%;height:100%;border-radius:2px;background:#fff}
 .t-ico.lg{width:56px;height:56px;font-size:18px;border-radius:16px}
 .lesson{border-bottom:1px solid var(--line)}
 .lesson:last-child{border-bottom:none}
@@ -856,24 +865,32 @@ function recModal(id){const r=S.recs.find(x=>x.id===id);if(!r)return;const a=rec
     <div><div class="eyebrow">How to apply</div><p style="margin:4px 0 0">${esc(r.reg?r.reg+'. '+r.how:r.how)}</p>${r.uni?`<p class="hint">Linked university: ${esc(r.uni)}</p>`:''}</div>
     <div class="modal-foot"><span class="hint">Deadlines based on last year</span><div class="row"><button class="btn" data-close>Close</button>${portal(r.name)?`<a class="btn" href="${portal(r.name)}" target="_blank" rel="noopener noreferrer">Application portal ↗</a>`:''}${a?`<button class="btn primary" data-go="applications">Open in Applications</button>`:recDays(r)!==null&&recDays(r)<0?'':`<button class="btn primary" data-act="track-rec" data-id="${r.id}">Add to my applications</button>`}</div></div>`);}
 
+const MKIND={s1:'doc',s2:'file',s3:'video',i1:'doc',i2:'file',i3:'doc',i4:'video',e1:'video',e3:'doc',u1:'doc',u2:'file',u3:'doc',d1:'file',d2:'doc',v1:'file',v2:'video'};
+const mk=m=>MKIND[m.id]||'doc';
+const MICO={video:'<svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>',file:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 14h6M9 17h4"/></svg>',doc:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 5h14M5 10h14M5 15h10M5 20h7"/></svg>'};
+const MLABEL={video:['Video','videos'],file:['File','files'],doc:['Article','articles']};
+const mmeta=m=>{const k=mk(m);return k==='video'?`Video · ${m.mins} min · EN + VI subtitles`:k==='file'?`PDF · ${Math.max(4,Math.round(m.mins*0.8))} pages`:`Article · ${m.mins} min read · EN + VI`;};
 V.materials=()=>{
-  if(!S.topic){const all=S.topics.flatMap(t=>t.lessons),dn=all.filter(l=>l.done).length;
-  return `<div class="topbar"><div><div class="eyebrow">Learning material</div><h1>Learn by topic</h1><p class="sub">Short lessons in English, each with a Vietnamese version made by AI translation and checked by a mentor. Videos are coming next.</p></div><span class="pill accent num">${dn} of ${all.length} lessons done</span></div>
-  <div class="grid">${S.topics.map(t=>{const d=t.lessons.filter(l=>l.done).length,n=t.lessons.length,mins=t.lessons.reduce((a,l)=>a+l.mins,0);const nextL=t.lessons.find(l=>!l.done);
-   return `<section class="panel topic span-4"><div class="row" style="justify-content:space-between;align-items:flex-start"><div class="t-ico" style="background:${t.bg};color:${t.fg}">${t.ico}</div>${d===n?'<span class="pill good">Completed</span>':d?'<span class="pill accent">In progress</span>':''}</div>
+  if(!S.topic){
+  return `<div class="topbar"><div><div class="eyebrow">Materials</div><h1>Reading library</h1><p class="sub">Videos, files and articles to read whenever you need them. Nothing to finish or tick off. Articles have an English and a Vietnamese version.</p></div></div>
+  <div class="grid">${S.topics.map(t=>{const c={video:0,file:0,doc:0};t.lessons.forEach(m=>c[mk(m)]++);
+   return `<section class="panel topic span-4"><div class="t-ico" style="background:${t.bg};color:${t.fg}">${t.ico}</div>
     <div><h2>${t.name}</h2><p class="hint" style="margin-top:4px">${t.desc}</p></div>
-    <div><div class="row" style="justify-content:space-between;font-size:12.5px;color:var(--muted);font-weight:600"><span>${d}/${n} lessons</span><span>${mins} min</span></div><div class="bar" style="margin-top:6px"><i style="width:${d/n*100}%"></i></div></div>
-    <button class="btn ${d&&d<n?'primary':''}" data-topic="${t.id}">${d===n?'Review':d?'Continue':'Start'} ›</button>${nextL&&d?`<span class="hint">Next: ${esc(nextL.title)}</span>`:''}</section>`;}).join('')}</div>`;}
-  const t=S.topics.find(x=>x.id===S.topic);const d=t.lessons.filter(l=>l.done).length;
+    <div class="m-counts">${['video','file','doc'].filter(k=>c[k]).map(k=>`<span class="m-count mk-${k}">${MICO[k]}${c[k]} ${c[k]>1?MLABEL[k][1]:MLABEL[k][0].toLowerCase()}</span>`).join('')}</div>
+    <button class="btn" data-topic="${t.id}">Open ›</button></section>`;}).join('')}</div>`;}
+  const t=S.topics.find(x=>x.id===S.topic);
   return `<div><button class="btn ghost" data-topic="">‹ All topics</button></div>
-  <div class="topbar"><div class="row" style="gap:14px;align-items:center"><div class="t-ico lg" style="background:${t.bg};color:${t.fg}">${t.ico}</div><div><div class="eyebrow">Topic · ${t.lessons.length} lessons</div><h1>${t.name}</h1><p class="sub">${t.desc}</p></div></div>
-    <div style="min-width:180px"><div class="hint" style="font-weight:600">${d} of ${t.lessons.length} done</div><div class="bar" style="margin-top:6px"><i style="width:${d/t.lessons.length*100}%"></i></div></div></div>
-  <section class="panel" style="padding:0;gap:0">${t.lessons.map((m,i)=>{const open=S.openLesson===m.id;const l=S.langPref[m.id]||'vi';return `<div class="lesson ${open?'open':''}">
-    <button class="lesson-h" data-lesson="${m.id}"><span class="l-num ${m.done?'done':''}">${m.done?'✓':i+1}</span><span class="grow"><b>${esc(m.title)}</b><span class="hint">${m.mins} min read${m.video?' · video coming soon':''}</span></span><span class="chev">${open?'–':'+'}</span></button>
-    ${open?`<div class="lesson-b"><div class="row" style="justify-content:space-between"><div class="tabs lang">${[['vi','Tiếng Việt'],['en','English']].map(([k,tt])=>`<button aria-selected="${l===k}" data-lang="${m.id}:${k}">${tt}</button>`).join('')}</div>${l==='vi'?'<span class="pill">AI-translated · mentor checked</span>':''}</div>
+  <div class="topbar"><div class="row" style="gap:14px;align-items:center"><div class="t-ico lg" style="background:${t.bg};color:${t.fg}">${t.ico}</div><div><div class="eyebrow">Materials · ${t.lessons.length} items</div><h1>${t.name}</h1><p class="sub">${t.desc}</p></div></div></div>
+  <section class="panel" style="padding:0;gap:0">${t.lessons.map(m=>{const k=mk(m);const open=k==='doc'&&S.openLesson===m.id;const l=S.langPref[m.id]||'vi';return `<div class="lesson ${open?'open':''}">
+    <div class="m-row"><span class="m-ico mk-${k}">${MICO[k]}</span><span class="grow"><b>${esc(m.title)}</b><span class="hint">${mmeta(m)}</span></span>
+      ${k==='video'?`<button class="btn sm" data-act="watch" data-id="${m.id}">Watch</button>`:k==='file'?`<button class="btn sm" data-act="dl">Download</button>`:`<button class="btn sm" data-lesson="${m.id}">${open?'Close':'Read'}</button>`}</div>
+    ${open?`<div class="lesson-b"><div class="row" style="justify-content:space-between"><div class="tabs lang">${[['vi','Tiếng Việt'],['en','English']].map(([kk,tt])=>`<button aria-selected="${l===kk}" data-lang="${m.id}:${kk}">${tt}</button>`).join('')}</div>${l==='vi'?'<span class="pill">AI-translated · mentor checked</span>':''}</div>
       <div class="module-body">${esc(m[l])}</div>
-      <div class="row"><button class="btn sm ${m.done?'':'primary'}" data-act="mdone" data-id="${m.id}">${m.done?'Done ✓':'Mark as done'}</button><button class="btn sm ghost" data-go="ask" data-ch="mentor">Ask a mentor about this</button></div></div>`:''}</div>`;}).join('')}</section>`;};
-
+      <div class="row"><button class="btn sm ghost" data-go="ask" data-ch="mentor">Ask a mentor about this</button></div></div>`:''}</div>`;}).join('')}</section>`;};
+function videoModal(id){const m=S.topics.flatMap(x=>x.lessons).find(x=>x.id===id);
+  modal(`<div><div class="eyebrow">Video · ${m.mins} min</div><h2 style="font-size:1.2rem">${esc(m.title)}</h2></div>
+    <div class="vplayer"><span class="vplay">${MICO.video}</span><span class="vbar"><i></i></span></div>
+    <div class="row" style="justify-content:space-between;flex-wrap:wrap;gap:8px"><span class="hint">Subtitles: English, Tiếng Việt</span><div class="row"><button class="btn" data-close>Close</button><button class="btn" data-go="ask" data-ch="mentor">Ask a mentor</button></div></div>`);}
 
 V.parents=()=>`
   <div class="topbar"><div><div class="eyebrow">Parent sync</div><h1>Sync with your parents every 3 months</h1><p class="sub">Instead of a written report, you, your parents and your mentor meet once a quarter to review progress and agree on next steps.</p></div></div>
@@ -1095,7 +1112,7 @@ document.addEventListener('click',e=>{
   if(t.dataset.mpm!==undefined){S.cal={y:S.mpYear,m:+t.dataset.mpm};S.mpOpen=false;render();return;}
   if(t.dataset.calnav!==undefined){S.mpOpen=false;const n=+t.dataset.calnav;if(n===0){const T=todayVN();S.cal={y:T.y,m:T.m};render();const c=document.getElementById('cal-today');if(c){c.scrollIntoView({block:'center',behavior:'smooth'});c.classList.remove('flash');void c.offsetWidth;c.classList.add('flash');}return;}else{let m=S.cal.m+n,y=S.cal.y;if(m<0){m=11;y--;}if(m>11){m=0;y++;}S.cal={y,m};}render();return;}
   if(t.dataset.taskgo){const k=S.tasks.find(x=>x.id==t.dataset.taskgo);if(k.act==='order'){const d=S.docs.find(x=>x.id==='d3');if(d.versions[d.versions.length-1].status==='Returned')orderModal(null,'d3');else{location.hash='documents';render();}}else if(k.act==='join'){openCall();}else{if(k.topic){S.topic=k.topic;S.openLesson=k.lesson;}location.hash=k.go;render();}return;}
-  if(t.dataset.topic!==undefined){S.topic=t.dataset.topic||null;S.openLesson=S.topic?(S.topics.find(x=>x.id===S.topic).lessons.find(l=>!l.done)||{}).id:null;render();const mm=document.querySelector('.main');if(mm)mm.scrollTop=0;window.scrollTo(0,0);return;}
+  if(t.dataset.topic!==undefined){S.topic=t.dataset.topic||null;S.openLesson=null;render();const mm=document.querySelector('.main');if(mm)mm.scrollTop=0;window.scrollTo(0,0);return;}
   if(t.dataset.lesson){S.openLesson=S.openLesson===t.dataset.lesson?null:t.dataset.lesson;render();return;}
   if(t.dataset.report!==undefined){openReport(t.dataset.report);return;}
   if(t.dataset.ctab){C.tab=t.dataset.ctab;drawCall();return;}
@@ -1123,6 +1140,7 @@ document.addEventListener('click',e=>{
       render();toast(S.askChannel==='mentor'?`Sent. 1 token used, ${tokLeft()} left.`:'Sent.');break;}
     case 'topup':topupModal();break;
     case 'buy':S.sessionsExtra+=+t.dataset.n;S.topups.push({n:+t.dataset.n,price:+t.dataset.price});close();render();toast(`Added ${t.dataset.n} session${t.dataset.n>1?'s':''}.`);break;
+    case 'watch':videoModal(t.dataset.id);break;
     case 'mdone':{const m=S.topics.flatMap(x=>x.lessons).find(x=>x.id===t.dataset.id);m.done=true;render();toast('Lesson done. Nice!');break;}
     case 'addapp':modal(`<div><div class="eyebrow">Applications</div><h2 style="font-size:1.25rem">Add an application</h2></div>
       <div class="field"><label for="an">University or scholarship</label><input id="an" placeholder="e.g. University of Melbourne"></div>
