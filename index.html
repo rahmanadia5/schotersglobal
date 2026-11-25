@@ -352,7 +352,7 @@ button.g-row:hover,button.g-row:hover .g-name{background:var(--surface-2)}
 .cal .day.today{box-shadow:inset 0 0 0 2px var(--accent);background:color-mix(in srgb,var(--accent-soft) 45%,var(--surface))}
 .cal .day{position:relative}
 .today-tag{position:absolute;top:8px;right:8px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--accent)}
-.btn.today-on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.month-pill{display:inline-flex;align-items:center;justify-content:center;min-width:150px;padding:9px 16px;border-radius:12px;background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);color:#1a64ad;font-weight:700;white-space:nowrap}
 @media (prefers-reduced-motion: no-preference){.cal .day.flash{animation:flash 1.2s ease-out}@keyframes flash{0%{box-shadow:inset 0 0 0 2px var(--accent),0 0 0 6px color-mix(in srgb,var(--accent) 35%,transparent)}100%{box-shadow:inset 0 0 0 2px var(--accent),0 0 0 0 transparent}}}
 @media (max-width: 640px){.today-tag{display:none}}
 .ev{display:block;width:100%;text-align:left;border:none;border-radius:7px;padding:3px 6px;font-size:11.5px;font-weight:600;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;font-family:inherit}
@@ -678,7 +678,7 @@ V.calendar=()=>{const T=todayVN();if(!S.cal)S.cal={y:T.y,m:T.m};const {y,m}=S.ca
   const rows=cells[35].m!==m?35:42;
   const monthEv=ev.filter(e=>e.y===y&&e.m===m).sort((a,b)=>a.d-b.d);
   return `<div class="topbar"><div><div class="eyebrow">Calendar</div><h1>${MONL[m]} ${y}</h1><p class="sub">Your sessions, parent syncs, deadlines and milestones. Times in GMT+7.</p></div>
-    <div class="row"><button class="btn" data-calnav="-1" aria-label="Previous month">‹</button><button class="btn ${onToday?'today-on':''}" data-calnav="0" aria-pressed="${onToday}" title="Go to today, ${T.d} ${MON[T.m]} ${T.y}">Today · ${T.d} ${MON[T.m]}</button><button class="btn" data-calnav="1" aria-label="Next month">›</button><button class="btn primary" data-act="book" ${sessLeft()<1?'disabled':''}>Book a session</button></div></div>
+    <div class="row"><button class="btn" data-calnav="-1" aria-label="Previous month">‹</button><span class="month-pill" aria-live="polite">${MONL[m]} ${y}</span><button class="btn" data-calnav="1" aria-label="Next month">›</button><button class="btn ghost" data-calnav="0" ${onToday?'disabled':''} title="Go to today, ${T.d} ${MON[T.m]} ${T.y}">Today</button><button class="btn primary" data-act="book" ${sessLeft()<1?'disabled':''}>Book a session</button></div></div>
   <section class="panel">
     <div class="legend"><span><i style="background:var(--accent)"></i>1-on-1 session</span><span><i style="background:var(--violet)"></i>Kickoff / parent sync</span><span><i style="background:var(--warn)"></i>Application deadline</span><span><i style="background:var(--good)"></i>Milestone</span><span style="opacity:.7">Faded = past</span></div>
     <div class="table-wrap"><div class="cal">${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d=>`<div class="dow">${d}</div>`).join('')}
