@@ -382,7 +382,6 @@ button.g-row:hover{background:var(--surface-2)}
     <div class="brand"><div class="brand-mark">S</div><div><b>Schoters Mentoring</b><small>Student LMS</small></div></div>
     <nav class="nav" id="nav" aria-label="Main"></nav>
     <div class="rail-bottom">
-      <button class="rb-item" data-act="started"><svg class="ring" viewBox="0 0 36 36"><circle cx="18" cy="18" r="14" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="4"/><circle id="ringArc" cx="18" cy="18" r="14" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-dasharray="88" stroke-dashoffset="35" transform="rotate(-90 18 18)"/></svg>Getting started<span class="rb-count" id="startedCount">3/5</span></button>
       <button class="rb-item sun" data-act="topup"><svg viewBox="0 0 24 24" class="rb-ic"><circle cx="12" cy="12" r="10" fill="var(--sun)"/><path d="M12 16V8M8.5 11.5L12 8l3.5 3.5" stroke="#3d2c00" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>Top up sessions<span class="rb-badge">Gold</span></button>
       <a class="rb-item" href="#billing"><svg viewBox="0 0 24 24" class="rb-ic"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 10h18" stroke="currentColor" stroke-width="1.8"/></svg>Plan &amp; billing<span class="rb-chev">›</span></a>
       <div class="me"><div class="avatar">N</div><div class="me-txt"><b>Nadia</b><small>Gold package</small></div><button class="gear" data-act="logout" title="Log out" aria-label="Log out"><svg viewBox="0 0 24 24"><path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
@@ -563,7 +562,6 @@ S.tasks=[
  {id:5,t:'1-on-1: Essay brainstorm (Monash)',tag:'Session',tc:'green',mins:50,due:'thu',act:'join'},
  {id:6,t:'Shortlist 2 more scholarships',tag:'Application',tc:'sun',mins:20,due:'thu',go:'applications'}
 ];
-S.started=[['Complete your profile',true],['Attend the kickoff session',true],['Invite your parent',true],['Book your first 1-on-1',false],['Turn on WhatsApp reminders',false]];
 const CLOCK='<svg viewBox="0 0 24 24" style="fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>';
 function taskRow(k){return `<div class="task ${k.done?'done':''}"><input type="checkbox" id="tk${k.id}" data-task="${k.id}" ${k.done?'checked':''} aria-label="Mark done"><div class="grow">
   <div class="t-title"><span>${esc(k.t)}</span>${k.due==='over'&&!k.done?'<span class="pill over">Overdue</span>':''}</div>
@@ -1006,8 +1004,7 @@ const view=document.getElementById('view'), nav=document.getElementById('nav');
 function current(){const h=location.hash.slice(1);return V[h]?h:'home';}
 function loggedIn(){try{return sessionStorage.getItem('lms-auth')==='1'}catch(e){return S.auth}}
 function setAuth(v){S.auth=v;try{v?sessionStorage.setItem('lms-auth','1'):sessionStorage.removeItem('lms-auth')}catch(e){}}
-function updStarted(){const n=S.started.filter(x=>x[1]).length;const c=document.getElementById('startedCount');if(c)c.textContent=n+'/5';const a=document.getElementById('ringArc');if(a)a.setAttribute('stroke-dashoffset',88-88*n/5);}
-function render(){updStarted();const r=current();document.getElementById('login').hidden=loggedIn();
+function render(){const r=current();document.getElementById('login').hidden=loggedIn();
   nav.innerHTML=NAV.map(([k,l,mo])=>k[0]==='#'?`<div class="nav-group">${k.slice(1)}</div>`:`<a href="#${k}" ${mo?'class="mobile-only"':''} ${k===r?'aria-current="page"':''}><svg viewBox="0 0 24 24">${ICONS[k]}</svg>${l}${k==='ask'&&S.threads.some(t=>!t.a)?'<span class="count">1</span>':''}</a>`).join('');
   view.innerHTML=V[r]();tickCountdown();
 }
@@ -1068,9 +1065,6 @@ document.addEventListener('click',e=>{
     case 'forgot':toast('In the live LMS this sends a reset link to your email.');break;
     case 'join':close();openCall(t.dataset.id);break;
     case 'catchup':S.tasks.forEach(k=>{if(k.due==='over'&&!k.done)k.due='today';});render();toast('Overdue tasks moved to today.');break;
-    case 'started':modal(`<div><div class="eyebrow">Getting started</div><h2 style="font-size:1.25rem">${S.started.filter(x=>x[1]).length} of 5 done</h2><p class="hint">Finish these to get the most out of your program.</p></div>
-      <div class="agenda">${S.started.map((x,i)=>`<label class="check ${x[1]?'done':''}"><input type="checkbox" id="gs${i}" data-gs="${i}" ${x[1]?'checked':''}><span>${x[0]}</span></label>`).join('')}</div>
-      <div class="modal-foot"><button class="btn" data-act="book">Book your first 1-on-1</button><button class="btn primary" data-close>Done</button></div>`);break;
     case 'cal':location.hash='calendar';break;
     case 'evinfo':toast(t.dataset.info);break;
     case 'skip':C.start=Date.now()-45*60*1000;tickCall();toast('Jumped to minute 45.');break;
@@ -1082,7 +1076,7 @@ document.addEventListener('click',e=>{
 });
 document.addEventListener('change',e=>{const ds=e.target.dataset||{};
   if(ds.task){const k=S.tasks.find(x=>x.id==ds.task);k.done=e.target.checked;render();if(k.done)toast('Nice! Task done.');return;}
-  if(ds.gs!==undefined){S.started[+ds.gs][1]=e.target.checked;updStarted();e.target.closest('label').classList.toggle('done',e.target.checked);return;}if(e.target.dataset&&e.target.dataset.ag!==undefined){C.agenda[+e.target.dataset.ag][1]=e.target.checked;return;}const ms=e.target.dataset&&e.target.dataset.ms;if(ms){const[p,i]=ms.split('-').map(Number);S.plan[p].items[i][1]=e.target.checked;render();}});
+  if(e.target.dataset&&e.target.dataset.ag!==undefined){C.agenda[+e.target.dataset.ag][1]=e.target.checked;return;}const ms=e.target.dataset&&e.target.dataset.ms;if(ms){const[p,i]=ms.split('-').map(Number);S.plan[p].items[i][1]=e.target.checked;render();}});
 document.getElementById('loginForm').addEventListener('submit',e=>{e.preventDefault();const em=document.getElementById('lemail');if(!em.value.trim()){em.focus();toast('Enter your email.');return;}setAuth(true);location.hash='home';render();toast('Logged in. Welcome back, Nadia!');});
 document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='cmsg'){document.querySelector('[data-act=csend]').click();return;}if(e.key==='Escape'&&layer.innerHTML)close();});
 render();
