@@ -871,18 +871,18 @@ function recModal(id){const r=S.recs.find(x=>x.id===id);if(!r)return;const a=rec
     <div><div class="eyebrow">How to apply</div><p style="margin:4px 0 0">${esc(r.reg?r.reg+'. '+r.how:r.how)}</p>${r.uni?`<p class="hint">Linked university: ${esc(r.uni)}</p>`:''}</div>
     <div class="modal-foot"><span class="hint">Deadlines based on last year</span><div class="row"><button class="btn" data-close>Close</button>${portal(r.name)?`<a class="btn" href="${portal(r.name)}" target="_blank" rel="noopener noreferrer">Application portal ↗</a>`:''}${a?`<button class="btn primary" data-go="applications">Open in Applications</button>`:recDays(r)!==null&&recDays(r)<0?'':`<button class="btn primary" data-act="track-rec" data-id="${r.id}">Add to my applications</button>`}</div></div>`);}
 
-const MKIND={s1:'doc',s2:'file',s3:'video',i1:'doc',i2:'file',i3:'doc',i4:'video',e1:'video',e3:'doc',u1:'doc',u2:'file',u3:'doc',d1:'file',d2:'doc',v1:'file',v2:'video'};
+const MKIND={s1:'doc',s2:'doc',s3:'video',i1:'doc',i2:'doc',i3:'doc',i4:'video',e1:'video',e3:'doc',u1:'doc',u2:'doc',u3:'doc',d1:'doc',d2:'doc',v1:'doc',v2:'video'};
 const mk=m=>MKIND[m.id]||'doc';
 const MICO={video:'<svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>',file:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 14h6M9 17h4"/></svg>',doc:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 5h14M5 10h14M5 15h10M5 20h7"/></svg>'};
 const MLABEL={video:['Video','videos'],file:['File','files'],doc:['Article','articles']};
 const mmeta=m=>{const k=mk(m);return k==='video'?`Video · ${m.mins} min · EN + VI subtitles`:k==='file'?`PDF · ${Math.max(4,Math.round(m.mins*0.8))} pages`:`Article · ${m.mins} min read · EN + VI`;};
 V.materials=()=>{
   if(!S.topic){
-  return `<div class="topbar"><div><div class="eyebrow">Materials</div><h1>Reading library</h1><p class="sub">Videos, files and articles to read whenever you need them. Nothing to finish or tick off. Articles have an English and a Vietnamese version.</p></div></div>
+  return `<div class="topbar"><div><div class="eyebrow">Materials</div><h1>Reading library</h1><p class="sub">Videos and articles to watch or read whenever you need them. Nothing to finish or tick off. Articles have an English and a Vietnamese version.</p></div></div>
   <div class="grid">${S.topics.map(t=>{const c={video:0,file:0,doc:0};t.lessons.forEach(m=>c[mk(m)]++);
    return `<section class="panel topic span-4"><div class="t-ico" style="background:${t.bg};color:${t.fg}">${t.ico}</div>
     <div><h2>${t.name}</h2><p class="hint" style="margin-top:4px">${t.desc}</p></div>
-    <div class="m-counts">${['video','file','doc'].filter(k=>c[k]).map(k=>`<span class="m-count mk-${k}">${MICO[k]}${c[k]} ${c[k]>1?MLABEL[k][1]:MLABEL[k][0].toLowerCase()}</span>`).join('')}</div>
+    <div class="m-counts">${['video','doc'].filter(k=>c[k]).map(k=>`<span class="m-count mk-${k}">${MICO[k]}${c[k]} ${c[k]>1?MLABEL[k][1]:MLABEL[k][0].toLowerCase()}</span>`).join('')}</div>
     <button class="btn" data-topic="${t.id}">Open ›</button></section>`;}).join('')}</div>`;}
   const t=S.topics.find(x=>x.id===S.topic);
   return `<div><button class="btn ghost" data-topic="">‹ All topics</button></div>
