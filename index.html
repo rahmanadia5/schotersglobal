@@ -207,14 +207,14 @@ a.btn{text-decoration:none;color:inherit}
 .st-sel.st-accent{background:var(--accent-soft);color:#1a64ad;border-color:transparent}.st-sel.st-good{background:var(--good-soft);color:var(--good);border-color:transparent}.st-sel.st-bad{background:var(--bad-soft);color:var(--bad);border-color:transparent}
 @media (max-width:760px){.rec-item{flex-direction:column}.rec-item .apply-link{border-left:none;border-top:1px dashed var(--line);padding:10px 16px;justify-content:flex-end}}
 .rec-list{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:12px;overflow:hidden}
-.rec-row{display:grid;grid-template-columns:10px minmax(0,1fr) 220px 150px 14px;gap:14px;align-items:center;padding:14px 16px;border:none;border-top:1px solid var(--line);background:var(--surface);text-align:left;font:inherit;color:inherit;cursor:pointer}
+.rec-row{display:grid;grid-template-columns:10px minmax(0,1fr) 44px 128px 108px 104px 14px;gap:14px;align-items:center;padding:14px 16px;border:none;border-top:1px solid var(--line);background:var(--surface);text-align:left;font:inherit;color:inherit;cursor:pointer}
 .rec-row:first-child{border-top:none}.rec-row:hover{background:var(--surface-2)}
 .rec-row .g-dot{margin-top:0}
 .rec-main{display:flex;flex-direction:column;gap:2px;min-width:0}.rec-main b{font-size:14.5px}.rec-main .hint{font-size:12.5px}
-.rec-tags{display:flex;gap:6px;flex-wrap:wrap}
-.rec-dl{display:flex;flex-direction:column;align-items:flex-end;gap:4px}.rec-dl b{font-size:13.5px;white-space:nowrap}
+.rec-f{display:flex;flex-direction:column;align-items:flex-start;gap:4px;min-width:0}.rec-f>i{font-style:normal;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.rec-dl{align-items:flex-start}.rec-dl b{font-size:13.5px;white-space:nowrap}
 .rec-chev{color:var(--muted);font-size:20px}
-@media (max-width:760px){.rec-row{grid-template-columns:10px minmax(0,1fr) auto;row-gap:8px}.rec-tags{grid-column:2/4;grid-row:2}.rec-chev{display:none}.rec-dl{grid-column:3;grid-row:1}}
+@media (max-width:760px){.rec-row{grid-template-columns:10px minmax(0,1fr) minmax(0,1fr);column-gap:14px;row-gap:12px;align-items:start}.rec-row .g-dot{grid-row:1/4;margin-top:6px}.rec-main{grid-column:2/4}.rec-chev{display:none}}
 .fchips{display:flex;flex-wrap:wrap;gap:8px}
 .fchip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);border-radius:99px;padding:6px 8px 6px 14px;font:inherit;font-size:13.5px;font-weight:600;color:var(--muted);cursor:pointer}
 .fchip span{min-width:22px;height:22px;padding:0 6px;border-radius:99px;background:var(--surface-2);display:grid;place-items:center;font-size:12px}
@@ -294,7 +294,6 @@ button.g-row:hover,button.g-row:hover .g-name{background:var(--surface-2)}
 .gl-end{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex:none}
 @media (max-width:600px){.g-wrap{display:none}.g-list{display:flex}}
 .pill.sch{background:#efe7fe;color:var(--violet)}.pill.uni{background:var(--accent-soft);color:#1a64ad}
-.rec-legend{display:flex;flex-wrap:wrap;gap:10px 24px;padding:12px 14px;border-radius:12px;background:var(--surface-2);font-size:13px;color:var(--muted);line-height:1.5}.rec-legend>div{display:flex;gap:10px;align-items:flex-start;flex:1 1 300px}.rec-legend b{color:var(--ink,inherit)}.rec-legend .grade,.rec-legend .pill{flex:none}
 .grade{display:inline-grid;place-items:center;min-width:30px;height:24px;padding:0 6px;border-radius:7px;font-weight:800;font-size:12.5px}.g-Ap{background:#d5f2e3;color:#0b6b48}.g-A{background:var(--good-soft);color:var(--good)}.g-B{background:var(--warn-soft);color:var(--warn)}.g-C{background:var(--bad-soft);color:var(--bad)}
 .elig{display:flex;flex-direction:column;gap:6px;margin-top:6px}.elig>div{display:grid;grid-template-columns:22px minmax(0,140px) minmax(0,1fr);gap:8px;align-items:baseline;font-size:14px}
 .el{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;font-size:11px;font-weight:800}.el.ok{background:var(--good-soft);color:var(--good)}.el.no{background:var(--bad-soft);color:var(--bad)}.el.pend{background:var(--surface-2);color:var(--muted)}
@@ -839,12 +838,13 @@ V.plan=()=>{const P=S.profile,f=S.recFilter;
       <div class="g-wrap">${gantt}</div>
       <div class="g-list">${list.map(r=>{const d=recDays(r);const cls=r.kind==='Scholarship'?'sch':'uni';const dt=r.dl==='rolling'?'Any time':recDate(r).split(' ').slice(0,2).join(' ');return `<button class="gl-row" data-rec="${r.id}"><span class="g-dot ${cls}"></span><span class="grow"><b>${esc(r.name)}</b><span class="hint">${r.prog?esc(r.prog)+' · ':r.kind+' · '}${r.country}</span></span><span class="gl-end"><span class="g-mark ${cls} ${d!==null&&d<0?'past':''}">${dt}</span><span class="hint">${d===null?'Rolling':d<0?'Closed':d+' days left'}</span></span></button>`;}).join('')}</div></section>
     <section class="panel span-12"><div class="panel-h"><h2>All recommendations, by deadline</h2><div class="tabs" role="tablist">${[['all','All'],['University','Universities'],['Scholarship','Scholarships']].map(([k,l])=>`<button role="tab" aria-selected="${f===k}" data-rf="${k}">${l}</button>`).join('')}</div></div>
-      <div class="rec-legend"><div><span class="grade g-A">Fit</span><span><b>Fit grade</b> shows how well your profile matches what they ask for. <b>A+</b> strong match, <b>A</b> you meet the requirements, <b>B</b> one or two gaps, <b>C</b> a stretch.</span></div><div><span class="pill good">Funding</span><span><b>Fully funded</b> covers tuition and living costs. <b>Partially funded</b> covers part of the costs, such as some tuition.</span></div></div>
       <div class="rec-list">${list.map(r=>{const d=recDays(r);const cls=r.kind==='Scholarship'?'sch':'uni';return `<div class="rec-item"><button class="rec-row" data-rec="${r.id}">
         <span class="g-dot ${cls}"></span>
         <span class="rec-main"><b>${esc(r.name)}</b><span class="hint">${r.kind}${r.prog?' · '+esc(r.prog):''} · ${r.country}</span></span>
-        <span class="rec-tags">${r.grade?`<span class="grade g-${r.grade.replace('+','p')}" title="${FITTIP[r.grade]||''}">Fit ${r.grade}</span>`:''}${r.fund?`<span class="pill ${r.fund==='Fully funded'?'good':''}" title="${FUNDTIP[r.fund]||''}">${r.fund}</span>`:''}</span>
-        <span class="rec-dl"><b class="num">${recDate(r)}</b></span>
+        <span class="rec-f"><i>Fit</i>${r.grade?`<span class="grade g-${r.grade.replace('+','p')}" title="${FITTIP[r.grade]||''}">${r.grade}</span>`:'<span class="hint">–</span>'}</span>
+        <span class="rec-f"><i>Funding type</i>${r.fund?`<span class="pill ${r.fund==='Fully funded'?'good':''}" title="${FUNDTIP[r.fund]||''}">${r.fund}</span>`:'<span class="hint">–</span>'}</span>
+        <span class="rec-f"><i>Status</i>${(()=>{const st=d===null?['Rolling','accent']:d<0?['Closed','']:d<=30?['Closing soon','warn']:['Open','good'];return `<span class="pill ${st[1]}">${st[0]}</span>`;})()}</span>
+        <span class="rec-f rec-dl"><i>Deadline</i><b class="num">${r.dl==='rolling'?'Any time':recDate(r)}</b></span>
         <span class="rec-chev" aria-hidden="true">›</span></button>${applyLink(r.name)}</div>`;}).join('')}</div>
       <p class="hint" style="margin:0">Deadlines are based on last year and your mentor double-checks them. Fit grade: A+ is the strongest match, C is a stretch.</p></section>
   </div>`;};
