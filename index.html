@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Schoters Mentoring LMS</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap">
+<style>
+html{color-scheme:light}body{margin:0}[hidden]{display:none!important}img{max-width:100%}
+
+/* Layout: app shell, left rail nav on desktop, scrolling tab strip on phones; content as a 12-col grid of panels */
+:root{
+  --bg:#f3f5f9; --surface:#ffffff; --surface-2:#eef1f7; --line:#dde2ec;
+  --ink:#121a2e; --muted:#5b6479; --accent:#2747e8; --accent-ink:#ffffff; --accent-soft:#e6ebff;
+  --good:#11805a; --good-soft:#dff3ea; --warn:#a85d00; --warn-soft:#fbeedb; --bad:#b4233a; --bad-soft:#fbe4e8;
+  --rail:#121a2e; --rail-ink:#c9d0e2; --rail-active:#ffffff;
+  --display:"Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
+  --body:"Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --r:12px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0d1220; --surface:#151c2e; --surface-2:#1c2539; --line:#2a3550;
+  --ink:#e9edf7; --muted:#9aa4bd; --accent:#7d93ff; --accent-ink:#0d1220; --accent-soft:#222e57;
+  --good:#5fd3a2; --good-soft:#123327; --warn:#f0b45c; --warn-soft:#3a2a12; --bad:#ff8a9c; --bad-soft:#3c1820;
+  --rail:#090d18; --rail-ink:#9aa4bd; --rail-active:#ffffff; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0d1220; --surface:#151c2e; --surface-2:#1c2539; --line:#2a3550;
+  --ink:#e9edf7; --muted:#9aa4bd; --accent:#7d93ff; --accent-ink:#0d1220; --accent-soft:#222e57;
+  --good:#5fd3a2; --good-soft:#123327; --warn:#f0b45c; --warn-soft:#3a2a12; --bad:#ff8a9c; --bad-soft:#3c1820;
+  --rail:#090d18; --rail-ink:#9aa4bd; --rail-active:#ffffff; color-scheme:dark}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:14px;line-height:1.5}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance;letter-spacing:-.01em}
+h1{font-size:1.6rem;font-weight:800}
+h2{font-size:1.05rem;font-weight:700}
+h3{font-size:.95rem;font-weight:700}
+p{margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.num{font-variant-numeric:tabular-nums}
+
+.shell{display:grid;grid-template-columns:232px minmax(0,1fr);min-height:100%}
+.rail{background:var(--rail);color:var(--rail-ink);padding:20px 12px;display:flex;flex-direction:column;gap:18px;position:sticky;top:0;height:100vh}
+.brand{display:flex;align-items:center;gap:10px;padding:0 8px;color:#fff}
+.brand-mark{width:30px;height:30px;border-radius:8px;background:var(--accent);display:grid;place-items:center;font-family:var(--display);font-weight:800;color:#fff;font-size:15px}
+.brand b{font-family:var(--display);font-size:15px;display:block;line-height:1.1}
+.brand small{font-size:11px;color:var(--rail-ink)}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav a{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;color:var(--rail-ink);text-decoration:none;font-weight:500}
+.nav a:hover{background:rgba(255,255,255,.06);color:#fff}
+.nav a[aria-current="page"]{background:rgba(255,255,255,.1);color:var(--rail-active)}
+.nav svg{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nav .count{margin-left:auto;font-size:11px;background:var(--accent);color:#fff;border-radius:99px;padding:0 7px}
+.rail-foot{margin-top:auto;font-size:12px;padding:10px;border-radius:10px;background:rgba(255,255,255,.05)}
+.rail-foot b{color:#fff;display:block}
+
+.main{min-width:0;padding-block:24px 48px;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+.wrap{max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+.topbar{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600}
+.sub{color:var(--muted)}
+.proto{font-size:11px;color:var(--warn);background:var(--warn-soft);border-radius:99px;padding:3px 10px;font-weight:600}
+
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}
+.span-12{grid-column:span 12}.span-8{grid-column:span 8}.span-7{grid-column:span 7}.span-6{grid-column:span 6}.span-5{grid-column:span 5}.span-4{grid-column:span 4}.span-3{grid-column:span 3}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.panel-h{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.hero{background:var(--ink);color:var(--bg);border:none}
+.hero .btn:not(.ghost){color:var(--ink);background:var(--bg);border-color:var(--bg)}
+.hero .sub{color:color-mix(in srgb, var(--bg) 70%, transparent)}
+
+.stat{display:flex;flex-direction:column;gap:6px}
+.stat .big{font-family:var(--display);font-size:2rem;font-weight:800;line-height:1}
+.stat .big small{font-size:.95rem;color:var(--muted);font-weight:600}
+.bar{height:8px;border-radius:99px;background:var(--surface-2);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:99px}
+.bar.good i{background:var(--good)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:9px;padding:8px 14px;font-weight:600;cursor:pointer;white-space:nowrap}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--accent);padding-inline:6px}
+.btn.sm{padding:5px 10px;font-size:13px}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:2px 9px;border-radius:99px;background:var(--surface-2);color:var(--muted);white-space:nowrap}
+.pill.good{background:var(--good-soft);color:var(--good)}
+.pill.warn{background:var(--warn-soft);color:var(--warn)}
+.pill.bad{background:var(--bad-soft);color:var(--bad)}
+.pill.accent{background:var(--accent-soft);color:var(--accent)}
+.dot{width:7px;height:7px;border-radius:50%;background:currentColor}
+
+.list{display:flex;flex-direction:column}
+.item{display:flex;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--line);min-width:0}
+.item:first-child{border-top:none;padding-top:0}
+.item .grow{flex:1;min-width:0}
+.item .title{font-weight:600}
+.item .meta{color:var(--muted);font-size:13px}
+.datebox{width:48px;flex:none;text-align:center;border-radius:10px;background:var(--accent-soft);color:var(--accent);padding:6px 0;font-family:var(--display);line-height:1.1}
+.datebox b{display:block;font-size:18px}
+.datebox span{font-size:11px;text-transform:uppercase;font-weight:700}
+
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{text-align:left;padding:10px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600}
+td.c,th.c{text-align:center}
+tr.hl td{background:var(--accent-soft)}
+
+.tabs{display:flex;gap:4px;background:var(--surface-2);padding:4px;border-radius:10px;flex-wrap:wrap}
+.tabs button{border:none;background:transparent;padding:7px 12px;border-radius:7px;font-weight:600;color:var(--muted);cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+
+.channel{border:1px solid var(--line);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;cursor:pointer;background:var(--surface);text-align:left}
+.channel[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.channel .cost{font-size:12px;font-weight:600;color:var(--accent)}
+
+.bubble{background:var(--surface-2);border-radius:12px;padding:10px 12px;max-width:560px}
+.bubble.me{background:var(--accent-soft);margin-left:auto}
+.bubble .who{font-size:12px;color:var(--muted);font-weight:600;margin-bottom:2px}
+
+.phase{display:grid;grid-template-columns:120px 1fr;gap:14px;padding:14px 0;border-top:1px solid var(--line)}
+.phase:first-child{border-top:none}
+.phase .when{font-family:var(--display);font-weight:700}
+.check{display:flex;gap:10px;align-items:flex-start;padding:4px 0;cursor:pointer}
+.check input{margin-top:3px;accent-color:var(--accent)}
+.check.done span{color:var(--muted);text-decoration:line-through}
+.timeline{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.yr{border-radius:10px;padding:14px;background:var(--surface-2);display:flex;flex-direction:column;gap:4px}
+.yr.now{background:var(--accent-soft)}
+
+.lang{font-size:12px}
+.module-body{background:var(--surface-2);border-radius:10px;padding:14px;line-height:1.65}
+
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-weight:600;font-size:13px}
+.field input,.field select,.field textarea{border:1px solid var(--line);background:var(--surface);border-radius:9px;padding:9px 11px;width:100%}
+.field textarea{min-height:90px;resize:vertical}
+.hint{font-size:12px;color:var(--muted)}
+.slots{display:flex;gap:8px;flex-wrap:wrap}
+.slot{border:1px solid var(--line);background:var(--surface);border-radius:9px;padding:7px 12px;cursor:pointer;font-weight:600}
+.slot[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.slot small{display:block;font-weight:500;font-size:11px;opacity:.8}
+
+.overlay{position:fixed;inset:0;background:rgba(8,12,24,.55);display:grid;place-items:center;padding:16px;z-index:50}
+.modal{background:var(--surface);border-radius:16px;width:min(560px,100%);max-height:calc(100% - 32px);overflow:auto;padding:22px;display:flex;flex-direction:column;gap:16px;border:1px solid var(--line)}
+.modal-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:14px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom, 0px));background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-weight:600;z-index:60;box-shadow:0 6px 24px rgba(0,0,0,.2);max-width:calc(100% - 32px)}
+.note{font-size:12.5px;color:var(--muted);border-left:3px solid var(--line);padding-left:10px}
+.assume{font-size:11px;font-weight:700;color:var(--warn);text-transform:uppercase;letter-spacing:.05em}
+
+@media (max-width: 960px){
+  .span-8,.span-7,.span-6,.span-5,.span-4{grid-column:span 12}
+  .span-3{grid-column:span 6}
+}
+@media (max-width: 760px){
+  .shell{grid-template-columns:minmax(0,1fr)}
+  .rail{position:sticky;top:env(safe-area-inset-top, 0px);height:auto;z-index:20;padding:10px 0 0;gap:8px;flex-direction:column}
+  body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top, 0px);z-index:30;background:var(--rail)}
+  .brand{padding-left:max(16px, env(safe-area-inset-left, 0px))}
+  .nav{flex-direction:row;overflow-x:auto;padding:0 max(16px, env(safe-area-inset-right, 0px)) 10px max(16px, env(safe-area-inset-left, 0px));scrollbar-width:none}
+  .nav a{white-space:nowrap;padding:7px 10px}
+  .nav svg{display:none}
+  .rail-foot{display:none}
+  .phase{grid-template-columns:1fr;gap:6px}
+  .timeline{grid-template-columns:1fr}
+  .span-3{grid-column:span 6}
+}
+@media (max-width: 420px){ .span-3{grid-column:span 12} h1{font-size:1.35rem} }
+@media (prefers-reduced-motion: no-preference){ .toast{animation:up .2s ease-out} @keyframes up{from{transform:translate(-50%,8px);opacity:0}} }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <aside class="rail">
+    <div class="brand"><div class="brand-mark">S</div><div><b>Schoters Mentoring</b><small>Student LMS</small></div></div>
+    <nav class="nav" id="nav" aria-label="Main"></nav>
+    <div class="rail-foot"><b>Gold package</b>Month 3 of 12 · Bachelor track</div>
+  </aside>
+  <main class="main"><div class="wrap" id="view"></div></main>
+</div>
+<div id="layer"></div>
+
+<script>
+(function(){
+const ICONS={
+  home:'<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+  sessions:'<rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3"/>',
+  applications:'<path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h8M8 17h5"/>',
+  documents:'<path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13l2 2 4-4"/>',
+  ask:'<path d="M4 5h16v11H9l-5 4z"/><path d="M9 10h6"/>',
+  plan:'<path d="M4 19V5M4 19h16"/><path d="M8 15l4-4 3 3 5-6"/>',
+  materials:'<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/>',
+  parents:'<circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5M15 15c3 0 6 1.5 6 4.5"/>',
+  billing:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h4"/>'
+};
+const NAV=[['home','Home'],['sessions','Sessions'],['applications','Applications'],['documents','Proofread'],['ask','Ask & support'],['plan','Learning plan'],['materials','Materials'],['parents','Parent sync'],['billing','Plan & billing']];
+
+/* ---------- Example data (not real students) ---------- */
+const S={
+  student:{name:'Nguyễn Minh Anh',first:'Minh Anh',track:'Bachelor',parentName:'Nguyễn Văn Hùng (father)',parentEmail:'parent@example.com'},
+  pkg:'Gold',
+  packages:{Silver:{sessions:10,tokens:10},Gold:{sessions:20,tokens:20},Platinum:{sessions:30,tokens:30}},
+  sessionsExtra:0, sessionsUsed:6, tokensUsed:3,
+  mentor:{name:'Dimas Pratama',role:'Mentor · Business & Economics'},
+  superMentor:{name:'Ayu Lestari',role:'Super Mentor'},
+  sso:{name:'Trần Thu Hà',role:'Student Success Officer · Vietnam'},
+  upcoming:[
+    {id:1,title:'Essay brainstorm: Monash',d:27,m:'Nov',dow:'Thu',time:'19:00–19:50',with:'Dimas Pratama',kind:'1-on-1'},
+    {id:2,title:'Quarterly sync with parents',d:12,m:'Dec',dow:'Sat',time:'09:00–09:50',with:'Dimas, Hà, parents',kind:'Parent sync'}
+  ],
+  past:[
+    {title:'Kickoff: 3-year roadmap',date:'12 Sep',with:'All stakeholders',kind:'Kickoff',free:true},
+    {title:'Profile review & major choice',date:'19 Sep',with:'Dimas Pratama',kind:'1-on-1'},
+    {title:'University shortlist',date:'3 Oct',with:'Dimas Pratama',kind:'1-on-1'},
+    {title:'IELTS writing strategy',date:'17 Oct',with:'Dimas Pratama',kind:'1-on-1'},
+    {title:'CV first draft',date:'31 Oct',with:'Dimas Pratama',kind:'1-on-1'},
+    {title:'Scholarship strategy',date:'14 Nov',with:'Ayu Lestari',kind:'1-on-1'}
+  ],
+  apps:[
+    {name:'Monash University',prog:'Bachelor of Commerce',kind:'University',deadline:'15 Dec 2026',days:20,status:'Writing essay',tone:'accent'},
+    {name:'Monash International Merit Scholarship',prog:'Scholarship',kind:'Scholarship',deadline:'15 Dec 2026',days:20,status:'Writing essay',tone:'accent'},
+    {name:'University of Manchester',prog:'BSc Economics',kind:'University',deadline:'28 Jan 2027',days:64,status:'Documents ready',tone:'good'},
+    {name:'NUS',prog:'Business Administration',kind:'University',deadline:'20 Feb 2027',days:87,status:'Not started',tone:''},
+    {name:'UBC International Scholars',prog:'Scholarship',kind:'Scholarship',deadline:'15 Nov 2026',days:-10,status:'Submitted',tone:'good'}
+  ],
+  docTypes:[
+    {id:'essay',name:'Personal statement / essay',price:1200000,days:3},
+    {id:'schol',name:'Scholarship essay',price:1200000,days:3},
+    {id:'motiv',name:'Motivation letter',price:900000,days:3},
+    {id:'cv',name:'CV / résumé',price:600000,days:2},
+    {id:'rec',name:'Recommendation letter review',price:700000,days:2}
+  ],
+  orders:[
+    {id:'PR-1042',file:'Monash_personal_statement_v2.docx',type:'Personal statement / essay',app:'Monash University',price:1200000,status:'In review',due:'28 Nov',reviewer:'Dimas Pratama'},
+    {id:'PR-1031',file:'MinhAnh_CV_Oct.pdf',type:'CV / résumé',app:'All applications',price:600000,status:'Returned',due:'2 Nov',reviewer:'Dimas Pratama'},
+    {id:'PR-1019',file:'UBC_scholars_essay_final.docx',type:'Scholarship essay',app:'UBC International Scholars',price:1200000,status:'Returned',due:'6 Nov',reviewer:'Ayu Lestari'}
+  ],
+  threads:[
+    {ch:'mentor',q:'Em nên chọn Kinh doanh hay Kinh tế cho hồ sơ Monash?',qEn:'Should I pick Business or Economics for my Monash application?',a:'Với điểm Toán của em, Kinh tế (Commerce major Economics) sẽ nổi bật hơn. Mình sẽ nói kỹ trong buổi thứ Năm.',by:'Dimas Pratama',when:'20 Nov',status:'Answered'},
+    {ch:'sp',q:'Can I send my IELTS result after the Manchester deadline?',a:'Yes. Manchester accepts English results after you apply, as a condition of your offer. Add your test date in the form.',by:'Student Priority team',when:'18 Nov',status:'Answered'},
+    {ch:'hotline',q:'I did not receive the invoice for my annual payment.',a:'Sent again to your email just now. It is also under Plan & billing.',by:'Hotline (AI assistant → Ops)',when:'10 Nov',status:'Resolved'},
+    {ch:'mentor',q:'Bài luận 650 từ có quá dài với Monash không?',qEn:'Is a 650-word essay too long for Monash?',a:null,by:'',when:'Today',status:'Waiting'}
+  ],
+  plan:[
+    {when:'Months 1–3',name:'Foundation',state:'now',items:[['Kickoff and 3-year roadmap',true],['Profile review and major choice',true],['Shortlist 5 universities and 3 scholarships',true],['IELTS target 7.0 (test booked 6 Dec)',false]]},
+    {when:'Months 4–6',name:'Build applications',state:'next',items:[['Personal statement drafts (2 rounds of proofread)',false],['CV final',false],['Recommendation letters requested',false],['Quarterly sync #2 with parents',false]]},
+    {when:'Months 7–9',name:'Submit',state:'',items:[['Submit all university applications',false],['Scholarship interviews practice',false],['Quarterly sync #3',false]]},
+    {when:'Months 10–12',name:'Decide and prepare',state:'',items:[['Compare offers and scholarships',false],['Accept offer and pay deposit',false],['Visa and pre-departure',false],['Final sync and renewal decision',false]]}
+  ],
+  modules:[
+    {id:'m1',title:'How Australian universities read your application',mins:12,cat:'Applications',done:true,
+      en:'Admissions teams read your grades first, then check that your subjects fit the course. Your personal statement should show one clear reason you chose this course and two pieces of evidence: something you did and what you learned from it.',
+      vi:'Bộ phận tuyển sinh xem điểm của bạn trước, sau đó kiểm tra xem các môn học có phù hợp với ngành không. Bài luận cá nhân nên nêu một lý do rõ ràng vì sao bạn chọn ngành này và hai bằng chứng: việc bạn đã làm và điều bạn học được từ đó.'},
+    {id:'m2',title:'Writing a scholarship essay that answers the prompt',mins:18,cat:'Essays',done:false,
+      en:'Underline every question in the prompt and answer each one in order. Scholarship readers score you against the criteria, so use their words: leadership, impact, financial need.',
+      vi:'Gạch chân từng câu hỏi trong đề bài và trả lời lần lượt. Người chấm học bổng chấm điểm theo tiêu chí, vì vậy hãy dùng chính từ ngữ của họ: khả năng lãnh đạo, tác động, nhu cầu tài chính.'},
+    {id:'m3',title:'IELTS Writing Task 2: structure in 4 paragraphs',mins:15,cat:'English tests',done:false,
+      en:'Introduction with your position, two body paragraphs with one idea each, and a short conclusion. Aim for 260–290 words.',
+      vi:'Mở bài nêu quan điểm, hai đoạn thân bài mỗi đoạn một ý, và kết bài ngắn. Hướng tới 260–290 từ.'},
+    {id:'m4',title:'Choosing between offers: cost, ranking, career',mins:10,cat:'Decisions',done:false,
+      en:'Put every offer in one table: total cost after scholarship, course ranking, internship options, and city cost of living.',
+      vi:'Đưa tất cả thư mời vào một bảng: tổng chi phí sau học bổng, xếp hạng ngành, cơ hội thực tập và chi phí sinh hoạt.'}
+  ],
+  syncs:[
+    {q:'Q1',date:'12 Sep 2026',state:'done',title:'Kickoff with all stakeholders',notes:['Agreed target: Bachelor of Commerce in Australia or UK, start Feb 2028 intake at the latest.','Budget ceiling set by parents; scholarships are a priority.','IELTS 7.0 by December.']},
+    {q:'Q2',date:'12 Dec 2026',state:'next',title:'Progress sync #2',notes:[]},
+    {q:'Q3',date:'13 Mar 2027',state:'',title:'Progress sync #3',notes:[]},
+    {q:'Q4',date:'12 Jun 2027',state:'',title:'Year review and next step',notes:[]}
+  ],
+  billing:'annual', monthsPaid:12, monthsUsed:3, topups:[],
+  langPref:{}, askChannel:'mentor', docFilter:'all'
+};
+const fmt=n=>n.toLocaleString('vi-VN')+' ₫';
+const sessTotal=()=>S.packages[S.pkg].sessions+S.sessionsExtra;
+const sessLeft=()=>sessTotal()-S.sessionsUsed-S.upcoming.filter(u=>u.kind==='1-on-1').length;
+const tokLeft=()=>S.packages[S.pkg].tokens-S.tokensUsed;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* SSO reply status from Vietnam time (GMT+7): Mon–Fri 09:00–17:00 = fast reply (assumption) */
+function ssoStatus(){
+  const now=new Date(Date.now()+7*3600e3); const d=now.getUTCDay(), h=now.getUTCHours();
+  const fast=d>=1&&d<=5&&h>=9&&h<17;
+  return fast?{fast,label:'Fast reply now',detail:'Usually answers within 30 minutes'}:{fast,label:'Slow reply now',detail:'Answers next working day from 09:00 (GMT+7)'};
+}
+
+/* ---------- Views ---------- */
+const V={};
+V.home=()=>{const sso=ssoStatus(); const tot=sessTotal(), left=sessLeft(); const tl=tokLeft(), tt=S.packages[S.pkg].tokens;
+  const done=S.plan.flatMap(p=>p.items).filter(i=>i[1]).length, all=S.plan.flatMap(p=>p.items).length;
+  const next=S.upcoming[0];
+  return `
+  <div class="topbar"><div><div class="eyebrow">Wednesday, 25 November</div><h1>Hi ${S.student.first}, your Monash essay is due in 20 days</h1></div><span class="proto">Prototype · example data</span></div>
+  <div class="grid">
+    <section class="panel hero span-8">
+      <div class="eyebrow" style="color:inherit;opacity:.7">Next session</div>
+      ${next?`<div class="row" style="justify-content:space-between;align-items:flex-end">
+        <div><h2 style="font-size:1.4rem">${esc(next.title)}</h2><p class="sub">${next.dow} ${next.d} ${next.m} · ${next.time} (GMT+7) · with ${esc(next.with)}</p></div>
+        <div class="row"><button class="btn" data-act="join">Join video call</button><button class="btn ghost" style="color:inherit" data-go="sessions">All sessions</button></div></div>`:'<p>No sessions booked.</p>'}
+    </section>
+    <section class="panel span-4">
+      <div class="panel-h"><h2>Your SSO</h2><span class="pill ${sso.fast?'good':'warn'}"><span class="dot"></span>${sso.label}</span></div>
+      <div><div class="title" style="font-weight:600">${S.sso.name}</div><div class="sub" style="font-size:13px">${S.sso.role}</div></div>
+      <p class="hint">${sso.detail}. Fast reply Mon–Fri 09:00–17:00.</p>
+      <button class="btn" data-go="ask" data-ch="hotline">Message Hà</button>
+    </section>
+    <section class="panel span-3 stat"><div class="eyebrow">Video sessions left</div><div class="big num">${left}<small> / ${tot}</small></div><div class="bar"><i style="width:${(tot-left)/tot*100}%"></i></div><button class="btn sm" data-act="book" ${left<1?'disabled':''}>Book a session</button></section>
+    <section class="panel span-3 stat"><div class="eyebrow">QnA tokens left</div><div class="big num">${tl}<small> / ${tt}</small></div><div class="bar"><i style="width:${(tt-tl)/tt*100}%"></i></div><button class="btn sm" data-go="ask" data-ch="mentor">Ask a mentor</button></section>
+    <section class="panel span-3 stat"><div class="eyebrow">Learning plan</div><div class="big num">${Math.round(done/all*100)}<small>%</small></div><div class="bar good"><i style="width:${done/all*100}%"></i></div><button class="btn sm" data-go="plan">Open plan</button></section>
+    <section class="panel span-3 stat"><div class="eyebrow">Proofreads in review</div><div class="big num">${S.orders.filter(o=>o.status!=='Returned').length}</div><p class="hint">Priced per document, no tokens</p><button class="btn sm" data-act="order">Order proofread</button></section>
+    <section class="panel span-7">
+      <div class="panel-h"><h2>Applications</h2><button class="btn ghost" data-go="applications">See all ${S.apps.length}</button></div>
+      <div class="list">${S.apps.filter(a=>a.days>0).slice(0,4).map(appRow).join('')}</div>
+    </section>
+    <section class="panel span-5">
+      <div class="panel-h"><h2>Coming up</h2></div>
+      <div class="list">
+        ${S.upcoming.map(u=>`<div class="item"><div class="datebox"><b>${u.d}</b><span>${u.m}</span></div><div class="grow"><div class="title">${esc(u.title)}</div><div class="meta">${u.time} · ${esc(u.with)}</div></div>${u.kind==='Parent sync'?'<span class="pill accent">Parents</span>':''}</div>`).join('')}
+        <div class="item"><div class="datebox"><b>6</b><span>Dec</span></div><div class="grow"><div class="title">IELTS test</div><div class="meta">Learning plan milestone</div></div></div>
+      </div>
+    </section>
+  </div>`;};
+
+function appRow(a){
+  const urgent=a.days>0&&a.days<=21;
+  return `<div class="item"><div class="grow"><div class="title">${esc(a.name)}</div><div class="meta">${esc(a.prog)} · due ${a.deadline}</div></div>
+  ${urgent?`<span class="pill warn num">${a.days} days</span>`:''}<span class="pill ${a.tone}">${a.status}</span></div>`;
+}
+
+V.sessions=()=>{const left=sessLeft();return `
+  <div class="topbar"><div><div class="eyebrow">Sessions</div><h1>1-on-1 video sessions</h1><p class="sub">Each session is up to 50 minutes. The kickoff and parent syncs do not use your sessions.</p></div>
+  <div class="row"><button class="btn" data-act="topup">Top up sessions</button><button class="btn primary" data-act="book" ${left<1?'disabled':''}>Book a session</button></div></div>
+  <div class="grid">
+    <section class="panel span-4 stat"><div class="eyebrow">Left to book</div><div class="big num">${left}<small> / ${sessTotal()}</small></div><div class="bar"><i style="width:${(sessTotal()-left)/sessTotal()*100}%"></i></div><p class="hint">${S.pkg} package: ${S.packages[S.pkg].sessions} sessions${S.sessionsExtra?` + ${S.sessionsExtra} topped up`:''}</p></section>
+    <section class="panel span-8"><div class="panel-h"><h2>Your mentors</h2></div>
+      <div class="list">
+        <div class="item"><div class="grow"><div class="title">${S.mentor.name}</div><div class="meta">${S.mentor.role} · answers QnA in Vietnamese</div></div><span class="pill accent">Main mentor</span></div>
+        <div class="item"><div class="grow"><div class="title">${S.superMentor.name}</div><div class="meta">${S.superMentor.role} · joins for strategy and escalations</div></div><span class="pill">Super Mentor</span></div>
+      </div></section>
+    <section class="panel span-12"><div class="panel-h"><h2>Upcoming</h2></div>
+      <div class="list">${S.upcoming.map(u=>`<div class="item"><div class="datebox"><b>${u.d}</b><span>${u.m}</span></div><div class="grow"><div class="title">${esc(u.title)}</div><div class="meta">${u.dow} · ${u.time} (GMT+7) · ${esc(u.with)}</div></div>
+        <span class="pill ${u.kind==='1-on-1'?'accent':'good'}">${u.kind==='1-on-1'?'Uses 1 session':'Free'}</span>
+        ${u.kind==='1-on-1'?`<button class="btn sm" data-act="cancel" data-id="${u.id}">Cancel</button>`:''}<button class="btn sm primary" data-act="join">Join</button></div>`).join('')}</div>
+      <p class="note">Cancel at least 24 hours before to get the session back. <span class="assume">Assumption</span></p></section>
+    <section class="panel span-12"><div class="panel-h"><h2>Past sessions</h2><span class="hint">${S.sessionsUsed} used</span></div>
+      <div class="table-wrap"><table><thead><tr><th>Date</th><th>Session</th><th>With</th><th>Quota</th><th></th></tr></thead><tbody>
+      ${S.past.slice().reverse().map(p=>`<tr><td class="num">${p.date}</td><td>${esc(p.title)}</td><td>${esc(p.with)}</td><td>${p.free?'<span class="pill good">Free</span>':'<span class="pill">1 session</span>'}</td><td><button class="btn ghost sm" data-act="notes">Notes &amp; recording</button></td></tr>`).join('')}
+      </tbody></table></div></section>
+  </div>`;};
+
+V.applications=()=>`
+  <div class="topbar"><div><div class="eyebrow">Applications</div><h1>${S.apps.length} applications, one place</h1><p class="sub">Every university and scholarship your team is working on with you, with the next deadline first.</p></div><button class="btn primary" data-act="addapp">Add application</button></div>
+  <section class="panel"><div class="table-wrap"><table><thead><tr><th>Institution</th><th>Programme</th><th>Type</th><th>Deadline</th><th>Status</th><th></th></tr></thead><tbody>
+  ${S.apps.slice().sort((a,b)=>(a.days<0)-(b.days<0)||a.days-b.days).map(a=>`<tr><td><b>${esc(a.name)}</b></td><td>${esc(a.prog)}</td><td>${a.kind}</td><td class="num">${a.deadline}${a.days>0&&a.days<=21?` <span class="pill warn">${a.days} days</span>`:''}</td><td><span class="pill ${a.tone}">${a.status}</span></td><td><button class="btn ghost sm" data-act="order" data-app="${esc(a.name)}">Proofread a document</button></td></tr>`).join('')}
+  </tbody></table></div></section>`;
+
+V.documents=()=>{const f=S.docFilter;const list=S.orders.filter(o=>f==='all'||(f==='open'?o.status!=='Returned':o.status==='Returned'));return `
+  <div class="topbar"><div><div class="eyebrow">Proofread</div><h1>Document proofreading</h1><p class="sub">Pay per document. No tokens needed. A mentor returns your file with tracked changes and comments.</p></div><button class="btn primary" data-act="order">Order proofread</button></div>
+  <div class="grid">
+    <section class="panel span-8"><div class="panel-h"><h2>Your orders</h2>
+      <div class="tabs" role="tablist">${[['all','All'],['open','In progress'],['done','Returned']].map(([k,l])=>`<button role="tab" aria-selected="${f===k}" data-filter="${k}">${l}</button>`).join('')}</div></div>
+      <div class="list">${list.map(o=>`<div class="item"><div class="grow"><div class="title">${esc(o.file)}</div><div class="meta">${o.id} · ${o.type} · ${esc(o.app)} · ${o.reviewer}</div></div>
+        <span class="num hint">${fmt(o.price)}</span>${o.status==='Returned'?`<span class="pill good">Returned ${o.due}</span><button class="btn sm" data-act="dl">Open reviewed file</button>`:`<span class="pill accent">${o.status} · back by ${o.due}</span>`}</div>`).join('')||'<p class="hint">Nothing here yet.</p>'}</div></section>
+    <section class="panel span-4"><div class="panel-h"><h2>Price list</h2><span class="assume">Sample prices</span></div>
+      <div class="list">${S.docTypes.map(t=>`<div class="item"><div class="grow"><div class="title" style="font-weight:500">${t.name}</div><div class="meta">Back in ${t.days} working days</div></div><b class="num">${fmt(t.price)}</b></div>`).join('')}</div>
+      <p class="note">Most students order 3 to 4 scholarship essays during the program.</p></section>
+  </div>`;};
+
+const CH={
+  mentor:{name:'Ask a mentor',lang:'Vietnamese',cost:'1 token per question',desc:'Study and application questions, answered by your mentor in Vietnamese.'},
+  sp:{name:'Student Priority',lang:'English',cost:'Free, no token',desc:'Quick questions answered in English by our Indonesia team.'},
+  hotline:{name:'Hotline & SSO',lang:'English or Vietnamese',cost:'Free',desc:'Urgent, schedule, payment and account issues. An AI assistant answers first, then your SSO.'}
+};
+V.ask=()=>{const c=S.askChannel;const th=S.threads.filter(t=>t.ch===c);return `
+  <div class="topbar"><div><div class="eyebrow">Ask &amp; support</div><h1>Where should your question go?</h1></div><span class="pill accent num">${tokLeft()} QnA tokens left</span></div>
+  <div class="grid">${Object.entries(CH).map(([k,v])=>`<button class="channel span-4" aria-pressed="${c===k}" data-ch-set="${k}"><h3>${v.name}</h3><span class="hint">${v.desc}</span><span class="cost">${v.cost} · ${v.lang}</span></button>`).join('')}</div>
+  <div class="grid">
+    <section class="panel span-7"><div class="panel-h"><h2>${CH[c].name}: your questions</h2></div>
+      <div class="list">${th.map(t=>`<div class="item" style="flex-direction:column;align-items:stretch;gap:8px">
+        <div class="bubble me"><div class="who">You · ${t.when}</div>${esc(t.q)}${t.qEn?`<div class="hint" style="margin-top:4px">EN: ${esc(t.qEn)}</div>`:''}</div>
+        ${t.a?`<div class="bubble"><div class="who">${esc(t.by)}</div>${esc(t.a)}</div>`:`<span class="pill warn" style="align-self:flex-start">Waiting for an answer</span>`}</div>`).join('')||'<p class="hint">No questions yet.</p>'}</div></section>
+    <section class="panel span-5"><div class="panel-h"><h2>New question</h2><span class="pill ${c==='mentor'?'accent':'good'}">${CH[c].cost}</span></div>
+      <div class="field"><label for="q">Your question</label><textarea id="q" placeholder="${c==='mentor'?'Bạn có thể viết bằng tiếng Việt':'Write in English'}"></textarea></div>
+      ${c==='hotline'?`<div class="field"><label for="topic">Topic</label><select id="topic"><option>Session schedule</option><option>Payment or invoice</option><option>Account or login</option><option>Something urgent</option></select></div>`:''}
+      <button class="btn primary" data-act="send" ${c==='mentor'&&tokLeft()<1?'disabled':''}>Send${c==='mentor'?' · uses 1 token':''}</button>
+      ${c==='hotline'?`<p class="hint">Fast reply Mon–Fri 09:00–17:00 (GMT+7). Outside these hours we reply the next working day.</p>`:''}
+      ${c==='mentor'?`<p class="hint">Tokens cannot be topped up. For free quick help in English, use Student Priority.</p>`:''}
+    </section>
+  </div>`;};
+
+V.plan=()=>`
+  <div class="topbar"><div><div class="eyebrow">Learning plan</div><h1>Your 12-month plan</h1><p class="sub">Built with you and the SAA team at kickoff. Tick milestones as you go; your mentor sees the same plan.</p></div></div>
+  <section class="panel"><div class="panel-h"><h2>3-year roadmap</h2><span class="hint">Agreed at kickoff, 12 Sep 2026</span></div>
+    <div class="timeline">
+      <div class="yr now"><span class="eyebrow">Year 1 · 2026–27</span><b>Apply and get in</b><span class="hint">5 applications, 3 scholarships, IELTS 7.0</span></div>
+      <div class="yr"><span class="eyebrow">Year 2 · 2027–28</span><b>Start Bachelor of Commerce</b><span class="hint">Settle in, first-year GPA 3.3+</span></div>
+      <div class="yr"><span class="eyebrow">Year 3 · 2028–29</span><b>First internship</b><span class="hint">Summer internship in finance or consulting</span></div>
+    </div></section>
+  <section class="panel"><div class="panel-h"><h2>This year, by phase</h2></div>
+    <div>${S.plan.map((p,pi)=>`<div class="phase"><div><div class="when">${p.when}</div><div class="hint">${p.name}</div>${p.state==='now'?'<span class="pill accent">Now</span>':''}</div>
+      <div>${p.items.map((it,ii)=>`<label class="check ${it[1]?'done':''}"><input type="checkbox" id="ms-${pi}-${ii}" data-ms="${pi}-${ii}" ${it[1]?'checked':''}><span>${esc(it[0])}</span></label>`).join('')}</div></div>`).join('')}</div></section>`;
+
+V.materials=()=>`
+  <div class="topbar"><div><div class="eyebrow">Learning material</div><h1>Materials</h1><p class="sub">Every module is in English with a Vietnamese version made by AI translation and checked by a mentor. Videos are coming next.</p></div></div>
+  <div class="grid">${S.modules.map(m=>{const l=S.langPref[m.id]||'vi';return `<section class="panel span-6">
+    <div class="panel-h"><div><div class="eyebrow">${m.cat} · ${m.mins} min read</div><h2>${esc(m.title)}</h2></div>${m.done?'<span class="pill good">Done</span>':''}</div>
+    <div class="row" style="justify-content:space-between"><div class="tabs lang">${[['vi','Tiếng Việt'],['en','English']].map(([k,t])=>`<button aria-selected="${l===k}" data-lang="${m.id}:${k}">${t}</button>`).join('')}</div>${l==='vi'?'<span class="pill">AI-translated</span>':''}</div>
+    <div class="module-body">${esc(m[l])}</div>
+    <div class="row"><button class="btn sm" data-act="mdone" data-id="${m.id}">${m.done?'Read again':'Mark as done'}</button><span class="hint">Video version: coming soon</span></div></section>`;}).join('')}</div>`;
+
+V.parents=()=>`
+  <div class="topbar"><div><div class="eyebrow">Parent sync</div><h1>Sync with your parents every 3 months</h1><p class="sub">Instead of a written report, you, your parents, your mentor and your SSO meet once a quarter to review progress and agree on next steps.</p></div></div>
+  <div class="grid">
+    <section class="panel span-8"><div class="panel-h"><h2>This year's syncs</h2></div>
+      <div class="list">${S.syncs.map(s=>`<div class="item" style="align-items:flex-start"><span class="pill ${s.state==='done'?'good':s.state==='next'?'accent':''}">${s.q}</span><div class="grow"><div class="title">${s.title}</div><div class="meta">${s.date} · 50 min · does not use your sessions <span class="assume">Assumption</span></div>
+        ${s.notes.length?`<ul style="margin:8px 0 0;padding-left:18px">${s.notes.map(n=>`<li>${esc(n)}</li>`).join('')}</ul>`:''}</div>
+        ${s.state==='next'?'<button class="btn sm primary" data-act="join">Add to calendar</button>':s.state==='done'?'<button class="btn sm" data-act="notes">Full notes</button>':''}</div>`).join('')}</div></section>
+    <section class="panel span-4"><div class="panel-h"><h2>Who joins</h2></div>
+      <div class="list">
+        <div class="item"><div class="grow"><div class="title">${S.student.parentName}</div><div class="meta">${S.student.parentEmail}</div></div><span class="pill good">Invited</span></div>
+        <div class="item"><div class="grow"><div class="title">${S.mentor.name}</div><div class="meta">Mentor</div></div></div>
+        <div class="item"><div class="grow"><div class="title">${S.sso.name}</div><div class="meta">SSO</div></div></div>
+      </div>
+      <p class="note">Master's students do not have parent syncs. Their quarterly review is with mentor and SSO only.</p></section>
+  </div>`;
+
+V.billing=()=>{const pk=S.packages;const refundMonths=S.billing==='annual'?S.monthsPaid-S.monthsUsed-1:0;return `
+  <div class="topbar"><div><div class="eyebrow">Plan &amp; billing</div><h1>${S.pkg} package</h1><p class="sub">All packages include the same features. They differ only in video sessions and QnA tokens.</p></div><span class="proto">Prices to be set</span></div>
+  <section class="panel"><div class="table-wrap"><table><thead><tr><th>Feature</th>${Object.keys(pk).map(k=>`<th class="c">${k}${k===S.pkg?' · yours':''}</th>`).join('')}</tr></thead><tbody>
+    <tr><td>Kickoff session with all stakeholders</td>${Object.keys(pk).map(()=>'<td class="c">1, free</td>').join('')}</tr>
+    <tr class="hl"><td><b>1-on-1 video sessions (50 min)</b></td>${Object.values(pk).map(p=>`<td class="c num"><b>${p.sessions}</b></td>`).join('')}</tr>
+    <tr class="hl"><td><b>QnA tokens (mentor, Vietnamese)</b></td>${Object.values(pk).map(p=>`<td class="c num"><b>${p.tokens}</b></td>`).join('')}</tr>
+    ${['Student Priority (English, free)','Parent sync every 3 months','Learning plan','Learning material (EN + VI)','Dedicated SSO and hotline','Applications tracker'].map(f=>`<tr><td>${f}</td>${Object.keys(pk).map(()=>'<td class="c">Yes</td>').join('')}</tr>`).join('')}
+    <tr><td>Document proofread</td>${Object.keys(pk).map(()=>'<td class="c">Per document</td>').join('')}</tr>
+    <tr><td>Top-up</td>${Object.keys(pk).map(()=>'<td class="c">Sessions only</td>').join('')}</tr>
+  </tbody></table></div></section>
+  <div class="grid">
+    <section class="panel span-6"><div class="panel-h"><h2>How you pay</h2><div class="tabs">${[['annual','Yearly upfront'],['monthly','Monthly']].map(([k,l])=>`<button aria-selected="${S.billing===k}" data-bill="${k}">${l}</button>`).join('')}</div></div>
+      ${S.billing==='annual'?`<p>Paid for 12 months on 12 Sep 2026, with the yearly discount.</p>
+        <div class="row"><span class="pill accent num">Month ${S.monthsUsed} of 12</span><span class="pill good num">${refundMonths} full months refundable</span></div>
+        <p class="note">If you stop the program, unused full months are refunded according to the terms. The current month is not refunded. <span class="assume">Assumption, terms to confirm</span></p>`
+      :`<p>Pay each month. No refund needed when you stop; you can cancel before the next month starts.</p><p class="note">Switching to yearly saves the annual discount (rate to be set).</p>`}
+    </section>
+    <section class="panel span-6"><div class="panel-h"><h2>Top-ups</h2><button class="btn sm primary" data-act="topup">Top up sessions</button></div>
+      <p class="hint">Only video sessions can be topped up. QnA tokens and proofreads are not sold as top-ups.</p>
+      <div class="list">${S.topups.length?S.topups.map(t=>`<div class="item"><div class="grow"><div class="title">+${t.n} sessions</div><div class="meta">Today</div></div><span class="num">${fmt(t.price)}</span></div>`).join(''):'<p class="hint">No top-ups yet.</p>'}</div>
+    </section>
+  </div>`;};
+
+/* ---------- Modals ---------- */
+const layer=document.getElementById('layer');
+function modal(html){layer.innerHTML=`<div class="overlay" data-close-bg><div class="modal" role="dialog" aria-modal="true">${html}</div></div>`;const f=layer.querySelector('input,select,textarea,button');f&&f.focus();}
+function close(){layer.innerHTML='';}
+function toast(t){document.querySelectorAll('.toast').forEach(x=>x.remove());const el=document.createElement('div');el.className='toast';el.textContent=t;document.body.appendChild(el);setTimeout(()=>el.remove(),2600);}
+
+let booking={day:null,slot:null};
+function bookModal(){
+  const days=[];const base=new Date(Date.UTC(2026,10,26));
+  for(let i=0;i<7;i++){const d=new Date(base.getTime()+i*864e5);days.push({key:i,dow:d.toUTCString().slice(0,3),d:d.getUTCDate(),m:d.toUTCString().slice(8,11)});}
+  const slots=['16:00–16:50','17:00–17:50','19:00–19:50','20:00–20:50'];
+  const draw=()=>modal(`<div><div class="eyebrow">Book a session · ${sessLeft()} left</div><h2 style="font-size:1.25rem">1-on-1 with ${S.mentor.name}</h2></div>
+    <div class="field"><label>Day</label><div class="slots">${days.map(d=>`<button class="slot" aria-pressed="${booking.day===d.key}" data-day="${d.key}">${d.dow}<small>${d.d} ${d.m}</small></button>`).join('')}</div></div>
+    <div class="field"><label>Time (GMT+7, 50 min)</label><div class="slots">${slots.map((s,i)=>`<button class="slot" aria-pressed="${booking.slot===i}" data-slot="${i}" ${booking.day===null||(booking.day+i)%3===0?'disabled style="opacity:.4"':''}>${s}</button>`).join('')}</div><span class="hint">Greyed-out times are taken.</span></div>
+    <div class="field"><label for="btopic">What do you want to cover?</label><input id="btopic" placeholder="e.g. Manchester personal statement, 2nd draft"></div>
+    <div class="modal-foot"><span class="hint">Uses 1 of your sessions</span><div class="row"><button class="btn" data-close>Cancel</button><button class="btn primary" data-act="confirm-book" ${booking.slot===null?'disabled':''}>Confirm booking</button></div></div>`);
+  bookModal.draw=draw;bookModal.days=days;bookModal.slots=slots;draw();
+}
+function orderModal(app){
+  modal(`<div><div class="eyebrow">Order proofread</div><h2 style="font-size:1.25rem">Send a document to your mentor</h2></div>
+    <div class="field"><label for="dtype">Document type</label><select id="dtype">${S.docTypes.map(t=>`<option value="${t.id}">${t.name} · ${fmt(t.price)}</option>`).join('')}</select></div>
+    <div class="field"><label for="dapp">For which application?</label><select id="dapp"><option>All applications</option>${S.apps.map(a=>`<option ${a.name===app?'selected':''}>${esc(a.name)}</option>`).join('')}</select></div>
+    <div class="field"><label for="dfile">File</label><input id="dfile" type="file" accept=".doc,.docx,.pdf"><span class="hint">Word or PDF. Word files come back with tracked changes.</span></div>
+    <div class="field"><label for="dnote">Notes for the mentor</label><textarea id="dnote" placeholder="Word limit, what you are unsure about…"></textarea></div>
+    <div class="modal-foot"><div><div class="hint">Total</div><b id="dprice" class="num" style="font-size:1.2rem">${fmt(S.docTypes[0].price)}</b></div><div class="row"><button class="btn" data-close>Cancel</button><button class="btn primary" data-act="confirm-order">Pay and send</button></div></div>`);
+  layer.querySelector('#dtype').addEventListener('change',e=>{layer.querySelector('#dprice').textContent=fmt(S.docTypes.find(t=>t.id===e.target.value).price);});
+}
+function topupModal(){
+  const packs=[{n:1,price:800000},{n:3,price:2250000},{n:5,price:3500000}];
+  modal(`<div><div class="eyebrow">Top up</div><h2 style="font-size:1.25rem">Add video sessions</h2><p class="hint">Top-ups are for video sessions only. They stay valid until your program ends.</p></div>
+    <div class="list">${packs.map(p=>`<div class="item"><div class="grow"><div class="title">+${p.n} session${p.n>1?'s':''}</div><div class="meta num">${fmt(Math.round(p.price/p.n))} per session</div></div><b class="num">${fmt(p.price)}</b><button class="btn sm primary" data-act="buy" data-n="${p.n}" data-price="${p.price}">Buy</button></div>`).join('')}</div>
+    <p class="note"><span class="assume">Sample prices</span></p>
+    <div class="modal-foot"><span></span><button class="btn" data-close>Close</button></div>`);
+}
+
+/* ---------- Routing & events ---------- */
+const view=document.getElementById('view'), nav=document.getElementById('nav');
+function current(){const h=location.hash.slice(1);return V[h]?h:'home';}
+function render(){const r=current();
+  nav.innerHTML=NAV.map(([k,l])=>`<a href="#${k}" ${k===r?'aria-current="page"':''}><svg viewBox="0 0 24 24">${ICONS[k]}</svg>${l}${k==='ask'&&S.threads.some(t=>!t.a)?'<span class="count">1</span>':''}</a>`).join('');
+  view.innerHTML=V[r]();
+}
+window.addEventListener('hashchange',()=>{render();window.scrollTo(0,0);});
+
+document.addEventListener('click',e=>{
+  const t=e.target.closest('button,[data-close-bg]');if(!t)return;
+  if(t.hasAttribute('data-close-bg')){if(e.target===t)close();return;}
+  if(t.hasAttribute('data-close')){close();return;}
+  if(t.dataset.go){if(t.dataset.ch)S.askChannel=t.dataset.ch;location.hash=t.dataset.go;render();return;}
+  if(t.dataset.chSet){S.askChannel=t.dataset.chSet;render();return;}
+  if(t.dataset.filter){S.docFilter=t.dataset.filter;render();return;}
+  if(t.dataset.lang){const[id,l]=t.dataset.lang.split(':');S.langPref[id]=l;render();return;}
+  if(t.dataset.bill){S.billing=t.dataset.bill;render();return;}
+  if(t.dataset.day!==undefined){booking.day=+t.dataset.day;booking.slot=null;bookModal.draw();return;}
+  if(t.dataset.slot!==undefined){booking.slot=+t.dataset.slot;bookModal.draw();return;}
+  const a=t.dataset.act;if(!a)return;
+  switch(a){
+    case 'book':booking={day:null,slot:null};bookModal();break;
+    case 'confirm-book':{const d=bookModal.days[booking.day];const topic=(layer.querySelector('#btopic').value||'1-on-1 mentoring').trim();
+      S.upcoming.push({id:Date.now(),title:topic,d:d.d,m:d.m,dow:d.dow,time:bookModal.slots[booking.slot],with:S.mentor.name,kind:'1-on-1'});
+      S.upcoming.sort((x,y)=>(x.m==='Dec')-(y.m==='Dec')||x.d-y.d);close();render();toast(`Booked ${d.dow} ${d.d} ${d.m}, ${bookModal.slots[booking.slot]}. ${sessLeft()} sessions left.`);break;}
+    case 'cancel':S.upcoming=S.upcoming.filter(u=>u.id!=t.dataset.id);render();toast('Session cancelled. It is back in your balance.');break;
+    case 'order':orderModal(t.dataset.app);break;
+    case 'confirm-order':{const ty=S.docTypes.find(x=>x.id===layer.querySelector('#dtype').value);const f=layer.querySelector('#dfile').files[0];
+      S.orders.unshift({id:'PR-'+(1043+S.orders.length),file:f?f.name:'Untitled document.docx',type:ty.name,app:layer.querySelector('#dapp').value,price:ty.price,status:'Waiting for mentor',due:(26+ty.days)+' Nov',reviewer:S.mentor.name});
+      close();location.hash='documents';render();toast(`Paid ${fmt(ty.price)}. Your mentor has the file.`);break;}
+    case 'send':{const q=layer.querySelector('#q')||document.getElementById('q');const v=q.value.trim();if(!v){q.focus();toast('Write your question first.');break;}
+      if(S.askChannel==='mentor')S.tokensUsed++;
+      S.threads.push({ch:S.askChannel,q:v,a:S.askChannel==='hotline'?'Thanks, this is the AI assistant. I have passed this to Hà, who will reply '+(ssoStatus().fast?'within 30 minutes.':'next working day from 09:00.'):null,by:S.askChannel==='hotline'?'Hotline (AI assistant)':'',when:'Just now',status:'Waiting'});
+      render();toast(S.askChannel==='mentor'?`Sent. 1 token used, ${tokLeft()} left.`:'Sent.');break;}
+    case 'topup':topupModal();break;
+    case 'buy':S.sessionsExtra+=+t.dataset.n;S.topups.push({n:+t.dataset.n,price:+t.dataset.price});close();render();toast(`Added ${t.dataset.n} session${t.dataset.n>1?'s':''}.`);break;
+    case 'mdone':{const m=S.modules.find(x=>x.id===t.dataset.id);m.done=true;render();toast('Marked as done.');break;}
+    case 'addapp':modal(`<div><div class="eyebrow">Applications</div><h2 style="font-size:1.25rem">Add an application</h2></div>
+      <div class="field"><label for="an">University or scholarship</label><input id="an" placeholder="e.g. University of Melbourne"></div>
+      <div class="field"><label for="ap">Programme</label><input id="ap" placeholder="e.g. Bachelor of Commerce"></div>
+      <div class="field"><label for="ad">Deadline</label><input id="ad" type="date" value="2027-03-01"></div>
+      <div class="modal-foot"><span class="hint">Your mentor will confirm it</span><div class="row"><button class="btn" data-close>Cancel</button><button class="btn primary" data-act="saveapp">Add</button></div></div>`);break;
+    case 'saveapp':{const n=layer.querySelector('#an').value.trim()||'New application';const dv=layer.querySelector('#ad').value;const dd=new Date(dv+'T00:00:00Z');
+      const days=Math.round((dd-Date.UTC(2026,10,25))/864e5);S.apps.push({name:n,prog:layer.querySelector('#ap').value.trim()||'—',kind:'University',deadline:dd.toUTCString().slice(5,16),days,status:'Not started',tone:''});close();render();toast('Application added.');break;}
+    case 'join':toast('In the live LMS this opens the video call.');break;
+    case 'notes':toast('In the live LMS this opens the session notes and recording.');break;
+    case 'dl':toast('In the live LMS this opens the file with tracked changes.');break;
+  }
+});
+document.addEventListener('change',e=>{const ms=e.target.dataset&&e.target.dataset.ms;if(ms){const[p,i]=ms.split('-').map(Number);S.plan[p].items[i][1]=e.target.checked;render();}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&layer.innerHTML)close();});
+render();
+})();
+</script>
+</body>
+</html>
