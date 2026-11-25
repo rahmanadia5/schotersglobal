@@ -205,8 +205,8 @@ button,input,select,textarea{font:inherit;color:inherit}
 .rec-row .rec-f>i{display:none}
 .apply-link:hover{text-decoration:underline}
 a.btn{text-decoration:none;color:inherit}
-.st-sel{font:inherit;font-size:13px;font-weight:600;border:1px solid var(--line);border-radius:99px;padding:4px 10px;background:var(--surface-2);color:var(--muted);cursor:pointer}
-.st-sel.st-accent{background:var(--accent-soft);color:#1a64ad;border-color:transparent}.st-sel.st-good{background:var(--good-soft);color:var(--good);border-color:transparent}.st-sel.st-bad{background:var(--bad-soft);color:var(--bad);border-color:transparent}
+.st-sel{-webkit-appearance:none;appearance:none;font:inherit;font-size:13px;font-weight:600;line-height:1.3;border:1px solid var(--line);border-radius:99px;padding:5px 32px 5px 12px;background:var(--surface-2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 11px center/13px 13px;color:var(--muted);cursor:pointer}.st-sel:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.st-sel.st-accent{background-color:var(--accent-soft);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231a64ad' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");color:#1a64ad;border-color:transparent}.st-sel.st-good{background-color:var(--good-soft);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2311805a' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");color:var(--good);border-color:transparent}.st-sel.st-bad{background-color:var(--bad-soft);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b4233a' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");color:var(--bad);border-color:transparent}
 @media (max-width:760px){.rec-item{flex-direction:column}.rec-item .apply-link{border-left:none;border-top:1px dashed var(--line);padding:10px 16px;justify-content:flex-end}}
 .rec-list{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:12px;overflow:hidden}
 .rec-row{display:grid;grid-template-columns:10px minmax(0,1fr) 44px 128px 108px 104px 14px;gap:14px;align-items:center;padding:14px 16px;border:none;border-top:1px solid var(--line);background:var(--surface);text-align:left;font:inherit;color:inherit;cursor:pointer}
@@ -236,7 +236,7 @@ a.btn{text-decoration:none;color:inherit}
 
 .table-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:13.5px}
-th,td{text-align:left;padding:10px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th,td{text-align:left;padding:10px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
 th{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600}
 td.c,th.c{text-align:center}
 tr.hl td{background:var(--accent-soft)}
@@ -915,12 +915,11 @@ V.parents=()=>`
   </div>`;
 
 V.billing=()=>{const pk=S.packages;const refundMonths=S.billing==='annual'?S.monthsPaid-S.monthsUsed-1:0;return `
-  <div class="topbar"><div><div class="eyebrow">Plan &amp; billing</div><h1>${S.pkg} package</h1><p class="sub">All packages include the same features. They differ only in video sessions and QnA tokens.</p></div><span class="proto">Prices to be set</span></div>
+  <div class="topbar"><div><div class="eyebrow">Plan &amp; billing</div><h1>${S.pkg} package</h1></div><span class="proto">Prices to be set</span></div>
   <section class="panel"><div class="table-wrap"><table><thead><tr><th>Feature</th>${Object.keys(pk).map(k=>`<th class="c">${k}${k===S.pkg?' · yours':''}</th>`).join('')}</tr></thead><tbody>
-    <tr><td>Kickoff session with all stakeholders</td>${Object.keys(pk).map(()=>'<td class="c">1</td>').join('')}</tr>
     <tr class="hl"><td><b>Video sessions (50 min)</b></td>${Object.values(pk).map(p=>`<td class="c num"><b>${p.sessions}</b></td>`).join('')}</tr>
     <tr class="hl"><td><b>QnA tokens (mentor, Vietnamese)</b></td>${Object.values(pk).map(p=>`<td class="c num"><b>${p.tokens}</b></td>`).join('')}</tr>
-    ${['Student Priority (English, free)','Parent sync every 3 months','Learning plan','Learning material (EN + VI)','Hotline','Applications tracker'].map(f=>`<tr><td>${f}</td>${Object.keys(pk).map(()=>'<td class="c">Yes</td>').join('')}</tr>`).join('')}
+    ${['Student Priority (English, free)','Learning plan','Learning material (EN + VI)','Hotline','Applications tracker'].map(f=>`<tr><td>${f}</td>${Object.keys(pk).map(()=>'<td class="c">Yes</td>').join('')}</tr>`).join('')}
     <tr><td>Document review (essay, CV, letters)</td>${Object.keys(pk).map(()=>'<td class="c">Included</td>').join('')}</tr>
     <tr><td>Top-up</td>${Object.keys(pk).map(()=>'<td class="c">Sessions only</td>').join('')}</tr>
   </tbody></table></div></section>
