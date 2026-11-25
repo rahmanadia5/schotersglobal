@@ -16,7 +16,7 @@ html{color-scheme:light}body{margin:0}[hidden]{display:none!important}img{max-wi
   --bg:#fbfcfe; --surface:#ffffff; --surface-2:#f1f6fc; --line:#e6ebf2;
   --ink:#111827; --muted:#6b7280; --accent:#3d9de8; --accent-ink:#ffffff; --accent-soft:#e5f2fd;
   --good:#11805a; --good-soft:#dcf5e9; --warn:#a85d00; --warn-soft:#fdf1dc; --bad:#b4233a; --bad-soft:#fde6ea;
-  --rail:#24476d; --rail-ink:#d3e1f0; --rail-active:#1f3d5f;
+  --rail:#22497a; --rail-grad:radial-gradient(140% 40% at 0% 0%,rgba(110,185,255,.30),transparent 70%),linear-gradient(180deg,#1a355a 0%,#21508a 50%,#3b4fbf 100%); --rail-ink:#d3e1f0; --rail-active:#1f3d5f;
   --violet:#7b3aed; --violet-ink:#ffffff; --sun:#f7cd5b; --sun-ink:#3d2c00; --flame:#f97316;
   --stage:#eaf4fd; color-scheme:light; --sky-a:#cfe5fa; --sky-b:#f5faff; --shadow:0 1px 2px rgba(19,35,58,.04),0 8px 24px rgba(19,35,58,.06);
   --display:"Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
@@ -36,7 +36,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .num{font-variant-numeric:tabular-nums}
 
 .shell{display:grid;grid-template-columns:232px minmax(0,1fr);min-height:100%}
-.rail{background:var(--rail);color:var(--rail-ink);padding:20px 12px;display:flex;flex-direction:column;gap:18px;position:sticky;top:0;height:100vh}
+.rail{background:var(--rail-grad);color:var(--rail-ink);padding:20px 12px;display:flex;flex-direction:column;gap:18px;position:sticky;top:0;height:100vh}
 .brand{display:flex;align-items:center;gap:10px;padding:0 8px;color:#fff}
 .brand-mark{width:32px;height:32px;border-radius:10px;background:#fff;color:var(--rail-active)!important;display:grid;place-items:center;font-family:var(--display);font-weight:800;color:#fff;font-size:15px}
 .brand b{font-family:var(--display);font-size:15px;display:block;line-height:1.1}
@@ -49,7 +49,8 @@ button,input,select,textarea{font:inherit;color:inherit}
 .nav .count{margin-left:auto;font-size:11px;background:var(--sun);color:var(--sun-ink);font-weight:700;border-radius:99px;padding:0 7px}
 @media (min-width: 761px){
   body{background:var(--rail)}
-  .shell{background:var(--rail);height:100vh;overflow:hidden}
+  .shell{background:var(--rail-grad);height:100vh;overflow:hidden}
+  .rail{background:transparent}
   .rail{overflow-y:auto;scrollbar-width:none}
   .main{margin:10px 10px 10px 0;height:calc(100vh - 20px);overflow-y:auto;border-radius:26px;background:var(--bg);box-shadow:0 0 0 1px rgba(255,255,255,.06)}
 }
