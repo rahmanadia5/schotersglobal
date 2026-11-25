@@ -294,6 +294,7 @@ button.g-row:hover,button.g-row:hover .g-name{background:var(--surface-2)}
 .gl-end{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex:none}
 @media (max-width:600px){.g-wrap{display:none}.g-list{display:flex}}
 .pill.sch{background:#efe7fe;color:var(--violet)}.pill.uni{background:var(--accent-soft);color:#1a64ad}
+.rec-legend{display:flex;flex-wrap:wrap;gap:10px 24px;padding:12px 14px;border-radius:12px;background:var(--surface-2);font-size:13px;color:var(--muted);line-height:1.5}.rec-legend>div{display:flex;gap:10px;align-items:flex-start;flex:1 1 300px}.rec-legend b{color:var(--ink,inherit)}.rec-legend .grade,.rec-legend .pill{flex:none}
 .grade{display:inline-grid;place-items:center;min-width:30px;height:24px;padding:0 6px;border-radius:7px;font-weight:800;font-size:12.5px}.g-Ap{background:#d5f2e3;color:#0b6b48}.g-A{background:var(--good-soft);color:var(--good)}.g-B{background:var(--warn-soft);color:var(--warn)}.g-C{background:var(--bad-soft);color:var(--bad)}
 .elig{display:flex;flex-direction:column;gap:6px;margin-top:6px}.elig>div{display:grid;grid-template-columns:22px minmax(0,140px) minmax(0,1fr);gap:8px;align-items:baseline;font-size:14px}
 .el{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;font-size:11px;font-weight:800}.el.ok{background:var(--good-soft);color:var(--good)}.el.no{background:var(--bad-soft);color:var(--bad)}.el.pend{background:var(--surface-2);color:var(--muted)}
@@ -838,10 +839,11 @@ V.plan=()=>{const P=S.profile,f=S.recFilter;
       <div class="g-wrap">${gantt}</div>
       <div class="g-list">${list.map(r=>{const d=recDays(r);const cls=r.kind==='Scholarship'?'sch':'uni';const dt=r.dl==='rolling'?'Any time':recDate(r).split(' ').slice(0,2).join(' ');return `<button class="gl-row" data-rec="${r.id}"><span class="g-dot ${cls}"></span><span class="grow"><b>${esc(r.name)}</b><span class="hint">${r.prog?esc(r.prog)+' · ':r.kind+' · '}${r.country}</span></span><span class="gl-end"><span class="g-mark ${cls} ${d!==null&&d<0?'past':''}">${dt}</span><span class="hint">${d===null?'Rolling':d<0?'Closed':d+' days left'}</span></span></button>`;}).join('')}</div></section>
     <section class="panel span-12"><div class="panel-h"><h2>All recommendations, by deadline</h2><div class="tabs" role="tablist">${[['all','All'],['University','Universities'],['Scholarship','Scholarships']].map(([k,l])=>`<button role="tab" aria-selected="${f===k}" data-rf="${k}">${l}</button>`).join('')}</div></div>
+      <div class="rec-legend"><div><span class="grade g-A">Fit</span><span><b>Fit grade</b> shows how well your profile matches what they ask for. <b>A+</b> strong match, <b>A</b> you meet the requirements, <b>B</b> one or two gaps, <b>C</b> a stretch.</span></div><div><span class="pill good">Funding</span><span><b>Fully funded</b> covers tuition and living costs. <b>Partially funded</b> covers part of the costs, such as some tuition.</span></div></div>
       <div class="rec-list">${list.map(r=>{const d=recDays(r);const cls=r.kind==='Scholarship'?'sch':'uni';return `<div class="rec-item"><button class="rec-row" data-rec="${r.id}">
         <span class="g-dot ${cls}"></span>
         <span class="rec-main"><b>${esc(r.name)}</b><span class="hint">${r.kind}${r.prog?' · '+esc(r.prog):''} · ${r.country}</span></span>
-        <span class="rec-tags">${r.grade?`<span class="grade g-${r.grade.replace('+','p')}" title="Fit grade">Fit ${r.grade}</span>`:''}${r.fund?`<span class="pill ${r.fund==='Fully funded'?'good':''}">${r.fund}</span>`:''}</span>
+        <span class="rec-tags">${r.grade?`<span class="grade g-${r.grade.replace('+','p')}" title="${FITTIP[r.grade]||''}">Fit ${r.grade}</span>`:''}${r.fund?`<span class="pill ${r.fund==='Fully funded'?'good':''}" title="${FUNDTIP[r.fund]||''}">${r.fund}</span>`:''}</span>
         <span class="rec-dl"><b class="num">${recDate(r)}</b></span>
         <span class="rec-chev" aria-hidden="true">›</span></button>${applyLink(r.name)}</div>`;}).join('')}</div>
       <p class="hint" style="margin:0">Deadlines are based on last year and your mentor double-checks them. Fit grade: A+ is the strongest match, C is a stretch.</p></section>
@@ -856,9 +858,12 @@ function msView(){return `
   <section class="panel"><div class="panel-h"><h2>This year, by phase</h2><span class="hint">Tick milestones as you go; your mentor sees the same plan.</span></div>
     <div>${S.plan.map((p,pi)=>`<div class="phase"><div><div class="when">${p.when}</div><div class="hint">${p.name}</div>${p.state==='now'?'<span class="pill accent">Now</span>':''}</div>
       <div>${p.items.map((it,ii)=>`<label class="check ${it[1]?'done':''}"><input type="checkbox" id="ms-${pi}-${ii}" data-ms="${pi}-${ii}" ${it[1]?'checked':''}><span>${esc(it[0])}</span></label>`).join('')}</div></div>`).join('')}</div></section>`;}
+const FITTIP={'A+':'Fit A+: you meet every requirement and are a strong candidate','A':'Fit A: you meet the requirements','B':'Fit B: you meet most requirements, one or two need work','C':'Fit C: a stretch, several requirements are not met yet'};
+const FUNDTIP={'Fully funded':'Covers tuition and living costs','Partially funded':'Covers part of the costs, for example some tuition'};
 function recModal(id){const r=S.recs.find(x=>x.id===id);if(!r)return;const a=recApp(r);const ic={ok:'<span class="el ok">✓</span>',no:'<span class="el no">✕</span>',pending:'<span class="el pend">…</span>'};
   modal(`<div><div class="eyebrow">${r.kind} · ${r.country}${r.round?' · Round '+r.round:''}</div><h2 style="font-size:1.25rem">${esc(r.name)}</h2>${r.prog?`<p class="hint">${esc(r.prog)}</p>`:''}</div>
-    <div class="row" style="gap:8px;flex-wrap:wrap">${r.grade?`<span class="grade g-${r.grade.replace('+','p')}">Fit ${r.grade}</span>`:''}${r.fund?`<span class="pill good">${r.fund}</span>`:''}<span class="pill">Deadline ${recDate(r)}</span>${a?`<span class="pill accent">Tracked · ${a.status}</span>`:''}</div>
+    <div class="row" style="gap:8px;flex-wrap:wrap">${r.grade?`<span class="grade g-${r.grade.replace('+','p')}">Fit ${r.grade}</span>`:''}${r.fund?`<span class="pill ${r.fund==='Fully funded'?'good':''}">${r.fund}</span>`:''}<span class="pill">Deadline ${recDate(r)}</span>${a?`<span class="pill accent">Tracked · ${a.status}</span>`:''}</div>
+    ${r.grade||r.fund?`<p class="hint" style="margin:0">${[FITTIP[r.grade],r.fund?r.fund+': '+(FUNDTIP[r.fund]||'').toLowerCase():''].filter(Boolean).join('. ')}.</p>`:''}
     ${r.benefit?`<div><div class="eyebrow">Benefit</div><p style="margin:4px 0 0">${esc(r.benefit)}</p></div>`:''}
     <div><div class="eyebrow">Eligibility vs your profile</div><div class="elig">${r.elig.map(([k,v,st])=>`<div>${ic[st]}<b>${k}</b><span class="hint">${esc(v)}</span></div>`).join('')}</div></div>
     <div><div class="eyebrow">Documents</div><ul class="docs-ul">${r.docs.map(d=>`<li>${esc(d)}</li>`).join('')}</ul></div>
