@@ -232,6 +232,12 @@ tr.hl td{background:var(--accent-soft)}
 .cal .day.out .dn{opacity:.45}
 .cal .dn{font-size:12px;font-weight:700;color:var(--muted);width:24px;height:24px;display:grid;place-items:center;border-radius:50%}
 .cal .day.today .dn{background:var(--accent);color:var(--accent-ink)}
+.cal .day.today{box-shadow:inset 0 0 0 2px var(--accent);background:color-mix(in srgb,var(--accent-soft) 45%,var(--surface))}
+.cal .day{position:relative}
+.today-tag{position:absolute;top:8px;right:8px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--accent)}
+.btn.today-on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+@media (prefers-reduced-motion: no-preference){.cal .day.flash{animation:flash 1.2s ease-out}@keyframes flash{0%{box-shadow:inset 0 0 0 2px var(--accent),0 0 0 6px color-mix(in srgb,var(--accent) 35%,transparent)}100%{box-shadow:inset 0 0 0 2px var(--accent),0 0 0 0 transparent}}}
+@media (max-width: 640px){.today-tag{display:none}}
 .ev{display:block;width:100%;text-align:left;border:none;border-radius:7px;padding:3px 6px;font-size:11.5px;font-weight:600;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;font-family:inherit}
 .ev.s{background:var(--accent-soft);color:var(--accent)}
 .ev.p{background:color-mix(in srgb,var(--violet) 15%,transparent);color:var(--violet)}
@@ -383,7 +389,7 @@ const S={
     {q:'Q4',date:'12 Jun 2027',state:'',title:'Year review and next step',notes:[]}
   ],
   billing:'annual', monthsPaid:12, monthsUsed:3, topups:[],
-  langPref:{}, cal:{y:2026,m:10}, askChannel:'mentor', docFilter:'all'
+  langPref:{}, cal:null, askChannel:'mentor', docFilter:'all'
 };
 const fmt=n=>n.toLocaleString('vi-VN')+' ₫';
 const sessTotal=()=>S.packages[S.pkg].sessions+S.sessionsExtra;
@@ -477,6 +483,7 @@ V.sessions=()=>{const left=sessLeft();return `
       </tbody></table></div></section>
   </div>`;};
 
+function todayVN(){const n=new Date(Date.now()+7*3600e3);return {y:n.getUTCFullYear(),m:n.getUTCMonth(),d:n.getUTCDate()};}
 const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const MONL=['January','February','March','April','May','June','July','August','September','October','November','December'];
 function yr(mi){return mi>=8?2026:2027;}
@@ -487,17 +494,17 @@ function calEvents(){const ev=[];const add=(d,m,y,o)=>ev.push(Object.assign({key
   S.apps.forEach(a=>{const[d,mm,y]=a.deadline.split(' ');add(+d,MON.indexOf(mm),+y,{t:'Deadline: '+a.name,c:'d',past:a.days<0});});
   add(6,11,2026,{t:'IELTS test',c:'m'});
   return ev;}
-V.calendar=()=>{const {y,m}=S.cal;const ev=calEvents();const first=new Date(Date.UTC(y,m,1));const lead=(first.getUTCDay()+6)%7;const start=Date.UTC(y,m,1-lead);
+V.calendar=()=>{const T=todayVN();if(!S.cal)S.cal={y:T.y,m:T.m};const {y,m}=S.cal;const onToday=y===T.y&&m===T.m;const ev=calEvents();const first=new Date(Date.UTC(y,m,1));const lead=(first.getUTCDay()+6)%7;const start=Date.UTC(y,m,1-lead);
   const cells=[];for(let i=0;i<42;i++){const dt=new Date(start+i*864e5);cells.push({d:dt.getUTCDate(),m:dt.getUTCMonth(),y:dt.getUTCFullYear()});}
   const rows=cells[35].m!==m?35:42;
   const monthEv=ev.filter(e=>e.y===y&&e.m===m).sort((a,b)=>a.d-b.d);
   return `<div class="topbar"><div><div class="eyebrow">Calendar</div><h1>${MONL[m]} ${y}</h1><p class="sub">Your sessions, parent syncs, deadlines and milestones. Times in GMT+7.</p></div>
-    <div class="row"><button class="btn" data-calnav="-1" aria-label="Previous month">‹</button><button class="btn" data-calnav="0">Today</button><button class="btn" data-calnav="1" aria-label="Next month">›</button><button class="btn primary" data-act="book" ${sessLeft()<1?'disabled':''}>Book a session</button></div></div>
+    <div class="row"><button class="btn" data-calnav="-1" aria-label="Previous month">‹</button><button class="btn ${onToday?'today-on':''}" data-calnav="0" aria-pressed="${onToday}" title="Go to today, ${T.d} ${MON[T.m]} ${T.y}">Today · ${T.d} ${MON[T.m]}</button><button class="btn" data-calnav="1" aria-label="Next month">›</button><button class="btn primary" data-act="book" ${sessLeft()<1?'disabled':''}>Book a session</button></div></div>
   <section class="panel">
     <div class="legend"><span><i style="background:var(--accent)"></i>1-on-1 session</span><span><i style="background:var(--violet)"></i>Kickoff / parent sync</span><span><i style="background:var(--warn)"></i>Application deadline</span><span><i style="background:var(--good)"></i>Milestone</span><span style="opacity:.7">Faded = past</span></div>
     <div class="table-wrap"><div class="cal">${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d=>`<div class="dow">${d}</div>`).join('')}
-    ${cells.slice(0,rows).map(c=>{const es=ev.filter(e=>e.y===c.y&&e.m===c.m&&e.d===c.d);const today=c.y===2026&&c.m===10&&c.d===25;
-      return `<div class="day ${c.m!==m?'out':''} ${today?'today':''}"><span class="dn">${c.d}</span>${es.map(e=>`<button class="ev ${e.c} ${e.past?'past':''}" ${e.id?`data-act="join" data-id="${e.id}"`:'data-act="evinfo"'} data-info="${esc(e.t+(e.time?' · '+e.time:''))}" title="${esc(e.t+(e.time?' · '+e.time:''))}">${e.time?e.time.slice(0,5)+' ':''}${esc(e.t)}</button>`).join('')}</div>`;}).join('')}
+    ${cells.slice(0,rows).map(c=>{const es=ev.filter(e=>e.y===c.y&&e.m===c.m&&e.d===c.d);const today=c.y===T.y&&c.m===T.m&&c.d===T.d;
+      return `<div class="day ${c.m!==m?'out':''} ${today?'today':''}" ${today?'id="cal-today"':''}><span class="dn">${c.d}</span>${today?'<span class="today-tag">Today</span>':''}${es.map(e=>`<button class="ev ${e.c} ${e.past?'past':''}" ${e.id?`data-act="join" data-id="${e.id}"`:'data-act="evinfo"'} data-info="${esc(e.t+(e.time?' · '+e.time:''))}" title="${esc(e.t+(e.time?' · '+e.time:''))}">${e.time?e.time.slice(0,5)+' ':''}${esc(e.t)}</button>`).join('')}</div>`;}).join('')}
     </div></div></section>
   <section class="panel"><div class="panel-h"><h2>This month</h2><span class="hint">${monthEv.length} items</span></div>
     <div class="list">${monthEv.map(e=>`<div class="item"><div class="datebox"><b>${e.d}</b><span>${MON[e.m]}</span></div><div class="grow"><div class="title">${esc(e.t)}</div><div class="meta">${[e.time,e.with].filter(Boolean).map(esc).join(' · ')||'&nbsp;'}</div></div>${e.past?'<span class="pill">Done</span>':e.id?`<button class="btn sm primary" data-act="join" data-id="${e.id}">Join</button>`:''}</div>`).join('')||'<p class="hint">Nothing this month.</p>'}</div></section>`;};
@@ -723,7 +730,7 @@ document.addEventListener('click',e=>{
   if(t.dataset.filter){S.docFilter=t.dataset.filter;render();return;}
   if(t.dataset.lang){const[id,l]=t.dataset.lang.split(':');S.langPref[id]=l;render();return;}
   if(t.dataset.bill){S.billing=t.dataset.bill;render();return;}
-  if(t.dataset.calnav!==undefined){const n=+t.dataset.calnav;if(n===0)S.cal={y:2026,m:10};else{let m=S.cal.m+n,y=S.cal.y;if(m<0){m=11;y--;}if(m>11){m=0;y++;}S.cal={y,m};}render();return;}
+  if(t.dataset.calnav!==undefined){const n=+t.dataset.calnav;if(n===0){const T=todayVN();S.cal={y:T.y,m:T.m};render();const c=document.getElementById('cal-today');if(c){c.scrollIntoView({block:'center',behavior:'smooth'});c.classList.remove('flash');void c.offsetWidth;c.classList.add('flash');}return;}else{let m=S.cal.m+n,y=S.cal.y;if(m<0){m=11;y--;}if(m>11){m=0;y++;}S.cal={y,m};}render();return;}
   if(t.dataset.ctab){C.tab=t.dataset.ctab;drawCall();return;}
   if(t.dataset.ctl){const k=t.dataset.ctl;if(k==='chat')C.tab='chat';else C[k]=!C[k];drawCall();if(k==='share')toast(C.share?'You are sharing your screen.':'Stopped sharing.');return;}
   if(t.dataset.star){const n=+t.dataset.star;document.querySelectorAll('#stars svg path').forEach((p,i)=>p.setAttribute('fill',i<n?'var(--sun)':'var(--line)'));toast('Thanks for the rating!');return;}
