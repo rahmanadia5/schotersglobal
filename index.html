@@ -385,7 +385,6 @@ const S={
   packages:{Silver:{sessions:10,tokens:10},Gold:{sessions:20,tokens:20},Platinum:{sessions:30,tokens:30}},
   sessionsExtra:0, sessionsUsed:6, tokensUsed:3,
   mentor:{name:'Lê Hoàng Nam',role:'Mentor · Business & Economics'},
-  superMentor:{name:'Phạm Thu Trang',role:'Super Mentor'},
   sso:{name:'Trần Thu Hà',role:'Student Success Officer · Vietnam'},
   upcoming:[
     {id:1,title:'Essay brainstorm: Monash',d:27,m:'Nov',dow:'Thu',time:'19:00–19:50',with:'Lê Hoàng Nam',kind:'1-on-1'},
@@ -397,7 +396,7 @@ const S={
     {title:'University shortlist',date:'3 Oct',with:'Lê Hoàng Nam',kind:'1-on-1'},
     {title:'IELTS writing strategy',date:'17 Oct',with:'Lê Hoàng Nam',kind:'1-on-1'},
     {title:'CV first draft',date:'31 Oct',with:'Lê Hoàng Nam',kind:'1-on-1'},
-    {title:'Scholarship strategy',date:'14 Nov',with:'Phạm Thu Trang',kind:'1-on-1'}
+    {title:'Scholarship strategy',date:'14 Nov',with:'Lê Hoàng Nam',kind:'1-on-1'}
   ],
   apps:[
     {name:'Monash University',prog:'Bachelor of Commerce',kind:'University',deadline:'15 Dec 2026',days:20,status:'Writing essay',tone:'accent'},
@@ -416,7 +415,7 @@ const S={
   orders:[
     {id:'PR-1042',file:'Monash_personal_statement_v2.docx',type:'Personal statement / essay',app:'Monash University',price:1200000,status:'In review',due:'28 Nov',reviewer:'Lê Hoàng Nam'},
     {id:'PR-1031',file:'Nadia_CV_Oct.pdf',type:'CV / résumé',app:'All applications',price:600000,status:'Returned',due:'2 Nov',reviewer:'Lê Hoàng Nam'},
-    {id:'PR-1019',file:'UBC_scholars_essay_final.docx',type:'Scholarship essay',app:'UBC International Scholars',price:1200000,status:'Returned',due:'6 Nov',reviewer:'Phạm Thu Trang'}
+    {id:'PR-1019',file:'UBC_scholars_essay_final.docx',type:'Scholarship essay',app:'UBC International Scholars',price:1200000,status:'Returned',due:'6 Nov',reviewer:'Lê Hoàng Nam'}
   ],
   threads:[
     {ch:'mentor',q:'Em nên chọn Kinh doanh hay Kinh tế cho hồ sơ Monash?',qEn:'Should I pick Business or Economics for my Monash application?',a:'Với điểm Toán của em, Kinh tế (Commerce major Economics) sẽ nổi bật hơn. Mình sẽ nói kỹ trong buổi thứ Năm.',by:'Lê Hoàng Nam',when:'20 Nov',status:'Answered'},
@@ -565,10 +564,9 @@ V.sessions=()=>{const left=sessLeft();return `
   <div class="row"><button class="btn" data-act="topup">Top up sessions</button><button class="btn primary" data-act="book" ${left<1?'disabled':''}>Book a session</button></div></div>
   <div class="grid">
     <section class="panel span-4 stat"><div class="eyebrow">Left to book</div><div class="big num">${left}<small> / ${sessTotal()}</small></div><div class="bar"><i style="width:${(sessTotal()-left)/sessTotal()*100}%"></i></div><p class="hint">${S.pkg} package: ${S.packages[S.pkg].sessions} sessions${S.sessionsExtra?` + ${S.sessionsExtra} topped up`:''}</p></section>
-    <section class="panel span-8"><div class="panel-h"><h2>Your mentors</h2></div>
+    <section class="panel span-8"><div class="panel-h"><h2>Your mentor</h2></div>
       <div class="list">
         <div class="item"><div class="grow"><div class="title">${S.mentor.name}</div><div class="meta">${S.mentor.role} · answers QnA in Vietnamese</div></div><span class="pill accent">Main mentor</span></div>
-        <div class="item"><div class="grow"><div class="title">${S.superMentor.name}</div><div class="meta">${S.superMentor.role} · joins for strategy and escalations</div></div><span class="pill">Super Mentor</span></div>
       </div></section>
     <section class="panel span-12"><div class="panel-h"><h2>Upcoming</h2></div>
       <div class="list">${S.upcoming.map(u=>`<div class="item"><div class="datebox"><b>${u.d}</b><span>${u.m}</span></div><div class="grow"><div class="title">${esc(u.title)}</div><div class="meta">${u.dow} · ${u.time} (GMT+7) · ${esc(u.with)}</div></div>
