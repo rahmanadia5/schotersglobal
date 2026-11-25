@@ -574,9 +574,8 @@ function tickCountdown(){const el=document.getElementById('cd-d');if(!el)return;
   const d=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5),m=Math.floor(ms%36e5/6e4);el.textContent=d;document.getElementById('cd-h').textContent=h;document.getElementById('cd-m').textContent=m;}
 setInterval(tickCountdown,30000);
 S.tasks=[
- {id:1,t:'Read: Writing a scholarship essay that answers the prompt',tag:'Material',tc:'blue',mins:18,due:'over',go:'materials',topic:'sch',lesson:'s2'},
  {id:2,t:'Update your CV with Nam\'s comments and send v2',tag:'CV',tc:'violet',mins:10,due:'over',act:'order'},
- {id:3,t:'Draft your "Why Monash" paragraph',tag:'Essay',tc:'violet',mins:30,due:'today',go:'materials',topic:'essay',lesson:'e3'},
+ {id:3,t:'Draft your "Why Monash" paragraph',tag:'Essay',tc:'violet',mins:30,due:'today',go:'documents'},
  {id:4,t:"Reply to mentor's comments on your CV",tag:'Application',tc:'sun',mins:15,due:'today',go:'documents'},
  {id:5,t:'1-on-1: Essay brainstorm (Monash)',tag:'Session',tc:'green',mins:50,due:'thu',act:'join'},
  {id:6,t:'Shortlist 2 more scholarships',tag:'Application',tc:'sun',mins:20,due:'thu',go:'applications'}
