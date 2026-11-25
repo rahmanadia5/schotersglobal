@@ -68,6 +68,16 @@ button,input,select,textarea{font:inherit;color:inherit}
 .chev{font-size:20px;color:var(--muted);width:20px;text-align:center}
 .lesson-b{padding:0 20px 18px 66px;display:flex;flex-direction:column;gap:12px}
 @media (max-width:600px){.lesson-b{padding-left:20px}}
+.ai-badge{font-size:12px;font-weight:700;color:var(--violet);background:color-mix(in srgb,var(--violet) 12%,transparent);padding:3px 10px;border-radius:99px}
+.report{border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px;background:linear-gradient(180deg,color-mix(in srgb,var(--violet) 5%,var(--surface)),var(--surface))}
+.report h4{margin:0 0 4px;font-size:13px}
+.report ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:3px}
+.ai-live{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:var(--violet);background:color-mix(in srgb,var(--violet) 10%,transparent);padding:8px 10px;border-radius:10px}
+.ai-dot{width:8px;height:8px;border-radius:50%;background:var(--violet)}
+@media (prefers-reduced-motion: no-preference){.ai-dot{animation:blink 1.2s infinite}@keyframes blink{50%{opacity:.25}}}
+.ai-item{display:flex;gap:10px;align-items:flex-start}
+.ai-item p{margin:4px 0 0;font-size:13.5px}
+.ai-t{font-size:11.5px;color:var(--muted);font-weight:600;width:38px;flex:none;padding-top:3px}
 .nav a.mobile-only{display:none}
 .nav-group{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.75);padding:16px 12px 6px}
 .rail-bottom{margin-top:auto;display:flex;flex-direction:column;gap:4px}
@@ -574,8 +584,8 @@ V.sessions=()=>{const left=sessLeft();return `
         ${u.kind==='1-on-1'?`<button class="btn sm" data-act="cancel" data-id="${u.id}">Cancel</button>`:''}<button class="btn sm primary" data-act="join" data-id="${u.id}">Join</button></div>`).join('')}</div>
       <p class="note">Cancel at least 24 hours before to get the session back. <span class="assume">Assumption</span></p></section>
     <section class="panel span-12"><div class="panel-h"><h2>Past sessions</h2><span class="hint">${S.sessionsUsed} used</span></div>
-      <div class="table-wrap"><table><thead><tr><th>Date</th><th>Session</th><th>With</th><th>Quota</th><th></th></tr></thead><tbody>
-      ${S.past.slice().reverse().map(p=>`<tr><td class="num">${p.date}</td><td>${esc(p.title)}</td><td>${esc(p.with)}</td><td>${p.free?'<span class="pill good">Free</span>':'<span class="pill">1 session</span>'}</td><td><button class="btn ghost sm" data-act="notes">Notes &amp; recording</button></td></tr>`).join('')}
+      <div class="table-wrap"><table><thead><tr><th>Date</th><th>Session</th><th>With</th><th>Quota</th><th>Session report</th></tr></thead><tbody>
+      ${S.past.slice().reverse().map(p=>`<tr><td class="num">${p.date}</td><td>${esc(p.title)}</td><td>${esc(p.with)}</td><td>${p.free?'<span class="pill good">Free</span>':'<span class="pill">1 session</span>'}</td><td>${p.status==='Pending'?'<span class="pill warn" style="margin-right:6px">Pending</span>':''}<button class="btn ghost sm" data-report="${esc(p.title)}">✦ AI report</button></td></tr>`).join('')}
       </tbody></table></div></section>
   </div>`;};
 
@@ -682,6 +692,8 @@ V.parents=()=>`
       <div class="list">${S.syncs.map(s=>`<div class="item" style="align-items:flex-start"><span class="pill ${s.state==='done'?'good':s.state==='next'?'accent':''}">${s.q}</span><div class="grow"><div class="title">${s.title}</div><div class="meta">${s.date} · 50 min · uses 1 session</div>
         ${s.notes.length?`<ul style="margin:8px 0 0;padding-left:18px">${s.notes.map(n=>`<li>${esc(n)}</li>`).join('')}</ul>`:''}</div>
         ${s.state==='next'?'<button class="btn sm primary" data-act="cal">Add to calendar</button>':s.state==='done'?'<button class="btn sm" data-act="notes">Full notes</button>':''}</div>`).join('')}</div></section>
+    <section class="panel span-12" style="order:3"><div class="panel-h"><h2>Session reports</h2><span class="hint">AI summaries approved by the mentor, shared with parents</span></div>
+      <div class="list">${S.past.slice().reverse().map(p=>{const r=p.report||aiReport(p.title);return `<div class="item" style="align-items:flex-start"><div class="datebox"><b>${p.date.split(' ')[0]}</b><span>${p.date.split(' ')[1]}</span></div><div class="grow"><div class="title">${esc(p.title)}</div><div class="meta">${esc(r.summary)}</div></div>${p.status==='Pending'?'<span class="pill warn">Pending</span>':'<span class="pill good">Approved</span>'}<button class="btn sm" data-report="${esc(p.title)}">Read</button></div>`;}).join('')}</div></section>
     <section class="panel span-4"><div class="panel-h"><h2>Who joins</h2></div>
       <div class="list">
         <div class="item"><div class="grow"><div class="title">${S.student.parentName}</div><div class="meta">${S.student.parentEmail}</div></div><span class="pill good">Invited</span></div>
@@ -749,8 +761,46 @@ function topupModal(){
     <div class="modal-foot"><span></span><button class="btn" data-close>Close</button></div>`);
 }
 
+/* ---------- AI notetaker ---------- */
+const AI_LIVE=[
+ {m:1,k:'topic',t:'Reviewed the intro paragraph of the Monash personal statement'},
+ {m:4,k:'topic',t:'Café story kept as the opening hook'},
+ {m:7,k:'decision',t:'Cut the paragraph about school clubs (not linked to Commerce)'},
+ {m:10,k:'topic',t:'"Why Monash": needs a specific unit, e.g. ECC1000 Microeconomics'},
+ {m:13,k:'action',t:'Nadia: rewrite "Why Monash" with one unit and one career goal'},
+ {m:18,k:'topic',t:'Word count is 720; target is under 650'},
+ {m:22,k:'action',t:'Nadia: cut 70+ words, send draft v3 for proofread by Sun 30 Nov'},
+ {m:30,k:'decision',t:'Use the same story for the Monash scholarship essay, new ending'},
+ {m:38,k:'action',t:'Mentor: share two example scholarship essays'},
+ {m:44,k:'topic',t:'Next session: scholarship essay first draft'}
+];
+const AIK={topic:['Topic','blue'],decision:['Decision','violet'],action:['Action item','sun']};
+function aiReport(title){
+  const base={summary:'',topics:[],decisions:[],actions:[]};
+  const R={
+   'Scholarship strategy':{summary:'Nadia and her mentor picked 3 scholarships to target and set the order of essays.',topics:['Monash International Merit vs. UBC International Scholars','Budget gap after scholarships'],decisions:['Focus on Monash Merit first (deadline 15 Dec)'],actions:['Nadia: draft scholarship essay outline','Mentor: send past winning essays']},
+   'CV first draft':{summary:'The CV was cut to one page and every activity now shows a result.',topics:['Layout and order of sections','Adding numbers to activities'],decisions:['Remove primary school awards'],actions:['Nadia: send final CV for proofread']},
+   'Personal statement outline':{summary:'Nadia chose her opening story and a 4-part outline for the personal statement.',topics:['Three possible stories','Outline: hook, interest, evidence, goal'],decisions:['Open with the café story'],actions:['Nadia: write first draft by 31 Oct']},
+   'University shortlist':{summary:'The shortlist is 5 universities: 2 reach, 2 match, 1 safe.',topics:['Australia vs. UK cost','Entry grades for Commerce'],decisions:['Add NUS as a reach option'],actions:['Nadia: add deadlines to Applications']},
+   'Profile review & major choice':{summary:'Nadia will apply for Commerce with an Economics major.',topics:['Grades and strengths in Maths','Business vs. Economics'],decisions:['Commerce (Economics major)'],actions:['Nadia: read 3 course pages']},
+   'Kickoff: 3-year roadmap':{summary:'All stakeholders agreed the 3-year roadmap and the year-1 targets.',topics:['Target countries and intake','Budget and scholarships','How sessions and tokens work'],decisions:['Australia or UK, Feb 2028 intake at the latest'],actions:['SSO: send learning plan','Parents: confirm budget ceiling']}
+  };
+  return Object.assign(base,R[title]||{summary:'Session summary generated by AI from the call, approved by the mentor.',topics:['Progress since last session','Next steps'],decisions:[],actions:['Follow the learning plan for this month']});
+}
+function reportHTML(r,status){return `<div class="report">
+  <div class="row" style="justify-content:space-between"><span class="ai-badge">✦ AI session report</span><span class="pill ${status==='Approved'?'good':'warn'}">${status==='Approved'?'Approved by mentor':'Waiting for mentor approval'}</span></div>
+  <p>${esc(r.summary)}</p>
+  ${r.topics.length?`<div><h4>Topics discussed</h4><ul>${r.topics.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`:''}
+  ${r.decisions.length?`<div><h4>Decisions</h4><ul>${r.decisions.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`:''}
+  ${r.actions.length?`<div><h4>Action items</h4><ul>${r.actions.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`:''}
+  </div>`;}
+function openReport(title){const p=S.past.find(x=>x.title===title)||{};const r=p.report||aiReport(title);
+  modal(`<div><div class="eyebrow">${esc(p.date||'')} · ${esc(p.with||'')}</div><h2 style="font-size:1.25rem">${esc(title)}</h2></div>${reportHTML(r,p.status||'Approved')}
+  <p class="hint">Written by the AI notetaker during the call and approved by your mentor. Shared with parents in Parent sync. Recording kept for 90 days.</p>
+  <div class="modal-foot"><span></span><button class="btn primary" data-close>Close</button></div>`);}
+
 /* ---------- Video call (mock) ---------- */
-const C={on:false,sess:null,start:0,mic:true,cam:true,share:false,cc:true,tab:'notes',chat:[],timer:null,agenda:[['Review intro paragraph',true],['Tighten "Why Monash" section',false],['Word count under 650',false],['Plan next draft date',false]],notes:''};
+const C={on:false,sess:null,start:0,mic:true,cam:true,share:false,cc:true,tab:'ai',chat:[],timer:null,agenda:[['Review intro paragraph',true],['Tighten "Why Monash" section',false],['Word count under 650',false],['Plan next draft date',false]],notes:''};
 const CTL={
  mic:'<path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V6a3 3 0 0 1 3-3z"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>',
  micoff:'<path d="M3 3l18 18M9 9v3a3 3 0 0 0 5 2M15 10V6a3 3 0 0 0-6-.5M5 11a7 7 0 0 0 11 5.7M19 11a7 7 0 0 1-.6 2.8M12 18v3"/>',
@@ -765,11 +815,16 @@ const LIMIT=50*60;
 const mmss=t=>String(Math.floor(t/60)).padStart(2,'0')+':'+String(t%60).padStart(2,'0');
 function elapsed(){return Math.floor((Date.now()-C.start)/1000);}
 function openCall(id){const u=S.upcoming.find(x=>x.id==id)||S.upcoming[0];if(!u){toast('No session booked yet.');return;}
-  Object.assign(C,{on:true,sess:u,start:Date.now()-12*60*1000,share:false,tab:'notes',chat:[{who:u.with.split(',')[0],t:'Hi Nadia! I opened your Monash draft. Ready when you are.'}]});
+  Object.assign(C,{on:true,sess:u,start:Date.now()-12*60*1000,share:false,tab:'ai',chat:[{who:u.with.split(',')[0],t:'Hi Nadia! I opened your Monash draft. Ready when you are.'}]});
   drawCall();clearInterval(C.timer);C.timer=setInterval(tickCall,1000);}
 function tickCall(){if(!C.on)return;const e=elapsed();const el=document.getElementById('ctime');if(!el)return;
   el.textContent=mmss(Math.min(e,LIMIT));document.getElementById('cbar').style.width=Math.min(100,e/LIMIT*100)+'%';
-  const w=document.getElementById('cwarn');w.hidden=e<45*60;if(e>=LIMIT){endCall();}}
+  const w=document.getElementById('cwarn');w.hidden=e<45*60;const mins=Math.floor(Math.min(e,LIMIT)/60);if(C.tab==='ai'&&mins!==aiShown){aiShown=mins;const a=document.getElementById('ainotes');if(a)a.innerHTML=aiLiveHTML();}if(e>=LIMIT){endCall();}}
+function aiLiveHTML(){const m=Math.floor(Math.min(elapsed(),LIMIT)/60);const items=AI_LIVE.filter(x=>x.m<=m);
+  return `<div class="ai-live"><span class="ai-dot"></span>AI notetaker is listening · English &amp; Vietnamese</div>
+  ${items.map(x=>`<div class="ai-item"><span class="ai-t num">${String(x.m).padStart(2,'0')}:00</span><div><span class="tag ${AIK[x.k][1]}">${AIK[x.k][0]}</span><p>${esc(x.t)}</p></div></div>`).join('')}
+  <p class="hint">These notes become your mentor's session report when the call ends. Your mentor only reviews and approves.</p>`;}
+let aiShown=-1;
 const CAPS=['Mentor: Đoạn mở bài của em rất tốt, nhưng phần "Why Monash" cần ví dụ cụ thể hơn.','Mentor: Try naming one Monash course unit you want to take, and why.','Mentor: Em hãy giữ bài dưới 650 từ nhé.'];
 function drawCall(){const u=C.sess;const el=document.getElementById('call');el.hidden=false;const mentor=u.with.split(',')[0];const ini=mentor.split(' ').map(w=>w[0]).join('').slice(0,2);
   const e=elapsed();
@@ -784,8 +839,8 @@ function drawCall(){const u=C.sess;const el=document.getElementById('call');el.h
       <div class="self">${C.cam?'N':'<span style="font-size:12px;font-weight:600;opacity:.8">Camera off</span>'}<span class="tile-label">You${C.mic?'':' · muted'}</span></div>
     </div>
     <aside class="side">
-      <div class="tabs">${[['notes','Notes'],['chat','Chat'],['files','Files']].map(([k,l])=>`<button aria-selected="${C.tab===k}" data-ctab="${k}">${l}${k==='chat'?' ('+C.chat.length+')':''}</button>`).join('')}</div>
-      ${C.tab==='notes'?`<div class="side-body"><div class="eyebrow">Agenda · shared with mentor</div><div class="agenda">${C.agenda.map((a,i)=>`<label><input type="checkbox" id="ag${i}" data-ag="${i}" ${a[1]?'checked':''}><span>${esc(a[0])}</span></label>`).join('')}</div>
+      <div class="tabs">${[['ai','AI notes'],['notes','My notes'],['chat','Chat'],['files','Files']].map(([k,l])=>`<button aria-selected="${C.tab===k}" data-ctab="${k}">${l}${k==='chat'?' ('+C.chat.length+')':''}</button>`).join('')}</div>
+      ${C.tab==='ai'?`<div class="side-body" id="ainotes">${aiLiveHTML()}</div>`:C.tab==='notes'?`<div class="side-body"><div class="eyebrow">Agenda · shared with mentor</div><div class="agenda">${C.agenda.map((a,i)=>`<label><input type="checkbox" id="ag${i}" data-ag="${i}" ${a[1]?'checked':''}><span>${esc(a[0])}</span></label>`).join('')}</div>
         <div class="field"><label for="cnotes">My notes</label><textarea id="cnotes" placeholder="Write what you want to remember…">${esc(C.notes)}</textarea></div></div>`
       :C.tab==='chat'?`<div class="side-body" id="cchat">${C.chat.map(m=>`<div class="bubble ${m.who==='You'?'me':''}"><div class="who">${esc(m.who)}</div>${esc(m.t)}</div>`).join('')}</div>
         <div class="side-foot"><input id="cmsg" placeholder="Message"><button class="btn sm primary" data-act="csend">Send</button></div>`
@@ -806,12 +861,15 @@ function drawCall(){const u=C.sess;const el=document.getElementById('call');el.h
 function endCall(){if(!C.on)return;C.on=false;clearInterval(C.timer);const e=Math.min(elapsed(),LIMIT);const u=C.sess;
   document.getElementById('call').hidden=true;document.getElementById('call').innerHTML='';
   S.upcoming=S.upcoming.filter(x=>x!==u);
-  const counted=true;S.past.push({title:u.title,date:u.d+' '+u.m,with:u.with,kind:u.kind,free:!counted});if(counted)S.sessionsUsed++;
+  const mE=Math.floor(e/60);const li=AI_LIVE.filter(x=>x.m<=mE);
+  const rep={summary:'Nadia and '+u.with.split(',')[0]+' worked on '+u.title.replace(/^1-on-1:\s*/,'')+'. '+li.filter(x=>x.k==='action').length+' action items were agreed.',topics:li.filter(x=>x.k==='topic').map(x=>x.t),decisions:li.filter(x=>x.k==='decision').map(x=>x.t),actions:li.filter(x=>x.k==='action').map(x=>x.t)};
+  const counted=true;S.past.push({title:u.title,date:u.d+' '+u.m,with:u.with,kind:u.kind,free:!counted,report:rep,status:'Pending'});if(counted)S.sessionsUsed++;
   const done=C.agenda.filter(a=>a[1]).length;
   render();
   modal(`<div><div class="eyebrow">Session ended</div><h2 style="font-size:1.35rem">Nice work, Nadia!</h2><p class="sub">${esc(u.title)} with ${esc(u.with)}</p></div>
    <div class="recap-stats"><div><b class="num">${Math.round(e/60)} min</b><span class="hint">of 50</span></div><div><b class="num">${counted?'1':'0'}</b><span class="hint">session used</span></div><div><b class="num">${sessLeft()}</b><span class="hint">sessions left</span></div></div>
-   <div><h3>Action items</h3><div class="agenda">${C.agenda.map(a=>`<label><input type="checkbox" disabled ${a[1]?'checked':''}><span>${esc(a[0])}</span></label>`).join('')}</div><p class="hint">${done} of ${C.agenda.length} done in the session. Open items move to your learning plan. The recording and mentor summary arrive within 24 hours.</p></div>
+   ${reportHTML(rep,'Pending')}
+   <p class="hint">No extra report needed: the AI notes above go to your mentor to approve, then to you and your parents. Open action items move to your learning plan.</p>
    ${C.notes.trim()?`<div class="note">Your notes: ${esc(C.notes)}</div>`:''}
    <div><h3>How was this session?</h3><div class="stars" id="stars">${[1,2,3,4,5].map(i=>`<button data-star="${i}" aria-label="${i} stars"><svg viewBox="0 0 24 24"><path fill="var(--line)" d="M12 2l3 6.5 7 .8-5.2 4.8 1.4 7L12 17.6 5.8 21l1.4-7L2 9.3l7-.8z"/></svg></button>`).join('')}</div></div>
    <div class="modal-foot"><button class="btn" data-act="book" ${sessLeft()<1?'disabled':''}>Book next session</button><button class="btn primary" data-close>Back to home</button></div>`);
@@ -842,6 +900,7 @@ document.addEventListener('click',e=>{
   if(t.dataset.taskgo){const k=S.tasks.find(x=>x.id==t.dataset.taskgo);if(k.act==='order'){orderModal('Monash University');}else if(k.act==='join'){openCall();}else{if(k.topic){S.topic=k.topic;S.openLesson=k.lesson;}location.hash=k.go;render();}return;}
   if(t.dataset.topic!==undefined){S.topic=t.dataset.topic||null;S.openLesson=S.topic?(S.topics.find(x=>x.id===S.topic).lessons.find(l=>!l.done)||{}).id:null;render();const mm=document.querySelector('.main');if(mm)mm.scrollTop=0;window.scrollTo(0,0);return;}
   if(t.dataset.lesson){S.openLesson=S.openLesson===t.dataset.lesson?null:t.dataset.lesson;render();return;}
+  if(t.dataset.report!==undefined){openReport(t.dataset.report);return;}
   if(t.dataset.ctab){C.tab=t.dataset.ctab;drawCall();return;}
   if(t.dataset.ctl){const k=t.dataset.ctl;if(k==='chat')C.tab='chat';else C[k]=!C[k];drawCall();if(k==='share')toast(C.share?'You are sharing your screen.':'Stopped sharing.');return;}
   if(t.dataset.star){const n=+t.dataset.star;document.querySelectorAll('#stars svg path').forEach((p,i)=>p.setAttribute('fill',i<n?'var(--sun)':'var(--line)'));toast('Thanks for the rating!');return;}
@@ -885,7 +944,7 @@ document.addEventListener('click',e=>{
     case 'skip':C.start=Date.now()-45*60*1000;tickCall();toast('Jumped to minute 45.');break;
     case 'endcall':endCall();break;
     case 'csend':{const i=document.getElementById('cmsg');const v=i.value.trim();if(!v)break;C.chat.push({who:'You',t:v});drawCall();setTimeout(()=>{if(C.on&&C.tab==='chat'){C.chat.push({who:C.sess.with.split(',')[0],t:'Got it, let me check.'});drawCall();}},1500);break;}
-    case 'notes':toast('In the live LMS this opens the session notes and recording.');break;
+    case 'notes':openReport('Kickoff: 3-year roadmap');break;
     case 'dl':toast('In the live LMS this opens the file with tracked changes.');break;
   }
 });
