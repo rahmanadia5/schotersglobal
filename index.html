@@ -683,7 +683,7 @@ function appRow(a){
 }
 
 V.sessions=()=>{const left=sessLeft();return `
-  <div class="topbar"><div><div class="eyebrow">Sessions</div><h1>1-on-1 video sessions</h1><p class="sub">Each session is up to 50 minutes. The kickoff and each parent sync also use 1 session.</p></div>
+  <div class="topbar"><div><div class="eyebrow">Sessions</div><h1>1-on-1 video sessions</h1><p class="sub">Each session is up to 50 minutes.</p></div>
   <div class="row"><button class="btn" data-act="topup">Top up sessions</button><button class="btn primary" data-act="book" ${left<1?'disabled':''}>Book a session</button></div></div>
   <div class="grid">
     <section class="panel span-4 stat"><div class="eyebrow">Left to book</div><div class="big num">${left}<small> / ${sessTotal()}</small></div><div class="bar"><i style="width:${(sessTotal()-left)/sessTotal()*100}%"></i></div><p class="hint">${S.pkg} package: ${S.packages[S.pkg].sessions} sessions${S.sessionsExtra?` + ${S.sessionsExtra} topped up`:''}</p></section>
@@ -693,7 +693,6 @@ V.sessions=()=>{const left=sessLeft();return `
       </div></section>
     <section class="panel span-12"><div class="panel-h"><h2>Upcoming</h2></div>
       <div class="list">${S.upcoming.map(u=>`<div class="item"><div class="datebox"><b>${u.d}</b><span>${u.m}</span></div><div class="grow"><div class="title">${esc(u.title)}</div><div class="meta">${u.dow} · ${u.time} (GMT+7) · ${esc(u.with)}</div></div>
-        <span class="pill accent">Uses 1 session</span>
         ${u.kind==='1-on-1'?`<button class="btn sm" data-act="cancel" data-id="${u.id}">Cancel</button>`:''}<button class="btn sm primary" data-act="join" data-id="${u.id}">Join</button></div>`).join('')}</div>
       <p class="note">Cancel at least 24 hours before to get the session back. <span class="assume">Assumption</span></p></section>
     <section class="panel span-12"><div class="panel-h"><h2>Past sessions</h2><span class="hint">${S.sessionsUsed} used</span></div>
@@ -902,7 +901,7 @@ V.parents=()=>`
   <div class="topbar"><div><div class="eyebrow">Parent sync</div><h1>Sync with your parents every 3 months</h1><p class="sub">Instead of a written report, you, your parents and your mentor meet once a quarter to review progress and agree on next steps.</p></div></div>
   <div class="grid">
     <section class="panel span-8"><div class="panel-h"><h2>This year's syncs</h2></div>
-      <div class="list">${S.syncs.map(s=>`<div class="item" style="align-items:flex-start"><span class="pill ${s.state==='done'?'good':s.state==='next'?'accent':''}">${s.q}</span><div class="grow"><div class="title">${s.title}</div><div class="meta">${s.date} · 50 min · uses 1 session</div>
+      <div class="list">${S.syncs.map(s=>`<div class="item" style="align-items:flex-start"><span class="pill ${s.state==='done'?'good':s.state==='next'?'accent':''}">${s.q}</span><div class="grow"><div class="title">${s.title}</div><div class="meta">${s.date} · 50 min</div>
         ${s.notes.length?`<ul style="margin:8px 0 0;padding-left:18px">${s.notes.map(n=>`<li>ZZZ</li>`).join('')}</ul>`:''}</div>
         ${s.state==='next'?'<button class="btn sm primary" data-act="cal">Add to calendar</button>':s.state==='done'?'<button class="btn sm" data-act="notes">Full notes</button>':''}</div>`).join('')}</div></section>
     <section class="panel span-12" style="order:3"><div class="panel-h"><h2>Session reports</h2><span class="hint">AI summaries approved by the mentor, shared with parents</span></div>
@@ -918,10 +917,10 @@ V.parents=()=>`
 V.billing=()=>{const pk=S.packages;const refundMonths=S.billing==='annual'?S.monthsPaid-S.monthsUsed-1:0;return `
   <div class="topbar"><div><div class="eyebrow">Plan &amp; billing</div><h1>${S.pkg} package</h1><p class="sub">All packages include the same features. They differ only in video sessions and QnA tokens.</p></div><span class="proto">Prices to be set</span></div>
   <section class="panel"><div class="table-wrap"><table><thead><tr><th>Feature</th>${Object.keys(pk).map(k=>`<th class="c">${k}${k===S.pkg?' · yours':''}</th>`).join('')}</tr></thead><tbody>
-    <tr><td>Kickoff session with all stakeholders</td>${Object.keys(pk).map(()=>'<td class="c">1, uses 1 session</td>').join('')}</tr>
-    <tr class="hl"><td><b>Video sessions (50 min)</b><div class="hint">Covers 1-on-1s, kickoff and parent syncs</div></td>${Object.values(pk).map(p=>`<td class="c num"><b>${p.sessions}</b></td>`).join('')}</tr>
+    <tr><td>Kickoff session with all stakeholders</td>${Object.keys(pk).map(()=>'<td class="c">1</td>').join('')}</tr>
+    <tr class="hl"><td><b>Video sessions (50 min)</b></td>${Object.values(pk).map(p=>`<td class="c num"><b>${p.sessions}</b></td>`).join('')}</tr>
     <tr class="hl"><td><b>QnA tokens (mentor, Vietnamese)</b></td>${Object.values(pk).map(p=>`<td class="c num"><b>${p.tokens}</b></td>`).join('')}</tr>
-    ${['Student Priority (English, free)','Parent sync every 3 months (uses 1 session)','Learning plan','Learning material (EN + VI)','Hotline','Applications tracker'].map(f=>`<tr><td>${f}</td>${Object.keys(pk).map(()=>'<td class="c">Yes</td>').join('')}</tr>`).join('')}
+    ${['Student Priority (English, free)','Parent sync every 3 months','Learning plan','Learning material (EN + VI)','Hotline','Applications tracker'].map(f=>`<tr><td>${f}</td>${Object.keys(pk).map(()=>'<td class="c">Yes</td>').join('')}</tr>`).join('')}
     <tr><td>Document review (essay, CV, letters)</td>${Object.keys(pk).map(()=>'<td class="c">Included</td>').join('')}</tr>
     <tr><td>Top-up</td>${Object.keys(pk).map(()=>'<td class="c">Sessions only</td>').join('')}</tr>
   </tbody></table></div></section>
