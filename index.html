@@ -384,20 +384,20 @@ const S={
   pkg:'Gold',
   packages:{Silver:{sessions:10,tokens:10},Gold:{sessions:20,tokens:20},Platinum:{sessions:30,tokens:30}},
   sessionsExtra:0, sessionsUsed:6, tokensUsed:3,
-  mentor:{name:'Dimas Pratama',role:'Mentor · Business & Economics'},
-  superMentor:{name:'Ayu Lestari',role:'Super Mentor'},
+  mentor:{name:'Lê Hoàng Nam',role:'Mentor · Business & Economics'},
+  superMentor:{name:'Phạm Thu Trang',role:'Super Mentor'},
   sso:{name:'Trần Thu Hà',role:'Student Success Officer · Vietnam'},
   upcoming:[
-    {id:1,title:'Essay brainstorm: Monash',d:27,m:'Nov',dow:'Thu',time:'19:00–19:50',with:'Dimas Pratama',kind:'1-on-1'},
-    {id:2,title:'Quarterly sync with parents',d:12,m:'Dec',dow:'Sat',time:'09:00–09:50',with:'Dimas, Hà, parents',kind:'Parent sync'}
+    {id:1,title:'Essay brainstorm: Monash',d:27,m:'Nov',dow:'Thu',time:'19:00–19:50',with:'Lê Hoàng Nam',kind:'1-on-1'},
+    {id:2,title:'Quarterly sync with parents',d:12,m:'Dec',dow:'Sat',time:'09:00–09:50',with:'Nam, Hà, parents',kind:'Parent sync'}
   ],
   past:[
     {title:'Kickoff: 3-year roadmap',date:'12 Sep',with:'All stakeholders',kind:'Kickoff'},
-    {title:'Profile review & major choice',date:'19 Sep',with:'Dimas Pratama',kind:'1-on-1'},
-    {title:'University shortlist',date:'3 Oct',with:'Dimas Pratama',kind:'1-on-1'},
-    {title:'IELTS writing strategy',date:'17 Oct',with:'Dimas Pratama',kind:'1-on-1'},
-    {title:'CV first draft',date:'31 Oct',with:'Dimas Pratama',kind:'1-on-1'},
-    {title:'Scholarship strategy',date:'14 Nov',with:'Ayu Lestari',kind:'1-on-1'}
+    {title:'Profile review & major choice',date:'19 Sep',with:'Lê Hoàng Nam',kind:'1-on-1'},
+    {title:'University shortlist',date:'3 Oct',with:'Lê Hoàng Nam',kind:'1-on-1'},
+    {title:'IELTS writing strategy',date:'17 Oct',with:'Lê Hoàng Nam',kind:'1-on-1'},
+    {title:'CV first draft',date:'31 Oct',with:'Lê Hoàng Nam',kind:'1-on-1'},
+    {title:'Scholarship strategy',date:'14 Nov',with:'Phạm Thu Trang',kind:'1-on-1'}
   ],
   apps:[
     {name:'Monash University',prog:'Bachelor of Commerce',kind:'University',deadline:'15 Dec 2026',days:20,status:'Writing essay',tone:'accent'},
@@ -414,12 +414,12 @@ const S={
     {id:'rec',name:'Recommendation letter review',price:700000,days:2}
   ],
   orders:[
-    {id:'PR-1042',file:'Monash_personal_statement_v2.docx',type:'Personal statement / essay',app:'Monash University',price:1200000,status:'In review',due:'28 Nov',reviewer:'Dimas Pratama'},
-    {id:'PR-1031',file:'Nadia_CV_Oct.pdf',type:'CV / résumé',app:'All applications',price:600000,status:'Returned',due:'2 Nov',reviewer:'Dimas Pratama'},
-    {id:'PR-1019',file:'UBC_scholars_essay_final.docx',type:'Scholarship essay',app:'UBC International Scholars',price:1200000,status:'Returned',due:'6 Nov',reviewer:'Ayu Lestari'}
+    {id:'PR-1042',file:'Monash_personal_statement_v2.docx',type:'Personal statement / essay',app:'Monash University',price:1200000,status:'In review',due:'28 Nov',reviewer:'Lê Hoàng Nam'},
+    {id:'PR-1031',file:'Nadia_CV_Oct.pdf',type:'CV / résumé',app:'All applications',price:600000,status:'Returned',due:'2 Nov',reviewer:'Lê Hoàng Nam'},
+    {id:'PR-1019',file:'UBC_scholars_essay_final.docx',type:'Scholarship essay',app:'UBC International Scholars',price:1200000,status:'Returned',due:'6 Nov',reviewer:'Phạm Thu Trang'}
   ],
   threads:[
-    {ch:'mentor',q:'Em nên chọn Kinh doanh hay Kinh tế cho hồ sơ Monash?',qEn:'Should I pick Business or Economics for my Monash application?',a:'Với điểm Toán của em, Kinh tế (Commerce major Economics) sẽ nổi bật hơn. Mình sẽ nói kỹ trong buổi thứ Năm.',by:'Dimas Pratama',when:'20 Nov',status:'Answered'},
+    {ch:'mentor',q:'Em nên chọn Kinh doanh hay Kinh tế cho hồ sơ Monash?',qEn:'Should I pick Business or Economics for my Monash application?',a:'Với điểm Toán của em, Kinh tế (Commerce major Economics) sẽ nổi bật hơn. Mình sẽ nói kỹ trong buổi thứ Năm.',by:'Lê Hoàng Nam',when:'20 Nov',status:'Answered'},
     {ch:'sp',q:'Can I send my IELTS result after the Manchester deadline?',a:'Yes. Manchester accepts English results after you apply, as a condition of your offer. Add your test date in the form.',by:'Student Priority team',when:'18 Nov',status:'Answered'},
     {ch:'hotline',q:'I did not receive the invoice for my annual payment.',a:'Sent again to your email just now. It is also under Plan & billing.',by:'Hotline (AI assistant → Ops)',when:'10 Nov',status:'Resolved'},
     {ch:'mentor',q:'Bài luận 650 từ có quá dài với Monash không?',qEn:'Is a 650-word essay too long for Monash?',a:null,by:'',when:'Today',status:'Waiting'}
@@ -529,10 +529,10 @@ V.home=()=>{const sso=ssoStatus(); const tot=sessTotal(), left=sessLeft(); const
         <div class="row"><button class="btn violet" data-act="join">Join video call</button><button class="btn ghost" data-go="sessions">All sessions</button></div>`:'<p>No sessions booked.</p>'}
     </section>
     <section class="panel">
-      <div class="panel-h"><h2>Your SSO</h2><span class="pill ${sso.fast?'good':'warn'}"><span class="dot"></span>${sso.label}</span></div>
-      <div><div class="title" style="font-weight:600">${S.sso.name}</div><div class="sub" style="font-size:13px">${S.sso.role}</div></div>
-      <p class="hint">${sso.detail}. Fast reply Mon–Fri 09:00–17:00.</p>
-      <button class="btn" data-go="ask" data-ch="hotline">Message Hà</button>
+      <div class="panel-h"><h2>Your mentor</h2><span class="pill ${sso.fast?'good':'warn'}"><span class="dot"></span>${sso.label}</span></div>
+      <div class="row" style="gap:12px;flex-wrap:nowrap"><div class="avatar" style="background:linear-gradient(135deg,#9fd0f7,#7b3aed);color:#fff">LN</div><div><div class="title" style="font-weight:600">${S.mentor.name}</div><div class="sub" style="font-size:13px">${S.mentor.role}</div></div></div>
+      <p class="hint">${sso.detail}. Fast reply Mon–Fri 09:00–17:00 (GMT+7).</p>
+      <button class="btn" data-go="ask" data-ch="mentor">Message Nam</button>
     </section></div>
     <section class="panel span-3 stat"><div class="eyebrow">Video sessions left</div><div class="big num">${left}<small> / ${tot}</small></div><div class="bar"><i style="width:${(tot-left)/tot*100}%"></i></div><button class="btn sm" data-act="book" ${left<1?'disabled':''}>Book a session</button></section>
     <section class="panel span-3 stat"><div class="eyebrow">QnA tokens left</div><div class="big num">${tl}<small> / ${tt}</small></div><div class="bar"><i style="width:${(tt-tl)/tt*100}%"></i></div><button class="btn sm" data-go="ask" data-ch="mentor">Ask a mentor</button></section>
