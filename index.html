@@ -13,12 +13,12 @@ html{color-scheme:light}body{margin:0}[hidden]{display:none!important}img{max-wi
 
 /* Layout: app shell, left rail nav on desktop, scrolling tab strip on phones; content as a 12-col grid of panels */
 :root{
-  --bg:#f5f8fc; --surface:#ffffff; --surface-2:#eef4fb; --line:#e2e9f2;
-  --ink:#13233a; --muted:#64748b; --accent:#1f86dd; --accent-ink:#ffffff; --accent-soft:#e3f1fd;
+  --bg:#fbfcfe; --surface:#ffffff; --surface-2:#f1f6fc; --line:#e6ebf2;
+  --ink:#111827; --muted:#6b7280; --accent:#3d9de8; --accent-ink:#ffffff; --accent-soft:#e5f2fd;
   --good:#11805a; --good-soft:#dcf5e9; --warn:#a85d00; --warn-soft:#fdf1dc; --bad:#b4233a; --bad-soft:#fde6ea;
-  --rail:#ffffff; --rail-ink:#475569; --rail-active:#1f86dd;
-  --violet:#7a3fe4; --violet-ink:#ffffff; --sun:#f8cf4f; --sun-ink:#4d3800; --flame:#f26b3a;
-  --stage:#e7f0fa; color-scheme:light; --sky-a:#cfe6fb; --sky-b:#eaf4fd; --shadow:0 1px 2px rgba(19,35,58,.04),0 8px 24px rgba(19,35,58,.06);
+  --rail:#ffffff; --rail-ink:#4b5563; --rail-active:#2b8ad6;
+  --violet:#7b3aed; --violet-ink:#ffffff; --sun:#f7cd5b; --sun-ink:#3d2c00; --flame:#f97316;
+  --stage:#eaf4fd; color-scheme:light; --sky-a:#cfe5fa; --sky-b:#f5faff; --shadow:0 1px 2px rgba(19,35,58,.04),0 8px 24px rgba(19,35,58,.06);
   --display:"Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
   --body:"Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   --r:18px;
@@ -74,7 +74,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .feature{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
 .tag{font-size:12px;font-weight:700;padding:3px 10px;border-radius:8px}
 .tag.blue{background:var(--accent-soft);color:var(--accent)}.tag.violet{background:color-mix(in srgb,var(--violet) 14%,transparent);color:var(--violet)}.tag.sun{background:color-mix(in srgb,var(--sun) 30%,transparent);color:var(--sun-ink)}
-.promo{background:linear-gradient(110deg,var(--surface) 45%,var(--accent-soft) 100%)}
+.promo{background:linear-gradient(110deg,var(--surface) 40%,#fdf3d3 100%)}
 .promo ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
 .promo li{display:flex;gap:10px;align-items:center}
 .promo li svg{width:18px;height:18px;stroke:var(--accent);fill:none;stroke-width:2.4;flex:none}
@@ -99,7 +99,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .btn.primary:hover{filter:brightness(1.08)}
 .btn.lg{padding:12px 20px;font-size:15px;border-radius:14px}
 .btn.violet{background:var(--violet);color:var(--violet-ink);border-color:var(--violet)}
-.btn.sun{background:var(--sun);color:var(--sun-ink);border-color:var(--sun)}
+.btn.sun{background:linear-gradient(180deg,#fbd96f,var(--sun));color:var(--sun-ink);border-color:#efc24a}
 .btn svg{width:16px;height:16px;fill:currentColor}
 .btn.ghost{border-color:transparent;background:transparent;color:var(--accent);padding-inline:6px}
 .btn.sm{padding:5px 10px;font-size:13px}
