@@ -222,6 +222,17 @@ tr.hl td{background:var(--accent-soft)}
 .check{display:flex;gap:10px;align-items:flex-start;padding:4px 0;cursor:pointer}
 .check input{margin-top:3px;accent-color:var(--accent)}
 .check.done span{color:var(--muted);text-decoration:line-through}
+.sp-head{display:flex;gap:14px;align-items:center;flex-wrap:wrap}.sp-head .grow{flex:1;min-width:200px}.sp-head h2{font-size:1.3rem;margin:2px 0}.sp-head .hint{margin:0}
+.avatar.lg{width:52px;height:52px;font-size:1.3rem}
+.sp-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.sp-card{background:var(--surface-2);border-radius:14px;padding:16px;min-width:0}
+.sp-card h3{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin:0 0 12px;font-weight:800}
+.sp-card dl{margin:0;display:flex;flex-direction:column;gap:12px}.sp-card dt{font-size:12px;color:var(--muted);font-weight:600}.sp-card dd{margin:3px 0 0;font-size:14px;font-weight:600;line-height:1.4}
+.sp-card .sp-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sp-card dd .pill{display:inline-flex;margin-top:5px}.sp-note{display:block;font-weight:400;color:var(--muted);font-size:12.5px}
+.sp-card .pchips{margin-top:5px;gap:5px}.sp-card .pchips .chip{background:var(--surface);box-shadow:none;border:1px solid var(--line);padding:2px 9px 2px 3px;font-size:12.5px}.sp-card .pchips .chip b{width:17px;height:17px;font-size:10px}
+@media (max-width:1100px){.sp-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:600px){.sp-grid{grid-template-columns:minmax(0,1fr)}}
 .prof-top{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:16px}
 .pchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;justify-content:flex-start}.pchips .chip{display:inline-flex;gap:6px;align-items:center;background:var(--surface-2);border-radius:99px;padding:4px 10px 4px 4px;font-size:13px;font-weight:600}.pchips .chip b{display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;font-size:11px}
 .prof{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,200px),1fr));gap:12px 18px;margin:0}.prof div{min-width:0}.prof dt{font-size:12px;color:var(--muted);font-weight:600}.prof dd{margin:2px 0 0;font-size:14px;font-weight:500}
@@ -732,9 +743,23 @@ V.plan=()=>{const P=S.profile,f=S.recFilter;
     ${list.map(r=>{const d=r.dl==='rolling'?null:new Date(r.dl);const ci=d?GM.findIndex(([y,m])=>y===d.getUTCFullYear()&&m===d.getUTCMonth()):GM.length;const cls=r.kind==='Scholarship'?'sch':'uni';
       return `<button class="g-row" role="row" data-rec="${r.id}"><div class="g-name" role="cell"><span class="g-dot ${cls}"></span><span class="grow"><b>${esc(r.name)}</b><span class="hint">${r.prog?esc(r.prog)+' · ':''}${r.country}</span></span></div>${GM.concat([[0,0]]).map((_,k)=>`<div role="cell" class="g-cell ${k===0?'g-now':''}">${k===ci?`<span class="g-mark ${cls} ${recDays(r)!==null&&recDays(r)<0?'past':''}">${d?d.getUTCDate():'∞'}</span>`:k<ci&&k>=ci-2&&ci<GM.length?`<span class="g-prep ${cls}"></span>`:''}</div>`).join('')}</button>`;}).join('')}</div>`;
   return head+`<div class="grid">
-    <section class="panel span-12"><div class="panel-h"><h2>Student profile</h2><span class="hint">From your intake form and kickoff</span></div>
-      <div class="prof-top"><div><div class="eyebrow">Target majors</div><div class="pchips">${P.majors.map((m,i)=>`<span class="chip"><b>${i+1}</b>${m}</span>`).join('')}</div></div><div><div class="eyebrow">Preferred countries</div><div class="pchips">${P.countries.map((m,i)=>`<span class="chip"><b>${i+1}</b>${m}</span>`).join('')}</div></div></div>
-      <dl class="prof">${prof.map(([k,v])=>`<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl></section>
+    <section class="panel span-12 sp"><div class="sp-head"><div class="avatar lg">${P.name[0]}</div><div class="grow"><div class="eyebrow">Student profile</div><h2>${esc(P.name)}</h2><p class="hint">${P.grade} · target ${P.level}, intake ${P.intake}</p></div><span class="hint">From intake form and kickoff</span></div>
+      <div class="sp-grid">
+        <div class="sp-card"><h3>Academic</h3><dl>
+          <div><dt>School</dt><dd>${esc(P.school)}</dd></div>
+          <div><dt>Curriculum</dt><dd>${esc(P.curriculum)}</dd></div>
+          <div class="sp-2"><div><dt>GPA</dt><dd class="num">${P.gpa}</dd></div><div><dt>Age</dt><dd class="num">17 <span class="sp-note" style="display:inline">(18 at start)</span></dd></div></div></dl></div>
+        <div class="sp-card"><h3>Targets</h3><dl>
+          <div><dt>Majors, in order</dt><dd class="pchips">${P.majors.map((m,i)=>`<span class="chip"><b>${i+1}</b>${m}</span>`).join('')}</dd></div>
+          <div><dt>Countries, in order</dt><dd class="pchips">${P.countries.map((m,i)=>`<span class="chip"><b>${i+1}</b>${m}</span>`).join('')}</dd></div>
+          <div class="sp-2"><div><dt>Intake</dt><dd>${P.intake}</dd></div><div><dt>Avoid</dt><dd>${P.avoid}</dd></div></div></dl></div>
+        <div class="sp-card"><h3>Tests</h3><dl>
+          <div><dt>English</dt><dd>${P.lang}<br><span class="pill good">Meets ${P.langMin} minimum</span></dd></div>
+          <div><dt>Standardized test</dt><dd>Not planned<span class="sp-note">SAT is optional for her targets</span></dd></div></dl></div>
+        <div class="sp-card"><h3>Funding</h3><dl>
+          <div><dt>Preference</dt><dd>${P.funding}</dd></div>
+          <div><dt>Fully funded options</dt><dd>${nFull} of ${nSch} scholarships</dd></div></dl></div>
+      </div></section>
     <section class="panel span-3 stat"><div class="eyebrow">Recommendations</div><div class="big num">${S.recs.length}</div><p class="hint">${nSch} scholarships · ${nUni} universities</p></section>
     <section class="panel span-3 stat"><div class="eyebrow">Fully funded options</div><div class="big num">${nFull}</div><p class="hint">Funding preference: ${P.funding.toLowerCase()}</p></section>
     <section class="panel span-6 stat"><div class="eyebrow">Next deadline</div><div class="big" style="font-size:1.35rem">${next?esc(next.name):'—'}</div><p class="hint">${next?recDate(next)+' · '+recDays(next)+' days left':''}</p><button class="btn sm" data-rec="${next?next.id:''}">See requirements</button></section>
