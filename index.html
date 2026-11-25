@@ -189,6 +189,14 @@ button,input,select,textarea{font:inherit;color:inherit}
 .item .meta{color:var(--muted);font-size:13px}
 .dstats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0}.dstats>div{padding:0 20px;border-left:1px solid var(--line)}.dstats>div:first-child{padding-left:0;border-left:none}.dstats .big{font-family:var(--display);font-size:2rem;font-weight:800;line-height:1.1;margin-top:4px}.dstats .hint{margin:2px 0 0}
 @media (max-width:600px){.dstats>div{padding:0 10px}.dstats .big{font-size:1.5rem}.dstats .hint{font-size:11.5px}.dstats .eyebrow{font-size:10px}}
+.rec-item{display:flex;align-items:stretch;border-top:1px solid var(--line)}.rec-item:first-child{border-top:none}.rec-item .rec-row{flex:1;border-top:none;min-width:0}
+.apply-link{display:inline-flex;align-items:center;gap:4px;font-weight:700;font-size:13px;color:#1a64ad;text-decoration:none;white-space:nowrap;padding:0 16px;align-self:center}
+.rec-item .apply-link{border-left:1px solid var(--line);align-self:stretch}
+.apply-link:hover{text-decoration:underline}
+a.btn{text-decoration:none;color:inherit}
+.st-sel{font:inherit;font-size:13px;font-weight:600;border:1px solid var(--line);border-radius:99px;padding:4px 10px;background:var(--surface-2);color:var(--muted);cursor:pointer}
+.st-sel.st-accent{background:var(--accent-soft);color:#1a64ad;border-color:transparent}.st-sel.st-good{background:var(--good-soft);color:var(--good);border-color:transparent}.st-sel.st-bad{background:var(--bad-soft);color:var(--bad);border-color:transparent}
+@media (max-width:760px){.rec-item{flex-direction:column}.rec-item .apply-link{border-left:none;border-top:1px dashed var(--line);padding:10px 16px;justify-content:flex-end}}
 .rec-list{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:12px;overflow:hidden}
 .rec-row{display:grid;grid-template-columns:10px minmax(0,1fr) 220px 150px 14px;gap:14px;align-items:center;padding:14px 16px;border:none;border-top:1px solid var(--line);background:var(--surface);text-align:left;font:inherit;color:inherit;cursor:pointer}
 .rec-row:first-child{border-top:none}.rec-row:hover{background:var(--surface-2)}
@@ -482,9 +490,9 @@ const S={
     {title:'Scholarship strategy',date:'14 Nov',with:'Lê Hoàng Nam',kind:'1-on-1'}
   ],
   apps:[
-    {name:'Monash University',prog:'Bachelor of Commerce',kind:'University',deadline:'15 Dec 2026',days:20,status:'Writing essay',tone:'accent'},
-    {name:'Monash International Merit Scholarship',prog:'Scholarship',kind:'Scholarship',deadline:'15 Dec 2026',days:20,status:'Writing essay',tone:'accent'},
-    {name:'University of Manchester',prog:'BSc Economics',kind:'University',deadline:'28 Jan 2027',days:64,status:'Documents ready',tone:'good'},
+    {name:'Monash University',prog:'Bachelor of Commerce',kind:'University',deadline:'15 Dec 2026',days:20,status:'In progress',tone:'accent'},
+    {name:'Monash International Merit Scholarship',prog:'Scholarship',kind:'Scholarship',deadline:'15 Dec 2026',days:20,status:'In progress',tone:'accent'},
+    {name:'University of Manchester',prog:'BSc Economics',kind:'University',deadline:'28 Jan 2027',days:64,status:'In progress',tone:'accent'},
     {name:'NUS',prog:'Business Administration',kind:'University',deadline:'20 Feb 2027',days:87,status:'Not started',tone:''},
     {name:'UBC International Scholars',prog:'Scholarship',kind:'Scholarship',deadline:'15 Nov 2026',days:-10,status:'Submitted',tone:'good'}
   ],
@@ -709,10 +717,11 @@ V.calendar=()=>{const T=todayVN();if(!S.cal)S.cal={y:T.y,m:T.m};const {y,m}=S.ca
     </div></div></section>
   <section class="panel"><div class="panel-h"><h2>This month</h2><span class="hint">${monthEv.length} items</span></div>
     <div class="list">${monthEv.map(e=>`<div class="item"><div class="datebox"><b>${e.d}</b><span>${MON[e.m]}</span></div><div class="grow"><div class="title">${esc(e.t)}</div><div class="meta">${[e.time,e.with].filter(Boolean).map(esc).join(' · ')||'&nbsp;'}</div></div>${e.past?'<span class="pill">Done</span>':e.id?`<button class="btn sm primary" data-act="join" data-id="${e.id}">Join</button>`:''}</div>`).join('')||'<p class="hint">Nothing this month.</p>'}</div></section>`;};
+const APP_ST={'Not started':'','In progress':'accent','Submitted':'good','Accepted':'good','Not accepted':'bad'};
 V.applications=()=>`
-  <div class="topbar"><div><div class="eyebrow">Applications</div><h1>${S.apps.length} applications, one place</h1><p class="sub">Every university and scholarship your team is working on with you, with the next deadline first.</p></div><button class="btn primary" data-act="addapp">Add application</button></div>
-  <section class="panel"><div class="table-wrap"><table><thead><tr><th>Institution</th><th>Programme</th><th>Type</th><th>Deadline</th><th>Status</th></tr></thead><tbody>
-  ${S.apps.slice().sort((a,b)=>(a.days<0)-(b.days<0)||a.days-b.days).map(a=>`<tr><td><b>${esc(a.name)}</b></td><td>${esc(a.prog)}</td><td>${a.kind}</td><td class="num">${a.deadline}${a.days>0&&a.days<=21?` <span class="pill warn">${a.days} days</span>`:''}</td><td><span class="pill ${a.tone}">${a.status}</span></td></tr>`).join('')}
+  <div class="topbar"><div><div class="eyebrow">Applications</div><h1>${S.apps.length} applications, one place</h1><p class="sub">Your tracker. You apply on each official portal yourself, then update the status here so your mentor can follow along.</p></div><button class="btn primary" data-act="addapp">Add application</button></div>
+  <section class="panel"><div class="panel-h"><h2>Tracker</h2><div class="tabs" role="tablist">${[['all','All'],['University','Universities'],['Scholarship','Scholarships']].map(([k,l])=>`<button role="tab" aria-selected="${(S.appFilter||'all')===k}" data-af="${k}">${l}</button>`).join('')}</div></div><div class="table-wrap"><table><thead><tr><th>Institution</th><th>Programme</th><th>Type</th><th>Deadline</th><th>Status</th><th>Portal</th></tr></thead><tbody>
+  ${S.apps.filter(a=>!S.appFilter||S.appFilter==='all'||a.kind===S.appFilter).slice().sort((a,b)=>(a.days<0)-(b.days<0)||a.days-b.days).map(a=>`<tr><td><b>${esc(a.name)}</b></td><td>${esc(a.prog)}</td><td>${a.kind}</td><td class="num">${a.deadline}${a.days>0&&a.days<=21?` <span class="pill warn">${a.days} days</span>`:''}</td><td><select class="st-sel st-${(APP_ST[a.status]||'')}" data-appst="${esc(a.name)}" aria-label="Status for ${esc(a.name)}">${Object.keys(APP_ST).map(k=>`<option ${k===a.status?'selected':''}>${k}</option>`).join('')}</select></td><td>${applyLink(a.name)||'<span class="hint">—</span>'}</td></tr>`).join('')}
   </tbody></table></div></section>`;
 
 const SHORT={all:'All',essay:'Personal statement',schol:'Scholarship essay',motiv:'Motivation letter',cv:'CV',rec:'Recommendation'};
@@ -760,6 +769,21 @@ V.ask=()=>{const c=S.askChannel;const th=S.threads.filter(t=>t.ch===c);return `
     </section>
   </div>`;};
 
+const PORTAL={
+ 'UBC International Scholars Program':'https://you.ubc.ca/financial-planning/scholarships-awards-international-students/',
+ 'UBC International Scholars':'https://you.ubc.ca/financial-planning/scholarships-awards-international-students/',
+ 'Monash University':'https://www.monash.edu/study/how-to-apply',
+ 'Monash International Merit Scholarship':'https://www.monash.edu/study/fees-scholarships/scholarships',
+ 'University of British Columbia':'https://you.ubc.ca/applying-ubc/',
+ 'University of Manchester':'https://www.ucas.com/',
+ 'University of Edinburgh':'https://www.ucas.com/',
+ 'ASEAN Undergraduate Scholarship (NUS)':'https://www.nus.edu.sg/oam/scholarships',
+ 'NUS':'https://www.nus.edu.sg/oam/apply-to-nus',
+ "University of Sydney Vice-Chancellor's International Scholarship":'https://www.sydney.edu.au/scholarships',
+ 'University of Sydney':'https://www.sydney.edu.au/study/how-to-apply.html',
+ 'MOE Tuition Grant':'https://tgonline.moe.gov.sg/'};
+const portal=n=>PORTAL[n]||'';
+const applyLink=(n,cls='apply-link')=>portal(n)?`<a class="${cls}" href="${portal(n)}" target="_blank" rel="noopener noreferrer">Apply<svg viewBox="0 0 24 24" width="13" height="13"><path d="M7 17L17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>`:'';
 const NOW=Date.UTC(2026,10,25);
 function recDays(r){return r.dl==='rolling'?null:Math.round((Date.parse(r.dl)-NOW)/864e5);}
 function recDate(r){if(r.dl==='rolling')return 'Rolling';const d=new Date(r.dl);return d.getUTCDate()+' '+MON[d.getUTCMonth()]+' '+d.getUTCFullYear();}
@@ -804,13 +828,13 @@ V.plan=()=>{const P=S.profile,f=S.recFilter;
       <p class="hint" style="margin:0">Tap a row to see requirements, documents and how to apply.</p>
       <div class="g-wrap">${gantt}</div>
       <div class="g-list">${list.map(r=>{const d=recDays(r);const cls=r.kind==='Scholarship'?'sch':'uni';const dt=r.dl==='rolling'?'Any time':recDate(r).split(' ').slice(0,2).join(' ');return `<button class="gl-row" data-rec="${r.id}"><span class="g-dot ${cls}"></span><span class="grow"><b>${esc(r.name)}</b><span class="hint">${r.prog?esc(r.prog)+' · ':r.kind+' · '}${r.country}</span></span><span class="gl-end"><span class="g-mark ${cls} ${d!==null&&d<0?'past':''}">${dt}</span><span class="hint">${d===null?'Rolling':d<0?'Closed':d+' days left'}</span></span></button>`;}).join('')}</div></section>
-    <section class="panel span-12"><div class="panel-h"><h2>All recommendations, by deadline</h2></div>
-      <div class="rec-list">${list.map(r=>{const d=recDays(r);const cls=r.kind==='Scholarship'?'sch':'uni';return `<button class="rec-row" data-rec="${r.id}">
+    <section class="panel span-12"><div class="panel-h"><h2>All recommendations, by deadline</h2><div class="tabs" role="tablist">${[['all','All'],['University','Universities'],['Scholarship','Scholarships']].map(([k,l])=>`<button role="tab" aria-selected="${f===k}" data-rf="${k}">${l}</button>`).join('')}</div></div>
+      <div class="rec-list">${list.map(r=>{const d=recDays(r);const cls=r.kind==='Scholarship'?'sch':'uni';return `<div class="rec-item"><button class="rec-row" data-rec="${r.id}">
         <span class="g-dot ${cls}"></span>
         <span class="rec-main"><b>${esc(r.name)}</b><span class="hint">${r.kind}${r.prog?' · '+esc(r.prog):''} · ${r.country}</span></span>
         <span class="rec-tags">${r.grade?`<span class="grade g-${r.grade.replace('+','p')}" title="Fit grade">Fit ${r.grade}</span>`:''}${r.fund?`<span class="pill ${r.fund==='Fully funded'?'good':''}">${r.fund}</span>`:''}</span>
         <span class="rec-dl"><b class="num">${recDate(r)}</b></span>
-        <span class="rec-chev" aria-hidden="true">›</span></button>`;}).join('')}</div>
+        <span class="rec-chev" aria-hidden="true">›</span></button>${applyLink(r.name)}</div>`;}).join('')}</div>
       <p class="hint" style="margin:0">Deadlines are based on last year and your mentor double-checks them. Fit grade: A+ is the strongest match, C is a stretch.</p></section>
   </div>`;};
 function msView(){return `
@@ -830,7 +854,7 @@ function recModal(id){const r=S.recs.find(x=>x.id===id);if(!r)return;const a=rec
     <div><div class="eyebrow">Eligibility vs your profile</div><div class="elig">${r.elig.map(([k,v,st])=>`<div>${ic[st]}<b>${k}</b><span class="hint">${esc(v)}</span></div>`).join('')}</div></div>
     <div><div class="eyebrow">Documents</div><ul class="docs-ul">${r.docs.map(d=>`<li>${esc(d)}</li>`).join('')}</ul></div>
     <div><div class="eyebrow">How to apply</div><p style="margin:4px 0 0">${esc(r.reg?r.reg+'. '+r.how:r.how)}</p>${r.uni?`<p class="hint">Linked university: ${esc(r.uni)}</p>`:''}</div>
-    <div class="modal-foot"><span class="hint">Deadlines based on last year</span><div class="row"><button class="btn" data-close>Close</button>${a?`<button class="btn primary" data-go="applications">Open in Applications</button>`:recDays(r)!==null&&recDays(r)<0?'':`<button class="btn primary" data-act="track-rec" data-id="${r.id}">Add to my applications</button>`}</div></div>`);}
+    <div class="modal-foot"><span class="hint">Deadlines based on last year</span><div class="row"><button class="btn" data-close>Close</button>${portal(r.name)?`<a class="btn" href="${portal(r.name)}" target="_blank" rel="noopener noreferrer">Application portal ↗</a>`:''}${a?`<button class="btn primary" data-go="applications">Open in Applications</button>`:recDays(r)!==null&&recDays(r)<0?'':`<button class="btn primary" data-act="track-rec" data-id="${r.id}">Add to my applications</button>`}</div></div>`);}
 
 V.materials=()=>{
   if(!S.topic){const all=S.topics.flatMap(t=>t.lessons),dn=all.filter(l=>l.done).length;
@@ -1060,6 +1084,7 @@ document.addEventListener('click',e=>{
   if(t.dataset.go){close();if(t.dataset.ch)S.askChannel=t.dataset.ch;location.hash=t.dataset.go;render();return;}
   if(t.dataset.chSet){S.askChannel=t.dataset.chSet;render();return;}
   if(t.dataset.ptab){S.planTab=t.dataset.ptab;render();return;}
+  if(t.dataset.af){S.appFilter=t.dataset.af;render();return;}
   if(t.dataset.rf){S.recFilter=t.dataset.rf;render();return;}
   if(t.dataset.rec){recModal(t.dataset.rec);return;}
   if(t.dataset.filter){S.docFilter=t.dataset.filter;render();return;}
@@ -1121,6 +1146,7 @@ document.addEventListener('click',e=>{
   }
 });
 document.addEventListener('change',e=>{const ds=e.target.dataset||{};
+  if(ds.appst!==undefined){const a=S.apps.find(x=>x.name===ds.appst);a.status=e.target.value;a.tone=APP_ST[a.status];render();toast(a.name+': '+a.status);return;}
   if(ds.task){const k=S.tasks.find(x=>x.id==ds.task);k.done=e.target.checked;render();if(k.done)toast('Nice! Task done.');return;}
   if(e.target.dataset&&e.target.dataset.ag!==undefined){C.agenda[+e.target.dataset.ag][1]=e.target.checked;return;}const ms=e.target.dataset&&e.target.dataset.ms;if(ms){const[p,i]=ms.split('-').map(Number);S.plan[p].items[i][1]=e.target.checked;render();}});
 document.getElementById('loginForm').addEventListener('submit',e=>{e.preventDefault();const em=document.getElementById('lemail');if(!em.value.trim()){em.focus();toast('Enter your email.');return;}setAuth(true);location.hash='home';render();toast('Logged in. Welcome back, Nadia!');});
