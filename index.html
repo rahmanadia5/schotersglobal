@@ -678,9 +678,8 @@ V.home=()=>{const sso=ssoStatus(); const tot=sessTotal(), left=sessLeft(); const
   </div>`;};
 
 function appRow(a){
-  const urgent=a.days>0&&a.days<=21;
   return `<div class="item"><div class="grow"><div class="title">${esc(a.name)}</div><div class="meta">${esc(a.prog)} · due ${a.deadline}</div></div>
-  ${urgent?`<span class="pill warn num">${a.days} days</span>`:''}<span class="pill ${a.tone}">${a.status}</span></div>`;
+  <span class="pill ${a.tone}">${a.status}</span></div>`;
 }
 
 V.sessions=()=>{const left=sessLeft();return `
@@ -732,7 +731,7 @@ const APP_ST={'Not started':'','In progress':'accent','Submitted':'good','Accept
 V.applications=()=>`
   <div class="topbar"><div><div class="eyebrow">Applications</div><h1>${S.apps.length} applications, one place</h1><p class="sub">Your tracker. You apply on each official portal yourself, then update the status here so your mentor can follow along.</p></div><button class="btn primary" data-act="addapp">Add application</button></div>
   <section class="panel"><div class="panel-h"><h2>Tracker</h2><div class="tabs" role="tablist">${[['all','All'],['University','Universities'],['Scholarship','Scholarships']].map(([k,l])=>`<button role="tab" aria-selected="${(S.appFilter||'all')===k}" data-af="${k}">${l}</button>`).join('')}</div></div><div class="table-wrap"><table><thead><tr><th>Institution</th><th>Programme</th><th>Type</th><th>Deadline</th><th>Status</th><th>Portal</th></tr></thead><tbody>
-  ${S.apps.filter(a=>!S.appFilter||S.appFilter==='all'||a.kind===S.appFilter).slice().sort((a,b)=>(a.days<0)-(b.days<0)||a.days-b.days).map(a=>`<tr><td><b>${esc(a.name)}</b></td><td>${esc(a.prog)}</td><td>${a.kind}</td><td class="num">${a.deadline}${a.days>0&&a.days<=21?` <span class="pill warn">${a.days} days</span>`:''}</td><td><select class="st-sel st-${(APP_ST[a.status]||'')}" data-appst="${esc(a.name)}" aria-label="Status for ${esc(a.name)}">${Object.keys(APP_ST).map(k=>`<option ${k===a.status?'selected':''}>${k}</option>`).join('')}</select></td><td>${applyLink(a.name)||'<span class="hint">—</span>'}</td></tr>`).join('')}
+  ${S.apps.filter(a=>!S.appFilter||S.appFilter==='all'||a.kind===S.appFilter).slice().sort((a,b)=>(a.days<0)-(b.days<0)||a.days-b.days).map(a=>`<tr><td><b>${esc(a.name)}</b></td><td>${esc(a.prog)}</td><td>${a.kind}</td><td class="num">${a.deadline}</td><td><select class="st-sel st-${(APP_ST[a.status]||'')}" data-appst="${esc(a.name)}" aria-label="Status for ${esc(a.name)}">${Object.keys(APP_ST).map(k=>`<option ${k===a.status?'selected':''}>${k}</option>`).join('')}</select></td><td>${applyLink(a.name)||'<span class="hint">—</span>'}</td></tr>`).join('')}
   </tbody></table></div></section>`;
 
 const SHORT={all:'All',essay:'Personal statement',schol:'Scholarship essay',motiv:'Motivation letter',cv:'CV',rec:'Recommendation'};
