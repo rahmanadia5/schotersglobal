@@ -161,10 +161,11 @@ button,input,select,textarea{font:inherit;color:inherit}
 
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:9px 16px;font-weight:600;cursor:pointer;white-space:nowrap}
 .btn:hover{border-color:var(--accent)}
-.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.primary{background:linear-gradient(135deg,#4fb0f2 0%,#2f86dc 55%,#1f6fc4 100%);color:var(--accent-ink);border-color:transparent;box-shadow:0 1px 0 rgba(255,255,255,.25) inset,0 4px 12px rgba(31,111,196,.25)}
+.btn.primary:disabled{box-shadow:none}
 .btn.primary:hover{filter:brightness(1.08)}
 .btn.lg{padding:12px 20px;font-size:15px;border-radius:14px}
-.btn.violet{background:var(--violet);color:var(--violet-ink);border-color:var(--violet)}
+.btn.violet{background:linear-gradient(135deg,#9a5cf5 0%,#7b3aed 55%,#6528d6 100%);color:var(--violet-ink);border-color:transparent;box-shadow:0 1px 0 rgba(255,255,255,.2) inset,0 4px 12px rgba(101,40,214,.25)}
 .btn.sun{background:linear-gradient(180deg,#fbd96f,var(--sun));color:var(--sun-ink);border-color:#efc24a}
 .btn svg{width:16px;height:16px;fill:currentColor}
 .btn.ghost{border-color:transparent;background:transparent;color:var(--accent);padding-inline:6px}
