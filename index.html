@@ -54,6 +54,20 @@ button,input,select,textarea{font:inherit;color:inherit}
   .rail{overflow-y:auto;scrollbar-width:none}
   .main{margin:10px 10px 10px 0;height:calc(100vh - 20px);overflow-y:auto;border-radius:26px;background:var(--bg);box-shadow:0 0 0 1px rgba(255,255,255,.06)}
 }
+.topic h2{font-size:1.1rem}
+.t-ico{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:15px}
+.t-ico.lg{width:56px;height:56px;font-size:18px;border-radius:16px}
+.lesson{border-bottom:1px solid var(--line)}
+.lesson:last-child{border-bottom:none}
+.lesson-h{width:100%;display:flex;gap:14px;align-items:center;padding:16px 20px;background:none;border:none;text-align:left;cursor:pointer;color:var(--ink)}
+.lesson-h:hover{background:var(--surface-2)}
+.lesson-h .grow{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.lesson-h b{font-size:15px}
+.l-num{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:var(--surface-2);font-weight:700;color:var(--muted);flex:none}
+.l-num.done{background:var(--good-soft);color:var(--good)}
+.chev{font-size:20px;color:var(--muted);width:20px;text-align:center}
+.lesson-b{padding:0 20px 18px 66px;display:flex;flex-direction:column;gap:12px}
+@media (max-width:600px){.lesson-b{padding-left:20px}}
 .nav a.mobile-only{display:none}
 .nav-group{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.75);padding:16px 12px 6px}
 .rail-bottom{margin-top:auto;display:flex;flex-direction:column;gap:4px}
@@ -416,20 +430,32 @@ const S={
     {when:'Months 7–9',name:'Submit',state:'',items:[['Submit all university applications',false],['Scholarship interviews practice',false],['Quarterly sync #3',false]]},
     {when:'Months 10–12',name:'Decide and prepare',state:'',items:[['Compare offers and scholarships',false],['Accept offer and pay deposit',false],['Visa and pre-departure',false],['Final sync and renewal decision',false]]}
   ],
-  modules:[
-    {id:'m1',title:'How Australian universities read your application',mins:12,cat:'Applications',done:true,
-      en:'Admissions teams read your grades first, then check that your subjects fit the course. Your personal statement should show one clear reason you chose this course and two pieces of evidence: something you did and what you learned from it.',
-      vi:'Bộ phận tuyển sinh xem điểm của bạn trước, sau đó kiểm tra xem các môn học có phù hợp với ngành không. Bài luận cá nhân nên nêu một lý do rõ ràng vì sao bạn chọn ngành này và hai bằng chứng: việc bạn đã làm và điều bạn học được từ đó.'},
-    {id:'m2',title:'Writing a scholarship essay that answers the prompt',mins:18,cat:'Essays',done:false,
-      en:'Underline every question in the prompt and answer each one in order. Scholarship readers score you against the criteria, so use their words: leadership, impact, financial need.',
-      vi:'Gạch chân từng câu hỏi trong đề bài và trả lời lần lượt. Người chấm học bổng chấm điểm theo tiêu chí, vì vậy hãy dùng chính từ ngữ của họ: khả năng lãnh đạo, tác động, nhu cầu tài chính.'},
-    {id:'m3',title:'IELTS Writing Task 2: structure in 4 paragraphs',mins:15,cat:'English tests',done:false,
-      en:'Introduction with your position, two body paragraphs with one idea each, and a short conclusion. Aim for 260–290 words.',
-      vi:'Mở bài nêu quan điểm, hai đoạn thân bài mỗi đoạn một ý, và kết bài ngắn. Hướng tới 260–290 từ.'},
-    {id:'m4',title:'Choosing between offers: cost, ranking, career',mins:10,cat:'Decisions',done:false,
-      en:'Put every offer in one table: total cost after scholarship, course ranking, internship options, and city cost of living.',
-      vi:'Đưa tất cả thư mời vào một bảng: tổng chi phí sau học bổng, xếp hạng ngành, cơ hội thực tập và chi phí sinh hoạt.'}
+  topics:[
+   {id:'sch',name:'Scholarships',desc:'Find scholarships that fit you and write applications that win.',bg:'#fdf3d3',fg:'#8a5a00',ico:'S',lessons:[
+    {id:'s1',title:'Finding scholarships that fit your profile',mins:10,done:true,video:false,en:'Start with three filters: your country, your study level, and your field. Then sort by deadline. Most students win money from mid-sized university scholarships, not only the famous national ones.',vi:'Bắt đầu với ba bộ lọc: quốc gia, bậc học và ngành học của bạn. Sau đó sắp xếp theo hạn nộp. Phần lớn học sinh nhận được học bổng từ các trường đại học tầm trung, không chỉ các học bổng quốc gia nổi tiếng.'},
+    {id:'s2',title:'Writing a scholarship essay that answers the prompt',mins:18,done:false,video:false,en:'Underline every question in the prompt and answer each one in order. Scholarship readers score you against the criteria, so use their words: leadership, impact, financial need.',vi:'Gạch chân từng câu hỏi trong đề bài và trả lời lần lượt. Người chấm học bổng chấm điểm theo tiêu chí, vì vậy hãy dùng chính từ ngữ của họ: khả năng lãnh đạo, tác động, nhu cầu tài chính.'},
+    {id:'s3',title:'Scholarship interview basics',mins:12,done:false,video:true,en:'Prepare three short stories: a challenge you solved, a time you led others, and why this course matters to you. Practise each in under 90 seconds.',vi:'Chuẩn bị ba câu chuyện ngắn: một thử thách bạn đã giải quyết, một lần bạn dẫn dắt người khác, và vì sao ngành học này quan trọng với bạn. Luyện mỗi câu chuyện dưới 90 giây.'}]},
+   {id:'ielts',name:'IELTS & English tests',desc:'Plan your test date and practise each IELTS section.',bg:'#fde7ef',fg:'#b0215a',ico:'IE',lessons:[
+    {id:'i1',title:'Choosing your test date',mins:6,done:true,video:false,en:'Book your test at least 8 weeks before your first application deadline, so you have time for one retake.',vi:'Đăng ký thi ít nhất 8 tuần trước hạn nộp hồ sơ đầu tiên, để bạn còn thời gian thi lại một lần.'},
+    {id:'i2',title:'Writing Task 2: structure in 4 paragraphs',mins:15,done:false,video:false,en:'Introduction with your position, two body paragraphs with one idea each, and a short conclusion. Aim for 260–290 words.',vi:'Mở bài nêu quan điểm, hai đoạn thân bài mỗi đoạn một ý, và kết bài ngắn. Hướng tới 260–290 từ.'},
+    {id:'i3',title:'Reading: skimming and scanning',mins:12,done:false,video:false,en:'Read the questions first, then skim each paragraph for its main idea. Scan for names, numbers and dates to find answers fast.',vi:'Đọc câu hỏi trước, sau đó đọc lướt từng đoạn để nắm ý chính. Dò tìm tên, số và ngày tháng để tìm đáp án nhanh.'},
+    {id:'i4',title:'Speaking Part 2: the 1-minute plan',mins:10,done:false,video:true,en:'Use your 1 minute to write four words: who, what, when, why. Speak about each for 30 seconds.',vi:'Dùng 1 phút chuẩn bị để viết bốn từ: ai, cái gì, khi nào, tại sao. Nói về mỗi ý trong 30 giây.'}]},
+   {id:'essay',name:'Essays & personal statement',desc:'Find your story and turn it into a strong personal statement.',bg:'#efe8fd',fg:'#6b2fd6',ico:'Es',lessons:[
+    {id:'e1',title:'Brainstorming your story',mins:12,done:true,video:false,en:'List five moments when you changed your mind about something. The best essays come from a moment of change, not a list of achievements.',vi:'Liệt kê năm khoảnh khắc bạn thay đổi suy nghĩ về điều gì đó. Bài luận hay nhất đến từ một khoảnh khắc thay đổi, không phải danh sách thành tích.'},
+    {id:'e2',title:"Show, don't tell",mins:10,done:false,video:false,en:'Replace "I am hardworking" with what you did: "I woke at 5 a.m. for six months to help at my mother\'s café before school."',vi:'Thay "Tôi chăm chỉ" bằng việc bạn đã làm: "Tôi dậy lúc 5 giờ sáng suốt sáu tháng để phụ quán cà phê của mẹ trước khi đi học."'},
+    {id:'e3',title:'Why this university?',mins:8,done:false,video:false,en:'Name one course unit, one professor or one programme feature, and connect it to your goal. Generic praise reads as copy-paste.',vi:'Nêu một môn học, một giáo sư hoặc một điểm đặc biệt của chương trình, và liên hệ với mục tiêu của bạn. Lời khen chung chung trông như sao chép.'}]},
+   {id:'uni',name:'Choosing universities',desc:'Build a balanced shortlist and compare offers.',bg:'#e5f2fd',fg:'#1f74c4',ico:'U',lessons:[
+    {id:'u1',title:'How universities read your application',mins:12,done:true,video:false,en:'Admissions teams read your grades first, then check that your subjects fit the course. Your personal statement should show one clear reason you chose this course.',vi:'Bộ phận tuyển sinh xem điểm của bạn trước, sau đó kiểm tra xem các môn học có phù hợp với ngành không. Bài luận cá nhân nên nêu một lý do rõ ràng vì sao bạn chọn ngành này.'},
+    {id:'u2',title:'Building a balanced shortlist',mins:10,done:true,video:false,en:'Pick 2 reach, 2 match and 1 safe university. Check entry grades, cost after scholarship and graduate jobs for each.',vi:'Chọn 2 trường khó, 2 trường vừa sức và 1 trường an toàn. Kiểm tra điểm đầu vào, chi phí sau học bổng và cơ hội việc làm của từng trường.'},
+    {id:'u3',title:'Choosing between offers',mins:10,done:false,video:false,en:'Put every offer in one table: total cost after scholarship, course ranking, internship options, and city cost of living.',vi:'Đưa tất cả thư mời vào một bảng: tổng chi phí sau học bổng, xếp hạng ngành, cơ hội thực tập và chi phí sinh hoạt.'}]},
+   {id:'docs',name:'Applications & documents',desc:'CV, recommendation letters and the forms you need.',bg:'#dcf5e9',fg:'#11805a',ico:'D',lessons:[
+    {id:'d1',title:'A CV for university applications',mins:10,done:false,video:false,en:'Keep it to one page: education, activities with results, awards, skills. Put numbers in every line you can.',vi:'Giữ trong một trang: học vấn, hoạt động kèm kết quả, giải thưởng, kỹ năng. Đưa số liệu vào mọi dòng có thể.'},
+    {id:'d2',title:'Asking for recommendation letters',mins:8,done:false,video:false,en:'Ask 6 weeks before the deadline. Send your teacher a one-page summary of what you did in their class and your goals.',vi:'Hãy nhờ trước hạn 6 tuần. Gửi giáo viên bản tóm tắt một trang về những gì bạn đã làm trong lớp của họ và mục tiêu của bạn.'}]},
+   {id:'visa',name:'Visa & pre-departure',desc:'Student visa steps, money and packing.',bg:'#eef1f5',fg:'#475569',ico:'V',lessons:[
+    {id:'v1',title:'Student visa checklist',mins:12,done:false,video:false,en:'You usually need: offer letter, proof of funds, health insurance, passport valid for the whole study period, and English test results.',vi:'Bạn thường cần: thư mời nhập học, chứng minh tài chính, bảo hiểm y tế, hộ chiếu còn hạn suốt thời gian học, và kết quả thi tiếng Anh.'},
+    {id:'v2',title:'Budgeting your first year',mins:10,done:false,video:true,en:'Add tuition, rent, food, transport and a 10% buffer. Compare it with your scholarship and family budget before you accept an offer.',vi:'Cộng học phí, tiền thuê nhà, ăn uống, đi lại và 10% dự phòng. So sánh với học bổng và ngân sách gia đình trước khi nhận thư mời.'}]}
   ],
+  topic:null, openLesson:null,
   syncs:[
     {q:'Q1',date:'12 Sep 2026',state:'done',title:'Kickoff with all stakeholders',notes:['Agreed target: Bachelor of Commerce in Australia or UK, start Feb 2028 intake at the latest.','Budget ceiling set by parents; scholarships are a priority.','IELTS 7.0 by December.']},
     {q:'Q2',date:'12 Dec 2026',state:'next',title:'Progress sync #2',notes:[]},
@@ -458,9 +484,9 @@ function tickCountdown(){const el=document.getElementById('cd-d');if(!el)return;
   const d=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5),m=Math.floor(ms%36e5/6e4);el.textContent=d;document.getElementById('cd-h').textContent=h;document.getElementById('cd-m').textContent=m;}
 setInterval(tickCountdown,30000);
 S.tasks=[
- {id:1,t:'Read: Writing a scholarship essay that answers the prompt',tag:'Material',tc:'blue',mins:18,due:'over',go:'materials'},
+ {id:1,t:'Read: Writing a scholarship essay that answers the prompt',tag:'Material',tc:'blue',mins:18,due:'over',go:'materials',topic:'sch',lesson:'s2'},
  {id:2,t:'Upload Monash essay draft v3 for proofread',tag:'Essay',tc:'violet',mins:10,due:'over',act:'order'},
- {id:3,t:'IELTS Writing Task 2: one timed practice',tag:'IELTS',tc:'rose',mins:40,due:'today',go:'materials'},
+ {id:3,t:'IELTS Writing Task 2: one timed practice',tag:'IELTS',tc:'rose',mins:40,due:'today',go:'materials',topic:'ielts',lesson:'i2'},
  {id:4,t:"Reply to mentor's comments on your CV",tag:'Application',tc:'sun',mins:15,due:'today',go:'documents'},
  {id:5,t:'1-on-1: Essay brainstorm (Monash)',tag:'Session',tc:'green',mins:50,due:'thu',act:'join'},
  {id:6,t:'Shortlist 2 more scholarships',tag:'Application',tc:'sun',mins:20,due:'thu',go:'applications'}
@@ -632,13 +658,24 @@ V.plan=()=>`
     <div>${S.plan.map((p,pi)=>`<div class="phase"><div><div class="when">${p.when}</div><div class="hint">${p.name}</div>${p.state==='now'?'<span class="pill accent">Now</span>':''}</div>
       <div>${p.items.map((it,ii)=>`<label class="check ${it[1]?'done':''}"><input type="checkbox" id="ms-${pi}-${ii}" data-ms="${pi}-${ii}" ${it[1]?'checked':''}><span>${esc(it[0])}</span></label>`).join('')}</div></div>`).join('')}</div></section>`;
 
-V.materials=()=>`
-  <div class="topbar"><div><div class="eyebrow">Learning material</div><h1>Materials</h1><p class="sub">Every module is in English with a Vietnamese version made by AI translation and checked by a mentor. Videos are coming next.</p></div></div>
-  <div class="grid">${S.modules.map(m=>{const l=S.langPref[m.id]||'vi';return `<section class="panel span-6">
-    <div class="panel-h"><div><div class="eyebrow">${m.cat} · ${m.mins} min read</div><h2>${esc(m.title)}</h2></div>${m.done?'<span class="pill good">Done</span>':''}</div>
-    <div class="row" style="justify-content:space-between"><div class="tabs lang">${[['vi','Tiếng Việt'],['en','English']].map(([k,t])=>`<button aria-selected="${l===k}" data-lang="${m.id}:${k}">${t}</button>`).join('')}</div>${l==='vi'?'<span class="pill">AI-translated</span>':''}</div>
-    <div class="module-body">${esc(m[l])}</div>
-    <div class="row"><button class="btn sm" data-act="mdone" data-id="${m.id}">${m.done?'Read again':'Mark as done'}</button><span class="hint">Video version: coming soon</span></div></section>`;}).join('')}</div>`;
+V.materials=()=>{
+  if(!S.topic){const all=S.topics.flatMap(t=>t.lessons),dn=all.filter(l=>l.done).length;
+  return `<div class="topbar"><div><div class="eyebrow">Learning material</div><h1>Learn by topic</h1><p class="sub">Short lessons in English, each with a Vietnamese version made by AI translation and checked by a mentor. Videos are coming next.</p></div><span class="pill accent num">${dn} of ${all.length} lessons done</span></div>
+  <div class="grid">${S.topics.map(t=>{const d=t.lessons.filter(l=>l.done).length,n=t.lessons.length,mins=t.lessons.reduce((a,l)=>a+l.mins,0);const nextL=t.lessons.find(l=>!l.done);
+   return `<section class="panel topic span-4"><div class="row" style="justify-content:space-between;align-items:flex-start"><div class="t-ico" style="background:${t.bg};color:${t.fg}">${t.ico}</div>${d===n?'<span class="pill good">Completed</span>':d?'<span class="pill accent">In progress</span>':''}</div>
+    <div><h2>${t.name}</h2><p class="hint" style="margin-top:4px">${t.desc}</p></div>
+    <div><div class="row" style="justify-content:space-between;font-size:12.5px;color:var(--muted);font-weight:600"><span>${d}/${n} lessons</span><span>${mins} min</span></div><div class="bar" style="margin-top:6px"><i style="width:${d/n*100}%"></i></div></div>
+    <button class="btn ${d&&d<n?'primary':''}" data-topic="${t.id}">${d===n?'Review':d?'Continue':'Start'} ›</button>${nextL&&d?`<span class="hint">Next: ${esc(nextL.title)}</span>`:''}</section>`;}).join('')}</div>`;}
+  const t=S.topics.find(x=>x.id===S.topic);const d=t.lessons.filter(l=>l.done).length;
+  return `<div><button class="btn ghost" data-topic="">‹ All topics</button></div>
+  <div class="topbar"><div class="row" style="gap:14px;align-items:center"><div class="t-ico lg" style="background:${t.bg};color:${t.fg}">${t.ico}</div><div><div class="eyebrow">Topic · ${t.lessons.length} lessons</div><h1>${t.name}</h1><p class="sub">${t.desc}</p></div></div>
+    <div style="min-width:180px"><div class="hint" style="font-weight:600">${d} of ${t.lessons.length} done</div><div class="bar" style="margin-top:6px"><i style="width:${d/t.lessons.length*100}%"></i></div></div></div>
+  <section class="panel" style="padding:0;gap:0">${t.lessons.map((m,i)=>{const open=S.openLesson===m.id;const l=S.langPref[m.id]||'vi';return `<div class="lesson ${open?'open':''}">
+    <button class="lesson-h" data-lesson="${m.id}"><span class="l-num ${m.done?'done':''}">${m.done?'✓':i+1}</span><span class="grow"><b>${esc(m.title)}</b><span class="hint">${m.mins} min read${m.video?' · video coming soon':''}</span></span><span class="chev">${open?'–':'+'}</span></button>
+    ${open?`<div class="lesson-b"><div class="row" style="justify-content:space-between"><div class="tabs lang">${[['vi','Tiếng Việt'],['en','English']].map(([k,tt])=>`<button aria-selected="${l===k}" data-lang="${m.id}:${k}">${tt}</button>`).join('')}</div>${l==='vi'?'<span class="pill">AI-translated · mentor checked</span>':''}</div>
+      <div class="module-body">${esc(m[l])}</div>
+      <div class="row"><button class="btn sm ${m.done?'':'primary'}" data-act="mdone" data-id="${m.id}">${m.done?'Done ✓':'Mark as done'}</button><button class="btn sm ghost" data-go="ask" data-ch="mentor">Ask a mentor about this</button></div></div>`:''}</div>`;}).join('')}</section>`;};
+
 
 V.parents=()=>`
   <div class="topbar"><div><div class="eyebrow">Parent sync</div><h1>Sync with your parents every 3 months</h1><p class="sub">Instead of a written report, you, your parents, your mentor and your SSO meet once a quarter to review progress and agree on next steps.</p></div></div>
@@ -792,7 +829,7 @@ function render(){updStarted();const r=current();document.getElementById('login'
   nav.innerHTML=NAV.map(([k,l,mo])=>k[0]==='#'?`<div class="nav-group">${k.slice(1)}</div>`:`<a href="#${k}" ${mo?'class="mobile-only"':''} ${k===r?'aria-current="page"':''}><svg viewBox="0 0 24 24">${ICONS[k]}</svg>${l}${k==='ask'&&S.threads.some(t=>!t.a)?'<span class="count">1</span>':''}</a>`).join('');
   view.innerHTML=V[r]();tickCountdown();
 }
-window.addEventListener('hashchange',()=>{render();window.scrollTo(0,0);const mm=document.querySelector('.main');if(mm)mm.scrollTop=0;});
+window.addEventListener('hashchange',()=>{if(location.hash!=='#materials'){S.topic=null;}render();window.scrollTo(0,0);const mm=document.querySelector('.main');if(mm)mm.scrollTop=0;});
 
 document.addEventListener('click',e=>{
   const t=e.target.closest('button,[data-close-bg]');if(!t)return;
@@ -804,7 +841,9 @@ document.addEventListener('click',e=>{
   if(t.dataset.lang){const[id,l]=t.dataset.lang.split(':');S.langPref[id]=l;render();return;}
   if(t.dataset.bill){S.billing=t.dataset.bill;render();return;}
   if(t.dataset.calnav!==undefined){const n=+t.dataset.calnav;if(n===0){const T=todayVN();S.cal={y:T.y,m:T.m};render();const c=document.getElementById('cal-today');if(c){c.scrollIntoView({block:'center',behavior:'smooth'});c.classList.remove('flash');void c.offsetWidth;c.classList.add('flash');}return;}else{let m=S.cal.m+n,y=S.cal.y;if(m<0){m=11;y--;}if(m>11){m=0;y++;}S.cal={y,m};}render();return;}
-  if(t.dataset.taskgo){const k=S.tasks.find(x=>x.id==t.dataset.taskgo);if(k.act==='order'){orderModal('Monash University');}else if(k.act==='join'){openCall();}else{location.hash=k.go;}return;}
+  if(t.dataset.taskgo){const k=S.tasks.find(x=>x.id==t.dataset.taskgo);if(k.act==='order'){orderModal('Monash University');}else if(k.act==='join'){openCall();}else{if(k.topic){S.topic=k.topic;S.openLesson=k.lesson;}location.hash=k.go;render();}return;}
+  if(t.dataset.topic!==undefined){S.topic=t.dataset.topic||null;S.openLesson=S.topic?(S.topics.find(x=>x.id===S.topic).lessons.find(l=>!l.done)||{}).id:null;render();const mm=document.querySelector('.main');if(mm)mm.scrollTop=0;window.scrollTo(0,0);return;}
+  if(t.dataset.lesson){S.openLesson=S.openLesson===t.dataset.lesson?null:t.dataset.lesson;render();return;}
   if(t.dataset.ctab){C.tab=t.dataset.ctab;drawCall();return;}
   if(t.dataset.ctl){const k=t.dataset.ctl;if(k==='chat')C.tab='chat';else C[k]=!C[k];drawCall();if(k==='share')toast(C.share?'You are sharing your screen.':'Stopped sharing.');return;}
   if(t.dataset.star){const n=+t.dataset.star;document.querySelectorAll('#stars svg path').forEach((p,i)=>p.setAttribute('fill',i<n?'var(--sun)':'var(--line)'));toast('Thanks for the rating!');return;}
@@ -827,7 +866,7 @@ document.addEventListener('click',e=>{
       render();toast(S.askChannel==='mentor'?`Sent. 1 token used, ${tokLeft()} left.`:'Sent.');break;}
     case 'topup':topupModal();break;
     case 'buy':S.sessionsExtra+=+t.dataset.n;S.topups.push({n:+t.dataset.n,price:+t.dataset.price});close();render();toast(`Added ${t.dataset.n} session${t.dataset.n>1?'s':''}.`);break;
-    case 'mdone':{const m=S.modules.find(x=>x.id===t.dataset.id);m.done=true;render();toast('Marked as done.');break;}
+    case 'mdone':{const m=S.topics.flatMap(x=>x.lessons).find(x=>x.id===t.dataset.id);m.done=true;render();toast('Lesson done. Nice!');break;}
     case 'addapp':modal(`<div><div class="eyebrow">Applications</div><h2 style="font-size:1.25rem">Add an application</h2></div>
       <div class="field"><label for="an">University or scholarship</label><input id="an" placeholder="e.g. University of Melbourne"></div>
       <div class="field"><label for="ap">Programme</label><input id="ap" placeholder="e.g. Bachelor of Commerce"></div>
