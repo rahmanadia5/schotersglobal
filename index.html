@@ -16,7 +16,7 @@ html{color-scheme:light}body{margin:0}[hidden]{display:none!important}img{max-wi
   --bg:#fbfcfe; --surface:#ffffff; --surface-2:#f1f6fc; --line:#e6ebf2;
   --ink:#111827; --muted:#6b7280; --accent:#3d9de8; --accent-ink:#ffffff; --accent-soft:#e5f2fd;
   --good:#11805a; --good-soft:#dcf5e9; --warn:#a85d00; --warn-soft:#fdf1dc; --bad:#b4233a; --bad-soft:#fde6ea;
-  --rail:#ffffff; --rail-ink:#4b5563; --rail-active:#2b8ad6;
+  --rail:#2f8fe0; --rail-ink:#e3f0fc; --rail-active:#1f74c4;
   --violet:#7b3aed; --violet-ink:#ffffff; --sun:#f7cd5b; --sun-ink:#3d2c00; --flame:#f97316;
   --stage:#eaf4fd; color-scheme:light; --sky-a:#cfe5fa; --sky-b:#f5faff; --shadow:0 1px 2px rgba(19,35,58,.04),0 8px 24px rgba(19,35,58,.06);
   --display:"Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
@@ -36,19 +36,19 @@ button,input,select,textarea{font:inherit;color:inherit}
 .num{font-variant-numeric:tabular-nums}
 
 .shell{display:grid;grid-template-columns:232px minmax(0,1fr);min-height:100%}
-.rail{border-right:1px solid var(--line);background:var(--rail);color:var(--rail-ink);padding:20px 12px;display:flex;flex-direction:column;gap:18px;position:sticky;top:0;height:100vh}
-.brand{display:flex;align-items:center;gap:10px;padding:0 8px;color:var(--ink)}
-.brand-mark{width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--violet));display:grid;place-items:center;font-family:var(--display);font-weight:800;color:#fff;font-size:15px}
+.rail{background:linear-gradient(180deg,#3d9de8 0%,#2a80d2 100%);color:var(--rail-ink);padding:20px 12px;display:flex;flex-direction:column;gap:18px;position:sticky;top:0;height:100vh}
+.brand{display:flex;align-items:center;gap:10px;padding:0 8px;color:#fff}
+.brand-mark{width:32px;height:32px;border-radius:10px;background:#fff;color:var(--rail-active)!important;display:grid;place-items:center;font-family:var(--display);font-weight:800;color:#fff;font-size:15px}
 .brand b{font-family:var(--display);font-size:15px;display:block;line-height:1.1}
-.brand small{font-size:11px;color:var(--muted)}
+.brand small{font-size:11px;color:var(--rail-ink)}
 .nav{display:flex;flex-direction:column;gap:2px}
 .nav a{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;color:var(--rail-ink);text-decoration:none;font-weight:500}
-.nav a:hover{background:var(--surface-2);color:var(--ink)}
-.nav a[aria-current="page"]{background:var(--accent-soft);color:var(--rail-active);font-weight:600}
+.nav a:hover{background:rgba(255,255,255,.16);color:#fff}
+.nav a[aria-current="page"]{background:#fff;color:var(--rail-active);font-weight:700;box-shadow:0 4px 14px rgba(10,50,100,.18)}
 .nav svg{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.nav .count{margin-left:auto;font-size:11px;background:var(--accent);color:#fff;border-radius:99px;padding:0 7px}
-.rail-foot{margin-top:auto;font-size:12px;padding:12px;border-radius:14px;background:var(--surface-2);color:var(--muted)}
-.rail-foot b{color:var(--ink);display:block}
+.nav .count{margin-left:auto;font-size:11px;background:var(--sun);color:var(--sun-ink);font-weight:700;border-radius:99px;padding:0 7px}
+.rail-foot{margin-top:auto;font-size:12px;padding:12px;border-radius:14px;background:rgba(255,255,255,.15);color:var(--rail-ink)}
+.rail-foot b{color:#fff;display:block}
 
 .main{min-width:0;padding-block:24px 48px;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
 .wrap{max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
@@ -181,7 +181,7 @@ tr.hl td{background:var(--accent-soft)}
 .login-form{display:flex;flex-direction:column;justify-content:center;gap:16px;padding-block:40px;padding-left:max(24px, env(safe-area-inset-left, 0px));padding-right:max(24px, env(safe-area-inset-right, 0px));max-width:420px;width:100%;margin:0 auto}
 .divider{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12px}
 .divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--line)}
-.logout{background:none;border:none;color:var(--accent);padding:0;margin-top:6px;cursor:pointer;text-decoration:underline;font-size:12px}
+.logout{background:none;border:none;color:#fff;padding:0;margin-top:6px;cursor:pointer;text-decoration:underline;font-size:12px}
 @media (max-width: 760px){.login{grid-template-columns:minmax(0,1fr)}.login-side{padding:28px max(16px, env(safe-area-inset-left, 0px))}.login-side h2{font-size:1.5rem}.login-side ul{display:none}}
 .call[hidden],.call [hidden]{display:none}
 .call{position:fixed;inset:0;z-index:45;background:var(--bg);display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -330,7 +330,7 @@ const S={
     {id:2,title:'Quarterly sync with parents',d:12,m:'Dec',dow:'Sat',time:'09:00–09:50',with:'Dimas, Hà, parents',kind:'Parent sync'}
   ],
   past:[
-    {title:'Kickoff: 3-year roadmap',date:'12 Sep',with:'All stakeholders',kind:'Kickoff',free:true},
+    {title:'Kickoff: 3-year roadmap',date:'12 Sep',with:'All stakeholders',kind:'Kickoff'},
     {title:'Profile review & major choice',date:'19 Sep',with:'Dimas Pratama',kind:'1-on-1'},
     {title:'University shortlist',date:'3 Oct',with:'Dimas Pratama',kind:'1-on-1'},
     {title:'IELTS writing strategy',date:'17 Oct',with:'Dimas Pratama',kind:'1-on-1'},
@@ -393,7 +393,7 @@ const S={
 };
 const fmt=n=>n.toLocaleString('vi-VN')+' ₫';
 const sessTotal=()=>S.packages[S.pkg].sessions+S.sessionsExtra;
-const sessLeft=()=>sessTotal()-S.sessionsUsed-S.upcoming.filter(u=>u.kind==='1-on-1').length;
+const sessLeft=()=>sessTotal()-S.sessionsUsed-S.upcoming.length;
 const tokLeft=()=>S.packages[S.pkg].tokens-S.tokensUsed;
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
@@ -463,7 +463,7 @@ function appRow(a){
 }
 
 V.sessions=()=>{const left=sessLeft();return `
-  <div class="topbar"><div><div class="eyebrow">Sessions</div><h1>1-on-1 video sessions</h1><p class="sub">Each session is up to 50 minutes. The kickoff and parent syncs do not use your sessions.</p></div>
+  <div class="topbar"><div><div class="eyebrow">Sessions</div><h1>1-on-1 video sessions</h1><p class="sub">Each session is up to 50 minutes. The kickoff and each parent sync also use 1 session.</p></div>
   <div class="row"><button class="btn" data-act="topup">Top up sessions</button><button class="btn primary" data-act="book" ${left<1?'disabled':''}>Book a session</button></div></div>
   <div class="grid">
     <section class="panel span-4 stat"><div class="eyebrow">Left to book</div><div class="big num">${left}<small> / ${sessTotal()}</small></div><div class="bar"><i style="width:${(sessTotal()-left)/sessTotal()*100}%"></i></div><p class="hint">${S.pkg} package: ${S.packages[S.pkg].sessions} sessions${S.sessionsExtra?` + ${S.sessionsExtra} topped up`:''}</p></section>
@@ -474,7 +474,7 @@ V.sessions=()=>{const left=sessLeft();return `
       </div></section>
     <section class="panel span-12"><div class="panel-h"><h2>Upcoming</h2></div>
       <div class="list">${S.upcoming.map(u=>`<div class="item"><div class="datebox"><b>${u.d}</b><span>${u.m}</span></div><div class="grow"><div class="title">${esc(u.title)}</div><div class="meta">${u.dow} · ${u.time} (GMT+7) · ${esc(u.with)}</div></div>
-        <span class="pill ${u.kind==='1-on-1'?'accent':'good'}">${u.kind==='1-on-1'?'Uses 1 session':'Free'}</span>
+        <span class="pill accent">Uses 1 session</span>
         ${u.kind==='1-on-1'?`<button class="btn sm" data-act="cancel" data-id="${u.id}">Cancel</button>`:''}<button class="btn sm primary" data-act="join" data-id="${u.id}">Join</button></div>`).join('')}</div>
       <p class="note">Cancel at least 24 hours before to get the session back. <span class="assume">Assumption</span></p></section>
     <section class="panel span-12"><div class="panel-h"><h2>Past sessions</h2><span class="hint">${S.sessionsUsed} used</span></div>
@@ -572,7 +572,7 @@ V.parents=()=>`
   <div class="topbar"><div><div class="eyebrow">Parent sync</div><h1>Sync with your parents every 3 months</h1><p class="sub">Instead of a written report, you, your parents, your mentor and your SSO meet once a quarter to review progress and agree on next steps.</p></div></div>
   <div class="grid">
     <section class="panel span-8"><div class="panel-h"><h2>This year's syncs</h2></div>
-      <div class="list">${S.syncs.map(s=>`<div class="item" style="align-items:flex-start"><span class="pill ${s.state==='done'?'good':s.state==='next'?'accent':''}">${s.q}</span><div class="grow"><div class="title">${s.title}</div><div class="meta">${s.date} · 50 min · does not use your sessions <span class="assume">Assumption</span></div>
+      <div class="list">${S.syncs.map(s=>`<div class="item" style="align-items:flex-start"><span class="pill ${s.state==='done'?'good':s.state==='next'?'accent':''}">${s.q}</span><div class="grow"><div class="title">${s.title}</div><div class="meta">${s.date} · 50 min · uses 1 session</div>
         ${s.notes.length?`<ul style="margin:8px 0 0;padding-left:18px">${s.notes.map(n=>`<li>${esc(n)}</li>`).join('')}</ul>`:''}</div>
         ${s.state==='next'?'<button class="btn sm primary" data-act="cal">Add to calendar</button>':s.state==='done'?'<button class="btn sm" data-act="notes">Full notes</button>':''}</div>`).join('')}</div></section>
     <section class="panel span-4"><div class="panel-h"><h2>Who joins</h2></div>
@@ -587,10 +587,10 @@ V.parents=()=>`
 V.billing=()=>{const pk=S.packages;const refundMonths=S.billing==='annual'?S.monthsPaid-S.monthsUsed-1:0;return `
   <div class="topbar"><div><div class="eyebrow">Plan &amp; billing</div><h1>${S.pkg} package</h1><p class="sub">All packages include the same features. They differ only in video sessions and QnA tokens.</p></div><span class="proto">Prices to be set</span></div>
   <section class="panel"><div class="table-wrap"><table><thead><tr><th>Feature</th>${Object.keys(pk).map(k=>`<th class="c">${k}${k===S.pkg?' · yours':''}</th>`).join('')}</tr></thead><tbody>
-    <tr><td>Kickoff session with all stakeholders</td>${Object.keys(pk).map(()=>'<td class="c">1, free</td>').join('')}</tr>
-    <tr class="hl"><td><b>1-on-1 video sessions (50 min)</b></td>${Object.values(pk).map(p=>`<td class="c num"><b>${p.sessions}</b></td>`).join('')}</tr>
+    <tr><td>Kickoff session with all stakeholders</td>${Object.keys(pk).map(()=>'<td class="c">1, uses 1 session</td>').join('')}</tr>
+    <tr class="hl"><td><b>Video sessions (50 min)</b><div class="hint">Covers 1-on-1s, kickoff and parent syncs</div></td>${Object.values(pk).map(p=>`<td class="c num"><b>${p.sessions}</b></td>`).join('')}</tr>
     <tr class="hl"><td><b>QnA tokens (mentor, Vietnamese)</b></td>${Object.values(pk).map(p=>`<td class="c num"><b>${p.tokens}</b></td>`).join('')}</tr>
-    ${['Student Priority (English, free)','Parent sync every 3 months','Learning plan','Learning material (EN + VI)','Dedicated SSO and hotline','Applications tracker'].map(f=>`<tr><td>${f}</td>${Object.keys(pk).map(()=>'<td class="c">Yes</td>').join('')}</tr>`).join('')}
+    ${['Student Priority (English, free)','Parent sync every 3 months (uses 1 session)','Learning plan','Learning material (EN + VI)','Dedicated SSO and hotline','Applications tracker'].map(f=>`<tr><td>${f}</td>${Object.keys(pk).map(()=>'<td class="c">Yes</td>').join('')}</tr>`).join('')}
     <tr><td>Document proofread</td>${Object.keys(pk).map(()=>'<td class="c">Per document</td>').join('')}</tr>
     <tr><td>Top-up</td>${Object.keys(pk).map(()=>'<td class="c">Sessions only</td>').join('')}</tr>
   </tbody></table></div></section>
@@ -699,7 +699,7 @@ function drawCall(){const u=C.sess;const el=document.getElementById('call');el.h
 function endCall(){if(!C.on)return;C.on=false;clearInterval(C.timer);const e=Math.min(elapsed(),LIMIT);const u=C.sess;
   document.getElementById('call').hidden=true;document.getElementById('call').innerHTML='';
   S.upcoming=S.upcoming.filter(x=>x!==u);
-  const counted=u.kind==='1-on-1';S.past.push({title:u.title,date:u.d+' '+u.m,with:u.with,kind:u.kind,free:!counted});if(counted)S.sessionsUsed++;
+  const counted=true;S.past.push({title:u.title,date:u.d+' '+u.m,with:u.with,kind:u.kind,free:!counted});if(counted)S.sessionsUsed++;
   const done=C.agenda.filter(a=>a[1]).length;
   render();
   modal(`<div><div class="eyebrow">Session ended</div><h2 style="font-size:1.35rem">Nice work, Nadia!</h2><p class="sub">${esc(u.title)} with ${esc(u.with)}</p></div>
