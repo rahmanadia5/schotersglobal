@@ -189,6 +189,15 @@ button,input,select,textarea{font:inherit;color:inherit}
 .item .meta{color:var(--muted);font-size:13px}
 .dstats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0}.dstats>div{padding:0 20px;border-left:1px solid var(--line)}.dstats>div:first-child{padding-left:0;border-left:none}.dstats .big{font-family:var(--display);font-size:2rem;font-weight:800;line-height:1.1;margin-top:4px}.dstats .hint{margin:2px 0 0}
 @media (max-width:600px){.dstats>div{padding:0 10px}.dstats .big{font-size:1.5rem}.dstats .hint{font-size:11.5px}.dstats .eyebrow{font-size:10px}}
+.rec-list{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.rec-row{display:grid;grid-template-columns:10px minmax(0,1fr) 220px 150px 14px;gap:14px;align-items:center;padding:14px 16px;border:none;border-top:1px solid var(--line);background:var(--surface);text-align:left;font:inherit;color:inherit;cursor:pointer}
+.rec-row:first-child{border-top:none}.rec-row:hover{background:var(--surface-2)}
+.rec-row .g-dot{margin-top:0}
+.rec-main{display:flex;flex-direction:column;gap:2px;min-width:0}.rec-main b{font-size:14.5px}.rec-main .hint{font-size:12.5px}
+.rec-tags{display:flex;gap:6px;flex-wrap:wrap}
+.rec-dl{display:flex;flex-direction:column;align-items:flex-end;gap:4px}.rec-dl b{font-size:13.5px;white-space:nowrap}
+.rec-chev{color:var(--muted);font-size:20px}
+@media (max-width:760px){.rec-row{grid-template-columns:10px minmax(0,1fr) auto;row-gap:8px}.rec-tags{grid-column:2/4;grid-row:2}.rec-chev{display:none}.rec-dl{grid-column:3;grid-row:1}}
 .fchips{display:flex;flex-wrap:wrap;gap:8px}
 .fchip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);border-radius:99px;padding:6px 8px 6px 14px;font:inherit;font-size:13.5px;font-weight:600;color:var(--muted);cursor:pointer}
 .fchip span{min-width:22px;height:22px;padding:0 6px;border-radius:99px;background:var(--surface-2);display:grid;place-items:center;font-size:12px}
@@ -795,11 +804,14 @@ V.plan=()=>{const P=S.profile,f=S.recFilter;
       <p class="hint" style="margin:0">Tap a row to see requirements, documents and how to apply.</p>
       <div class="g-wrap">${gantt}</div>
       <div class="g-list">${list.map(r=>{const d=recDays(r);const cls=r.kind==='Scholarship'?'sch':'uni';const dt=r.dl==='rolling'?'Any time':recDate(r).split(' ').slice(0,2).join(' ');return `<button class="gl-row" data-rec="${r.id}"><span class="g-dot ${cls}"></span><span class="grow"><b>${esc(r.name)}</b><span class="hint">${r.prog?esc(r.prog)+' · ':r.kind+' · '}${r.country}</span></span><span class="gl-end"><span class="g-mark ${cls} ${d!==null&&d<0?'past':''}">${dt}</span><span class="hint">${d===null?'Rolling':d<0?'Closed':d+' days left'}</span></span></button>`;}).join('')}</div></section>
-    <section class="panel span-12"><div class="panel-h"><h2>All recommendations, by deadline</h2><span class="assume">Deadlines based on last year. Your mentor double-checks them.</span></div>
-      <div class="table-wrap"><table><thead><tr><th>Scholarship / university</th><th>Type</th><th>Fit</th><th>Funding</th><th>How to register</th><th>Deadline</th><th>Days left</th><th></th></tr></thead><tbody>
-      ${list.map(r=>{const a=recApp(r);return `<tr><td><b>${esc(r.name)}</b><div class="hint">${r.prog?esc(r.prog)+' · ':''}${r.country}${r.round?' · Round '+r.round:''}</div></td><td><span class="pill ${r.kind==='Scholarship'?'sch':'uni'}">${r.kind}</span></td><td>${r.grade?`<span class="grade g-${r.grade.replace('+','p')}">${r.grade}</span>`:'<span class="hint">—</span>'}</td><td>${r.fund||'<span class="hint">—</span>'}</td><td class="hint" style="max-width:220px">${esc(r.reg||r.how)}</td><td class="num" style="white-space:nowrap">${recDate(r)}</td><td>${days(r)}</td><td><button class="btn ghost sm" data-rec="${r.id}">${a?'Details':'Details'}</button></td></tr>`;}).join('')}
-      </tbody></table></div>
-      <p class="note">Fit grade compares your profile with each scholarship: A+ is the strongest match, C is a stretch.</p></section>
+    <section class="panel span-12"><div class="panel-h"><h2>All recommendations, by deadline</h2></div>
+      <div class="rec-list">${list.map(r=>{const d=recDays(r);const cls=r.kind==='Scholarship'?'sch':'uni';return `<button class="rec-row" data-rec="${r.id}">
+        <span class="g-dot ${cls}"></span>
+        <span class="rec-main"><b>${esc(r.name)}</b><span class="hint">${r.kind}${r.prog?' · '+esc(r.prog):''} · ${r.country}</span></span>
+        <span class="rec-tags">${r.grade?`<span class="grade g-${r.grade.replace('+','p')}" title="Fit grade">Fit ${r.grade}</span>`:''}${r.fund?`<span class="pill ${r.fund==='Fully funded'?'good':''}">${r.fund}</span>`:''}</span>
+        <span class="rec-dl"><b class="num">${recDate(r)}</b>${days(r)}</span>
+        <span class="rec-chev" aria-hidden="true">›</span></button>`;}).join('')}</div>
+      <p class="hint" style="margin:0">Deadlines are based on last year and your mentor double-checks them. Fit grade: A+ is the strongest match, C is a stretch.</p></section>
   </div>`;};
 function msView(){return `
   <section class="panel"><div class="panel-h"><h2>3-year roadmap</h2><span class="hint">Agreed at kickoff, 12 Sep 2026</span></div>
