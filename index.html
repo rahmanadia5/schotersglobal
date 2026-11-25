@@ -187,6 +187,13 @@ button,input,select,textarea{font:inherit;color:inherit}
 .item .grow{flex:1;min-width:0}
 .item .title{font-weight:600}
 .item .meta{color:var(--muted);font-size:13px}
+.dstats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0}.dstats>div{padding:0 20px;border-left:1px solid var(--line)}.dstats>div:first-child{padding-left:0;border-left:none}.dstats .big{font-family:var(--display);font-size:2rem;font-weight:800;line-height:1.1;margin-top:4px}.dstats .hint{margin:2px 0 0}
+@media (max-width:600px){.dstats>div{padding:0 10px}.dstats .big{font-size:1.5rem}.dstats .hint{font-size:11.5px}.dstats .eyebrow{font-size:10px}}
+.fchips{display:flex;flex-wrap:wrap;gap:8px}
+.fchip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);border-radius:99px;padding:6px 8px 6px 14px;font:inherit;font-size:13.5px;font-weight:600;color:var(--muted);cursor:pointer}
+.fchip span{min-width:22px;height:22px;padding:0 6px;border-radius:99px;background:var(--surface-2);display:grid;place-items:center;font-size:12px}
+.fchip:hover{border-color:var(--accent);color:var(--ink)}
+.fchip[aria-selected="true"]{background:var(--accent-soft);border-color:var(--accent);color:#1a64ad}.fchip[aria-selected="true"] span{background:var(--accent);color:#fff}
 .doc-list{display:flex;flex-direction:column;gap:14px}
 .doc{border:1px solid var(--line);border-radius:14px;padding:16px}
 .doc-h{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.doc-h .grow{flex:1;min-width:180px}.doc-h .title{font-weight:600}.doc-h .meta{color:var(--muted);font-size:13px}
@@ -699,6 +706,7 @@ V.applications=()=>`
   ${S.apps.slice().sort((a,b)=>(a.days<0)-(b.days<0)||a.days-b.days).map(a=>`<tr><td><b>${esc(a.name)}</b></td><td>${esc(a.prog)}</td><td>${a.kind}</td><td class="num">${a.deadline}${a.days>0&&a.days<=21?` <span class="pill warn">${a.days} days</span>`:''}</td><td><span class="pill ${a.tone}">${a.status}</span></td><td><button class="btn ghost sm" data-act="order" data-app="${esc(a.name)}">Send a document</button></td></tr>`).join('')}
   </tbody></table></div></section>`;
 
+const SHORT={all:'All',essay:'Personal statement',schol:'Scholarship essay',motiv:'Motivation letter',cv:'CV',rec:'Recommendation'};
 V.documents=()=>{const f=S.docFilter;const tn=id=>S.docTypes.find(t=>t.id===id).name;const last=d=>d.versions[d.versions.length-1];
   const types=[['all','All']].concat(S.docTypes.filter(t=>S.docs.some(d=>d.type===t.id)).map(t=>[t.id,t.name]));
   const list=S.docs.filter(d=>f==='all'||d.type===f);
@@ -707,8 +715,11 @@ V.documents=()=>{const f=S.docFilter;const tn=id=>S.docTypes.find(t=>t.id===id).
   return `
   <div class="topbar"><div><div class="eyebrow">Document review</div><h1>Your documents</h1><p class="sub">Send each new draft as a new version. Your mentor returns it with comments, so you can see every attempt and what changed.</p></div><button class="btn primary" data-act="order">Send a new document</button></div>
   <div class="grid">
-    <section class="panel span-12"><div class="panel-h"><h2>${S.docs.length} documents · ${rounds} versions sent · ${inRev} in review</h2>
-      <div class="tabs" role="tablist">${types.map(([k,l])=>`<button role="tab" aria-selected="${f===k}" data-filter="${k}">${l}</button>`).join('')}</div></div>
+    <section class="panel span-12 dstats"><div><div class="eyebrow">Documents</div><div class="big num">${S.docs.length}</div><p class="hint">Essays, CV and letters</p></div>
+      <div><div class="eyebrow">Versions sent</div><div class="big num">${rounds}</div><p class="hint">Every draft sent for review</p></div>
+      <div><div class="eyebrow">In review</div><div class="big num">${inRev}</div><p class="hint">Waiting for ${S.mentor.name.split(' ').pop()}'s feedback</p></div></section>
+    <section class="panel span-12"><div class="panel-h"><h2>Documents by type</h2></div>
+      <div class="fchips" role="tablist" aria-label="Filter by type">${types.map(([k,l])=>{const n=k==='all'?S.docs.length:S.docs.filter(d=>d.type===k).length;return `<button role="tab" class="fchip" aria-selected="${f===k}" data-filter="${k}">${SHORT[k]||l}<span>${n}</span></button>`;}).join('')}</div>
       <div class="doc-list">${list.map(d=>{const L=last(d);return `<article class="doc">
         <div class="doc-h"><div class="grow"><div class="title">${esc(d.name)}</div><div class="meta">${tn(d.type)} · ${esc(d.app)} · ${d.versions.length} version${d.versions.length>1?'s':''}</div></div>${pill(L)}
           <button class="btn sm" data-act="order" data-doc="${d.id}" ${L.status!=='Returned'?'disabled title="Wait for feedback on the current version"':''}>Send version ${d.versions.length+1}</button></div>
