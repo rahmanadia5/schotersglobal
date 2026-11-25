@@ -200,7 +200,9 @@ button,input,select,textarea{font:inherit;color:inherit}
 @media (max-width:600px){.dstats>div{padding:0 10px}.dstats .big{font-size:1.5rem}.dstats .hint{font-size:11.5px}.dstats .eyebrow{font-size:10px}}
 .rec-item{display:flex;align-items:stretch;border-top:1px solid var(--line)}.rec-item:first-child{border-top:none}.rec-item .rec-row{flex:1;border-top:none;min-width:0}
 .apply-link{display:inline-flex;align-items:center;gap:4px;font-weight:700;font-size:13px;color:#1a64ad;text-decoration:none;white-space:nowrap;padding:0 16px;align-self:center}
-.rec-item .apply-link{border-left:1px solid var(--line);align-self:stretch}
+.rec-item .apply-link{border-left:1px solid var(--line);align-self:stretch;width:86px;box-sizing:border-box}
+.rec-head{display:flex;background:var(--surface-2);font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}.rec-hrow{flex:1;min-width:0;display:grid;grid-template-columns:10px minmax(0,1fr) 44px 128px 108px 104px 14px;gap:14px;padding:10px 16px}.rec-hap{width:86px;flex:none}
+.rec-row .rec-f>i{display:none}
 .apply-link:hover{text-decoration:underline}
 a.btn{text-decoration:none;color:inherit}
 .st-sel{font:inherit;font-size:13px;font-weight:600;border:1px solid var(--line);border-radius:99px;padding:4px 10px;background:var(--surface-2);color:var(--muted);cursor:pointer}
@@ -214,7 +216,7 @@ a.btn{text-decoration:none;color:inherit}
 .rec-f{display:flex;flex-direction:column;align-items:flex-start;gap:4px;min-width:0}.rec-f>i{font-style:normal;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
 .rec-dl{align-items:flex-start}.rec-dl b{font-size:13.5px;white-space:nowrap}
 .rec-chev{color:var(--muted);font-size:20px}
-@media (max-width:760px){.rec-row{grid-template-columns:10px minmax(0,1fr) minmax(0,1fr);column-gap:14px;row-gap:12px;align-items:start}.rec-row .g-dot{grid-row:1/4;margin-top:6px}.rec-main{grid-column:2/4}.rec-chev{display:none}}
+@media (max-width:760px){.rec-head{display:none}.rec-row .rec-f>i{display:block}.rec-item .apply-link{width:auto}.rec-row{grid-template-columns:10px minmax(0,1fr) minmax(0,1fr);column-gap:14px;row-gap:12px;align-items:start}.rec-row .g-dot{grid-row:1/4;margin-top:6px}.rec-main{grid-column:2/4}.rec-chev{display:none}}
 .fchips{display:flex;flex-wrap:wrap;gap:8px}
 .fchip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);border-radius:99px;padding:6px 8px 6px 14px;font:inherit;font-size:13.5px;font-weight:600;color:var(--muted);cursor:pointer}
 .fchip span{min-width:22px;height:22px;padding:0 6px;border-radius:99px;background:var(--surface-2);display:grid;place-items:center;font-size:12px}
@@ -838,7 +840,7 @@ V.plan=()=>{const P=S.profile,f=S.recFilter;
       <div class="g-wrap">${gantt}</div>
       <div class="g-list">${list.map(r=>{const d=recDays(r);const cls=r.kind==='Scholarship'?'sch':'uni';const dt=r.dl==='rolling'?'Any time':recDate(r).split(' ').slice(0,2).join(' ');return `<button class="gl-row" data-rec="${r.id}"><span class="g-dot ${cls}"></span><span class="grow"><b>${esc(r.name)}</b><span class="hint">${r.prog?esc(r.prog)+' · ':r.kind+' · '}${r.country}</span></span><span class="gl-end"><span class="g-mark ${cls} ${d!==null&&d<0?'past':''}">${dt}</span><span class="hint">${d===null?'Rolling':d<0?'Closed':d+' days left'}</span></span></button>`;}).join('')}</div></section>
     <section class="panel span-12"><div class="panel-h"><h2>All recommendations, by deadline</h2><div class="tabs" role="tablist">${[['all','All'],['University','Universities'],['Scholarship','Scholarships']].map(([k,l])=>`<button role="tab" aria-selected="${f===k}" data-rf="${k}">${l}</button>`).join('')}</div></div>
-      <div class="rec-list">${list.map(r=>{const d=recDays(r);const cls=r.kind==='Scholarship'?'sch':'uni';return `<div class="rec-item"><button class="rec-row" data-rec="${r.id}">
+      <div class="rec-list"><div class="rec-head" aria-hidden="true"><span class="rec-hrow"><span></span><span>Name</span><span>Fit</span><span>Funding type</span><span>Status</span><span>Deadline</span><span></span></span><span class="rec-hap"></span></div>${list.map(r=>{const d=recDays(r);const cls=r.kind==='Scholarship'?'sch':'uni';return `<div class="rec-item"><button class="rec-row" data-rec="${r.id}">
         <span class="g-dot ${cls}"></span>
         <span class="rec-main"><b>${esc(r.name)}</b><span class="hint">${r.kind}${r.prog?' · '+esc(r.prog):''} · ${r.country}</span></span>
         <span class="rec-f"><i>Fit</i>${r.grade?`<span class="grade g-${r.grade.replace('+','p')}" title="${FITTIP[r.grade]||''}">${r.grade}</span>`:'<span class="hint">–</span>'}</span>
