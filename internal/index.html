@@ -158,6 +158,21 @@ tr.click{cursor:pointer}tr.click:hover td{background:#f7fbff}
 .art-body{min-height:260px;line-height:1.7;font-size:15px;max-width:72ch;outline:none;border-radius:10px;padding:4px}
 .art-body:focus{box-shadow:0 0 0 2px var(--accent-soft)}
 .art-body h3{font-size:1.05rem;margin:14px 0 4px}.art-body p{margin:0 0 10px}.art-body ul,.art-body ol{margin:0 0 10px;padding-left:22px}
+.art-view{line-height:1.7;font-size:15px;max-width:72ch}.art-view h3{font-size:1.05rem;margin:14px 0 4px}.art-view p{margin:0 0 10px}.art-view ul,.art-view ol{margin:0 0 10px;padding-left:22px}
+.vidbox{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,#1b4f8a,#2f86dc);color:#fff;border-radius:14px;padding:22px;aspect-ratio:16/6;min-height:120px}.vidbox>span{width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.2);display:grid;place-items:center;font-size:20px;flex:none}.vidbox .sub{color:rgba(255,255,255,.8)}
+.rail-m{margin:2px 8px 6px;display:flex;flex-direction:column;gap:4px}.rail-m label{font-size:11px;color:rgba(255,255,255,.75);font-weight:600}
+.rail-m select{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:10px;padding:7px 8px;font-weight:600}.rail-m option{color:var(--ink)}
+.pkgs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.pkgc{border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px;background:var(--surface)}
+.pkgc.silver{background:linear-gradient(180deg,#f6f8fb,#fff)}.pkgc.gold{background:linear-gradient(180deg,#fffaeb,#fff);border-color:#f3e2ad}.pkgc.platinum{background:linear-gradient(180deg,#f0f4ff,#fff);border-color:#d5def8}.pkgc.len{background:var(--surface-2)}
+.pkgc h3{font-size:1.05rem;margin:0}
+.stepper{display:flex;align-items:center;border:1px solid var(--line);border-radius:12px;background:#fff;overflow:hidden;align-self:flex-start}
+.stepper button{border:none;background:none;width:36px;height:40px;font-size:18px;font-weight:700;color:var(--accent);cursor:pointer}.stepper button:hover{background:var(--accent-soft)}
+.stepper input{width:58px;border:none;text-align:center;font:700 1.3rem var(--display);padding:0;-moz-appearance:textfield}.stepper input::-webkit-inner-spin-button{-webkit-appearance:none}
+.shift{display:flex;align-items:center;gap:10px;flex-wrap:wrap;border:1px solid #cfe3f8;background:#f3f9ff;border-radius:14px;padding:10px 14px}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--good,#1a9e5c);display:inline-block}
+@media (max-width:1000px){.pkgs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){.rail-m{display:none}}
 .lenpick{display:flex;gap:6px;flex-wrap:wrap}
 .lenbtn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:6px 12px;font-weight:600;color:var(--muted);cursor:pointer}
 .lenbtn[aria-pressed=true]{background:var(--accent-soft);border-color:#a9d1f5;color:#1a64ad}
@@ -185,16 +200,7 @@ tr.click{cursor:pointer}tr.click:hover td{background:#f7fbff}
 .acct b{display:block}.acct span{color:var(--muted);font-size:13px}
 @media (max-width:760px){.login{grid-template-columns:minmax(0,1fr);overflow-y:auto}.login-right{height:auto;overflow:visible}.login-side{padding:28px 16px;gap:14px}.login-side h2{font-size:1.7rem}.login-form{padding:28px 16px 40px}}
 
-/* global search + mentor switcher */
-.gsbar{position:sticky;top:0;z-index:6;padding:14px 32px 0;background:linear-gradient(var(--bg) 75%,rgba(251,252,254,0))}
-.gs{position:relative;display:flex;align-items:center;gap:0;max-width:1176px;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:0 2px 10px rgba(20,60,110,.06)}
-.gs:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
-.gs select{border:none;background:var(--surface-2);border-radius:13px 0 0 13px;padding:11px 10px 11px 14px;font-weight:600;color:var(--ink);align-self:stretch;cursor:pointer}
-.gs svg{width:18px;height:18px;margin-left:12px;flex:none;stroke:var(--muted);fill:none;stroke-width:2;stroke-linecap:round}
-.gs input{flex:1;min-width:0;border:none;outline:none;padding:11px 12px;background:none;font-size:14.5px}
-.gs kbd{margin-right:12px;font:600 11px/1 inherit;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:4px 6px}
-.gsres{position:absolute;left:0;right:0;top:calc(100% + 6px);background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:0 16px 40px rgba(20,50,90,.16);max-height:min(460px,65vh);overflow-y:auto;padding:6px}
-.gsg{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);padding:10px 10px 4px;display:flex;justify-content:space-between}
+/* picker + mentor switcher */
 .gsi{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:none;background:none;border-radius:10px;padding:8px 10px;cursor:pointer;color:var(--ink)}
 .gsi:hover,.gsi.act{background:var(--accent-soft)}
 .gsi .avatar{width:30px;height:30px;font-size:11px;flex:none}
@@ -212,7 +218,6 @@ tr.click{cursor:pointer}tr.click:hover td{background:#f7fbff}
 .rolechips{display:flex;gap:6px;flex-wrap:wrap}
 .rolechips button{border:1px solid var(--line);background:var(--surface);border-radius:99px;padding:5px 12px;font-weight:600;font-size:13px;cursor:pointer;color:var(--muted)}
 .rolechips button[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:#fff}
-@media (max-width:760px){.gsbar{padding:10px 16px 0}.gs kbd{display:none}.gs select{max-width:120px}}
 @media (max-width:1000px){.c3,.c4,.c5,.c6,.c7,.c8{grid-column:span 12}}
 @media (max-width:760px){
   .shell{grid-template-columns:1fr}
@@ -270,8 +275,8 @@ const ICONS={
   cal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>'
 };
 const ROLES={
-  super:{label:'Super Admin',user:'Andi Pratama',sub:'Super Admin',nav:[['#Operations'],['overview','Overview'],['students','Students'],['new','New student'],['mentorlist','Mentor list'],['materials','Materials'],['#Support'],['inbox','Support inbox'],['#Mentor workspace'],['mday','Mentor\'s day'],['msessions','Sessions & reports'],['mreview','Document review'],['mstudents','Mentor\'s students'],['mavail','Availability'],['#Admin'],['users','Users & approvals'],['settings','Program settings'],['audit','Audit log']],home:'overview'},
-  ops:{label:'Operations',user:'Dewi Lestari',sub:'Operations',nav:[['overview','Overview'],['students','Students'],['new','New student'],['mentorlist','Mentor list'],['materials','Materials']],home:'overview'},
+  super:{label:'Super Admin',user:'Andi Pratama',sub:'Super Admin',nav:[['#Operations'],['overview','Overview'],['students','Students'],['mentorlist','Mentor list'],['materials','Materials'],['#Support'],['inbox','Support inbox'],['#Mentor workspace'],['mday','Today'],['msessions','Sessions & reports'],['mreview','Document review'],['mstudents','Mentees'],['mavail','Availability'],['#Admin'],['users','Users & approvals'],['settings','Program settings'],['audit','Audit log']],home:'overview'},
+  ops:{label:'Operations',user:'Dewi Lestari',sub:'Operations',nav:[['overview','Overview'],['students','Students'],['mentorlist','Mentor list'],['materials','Materials']],home:'overview'},
   mentor:{label:'Mentor',user:'Lê Hoàng Nam',sub:'Mentor',nav:[['mday','My day'],['msessions','Sessions & reports'],['mreview','Document review'],['mstudents','My students'],['mavail','Availability']],home:'mday'},
   sp:{label:'Student Priority',user:'Putri Ayu',sub:'Student Priority',nav:[['inbox','Student Priority inbox']],home:'inbox',ch:'sp'},
   hotline:{label:'Hotline',user:'Rizky Hidayat',sub:'Hotline',nav:[['inbox','Hotline inbox']],home:'inbox',ch:'hotline'}
@@ -293,7 +298,7 @@ function addWorkdays(s,n){const d=D(s);let k=0;while(k<n){d.setUTCDate(d.getUTCD
 /* ---------- Example data (not real people) ---------- */
 const S={
   role:null, studentTab:'overview', inboxCh:'sp', inboxSel:null, filters:{q:'',track:'',pkg:'',mentor:'',status:''}, reviewSel:null, auditQ:'', matTopic:'sch',
-  settings:{packages:{Silver:10,Gold:20,Platinum:30},sessionMin:50,topups:[{n:1,price:800000},{n:3,price:2250000},{n:5,price:3500000}],cancelHrs:24,reviewDays:3,lengths:{'S1-10':[1,2,3],'S1-11':[1,2],'S1-12':[1],'Gap year':[1],'S2':[1],'S3':[1]},reportHrs:24,hotline:'Mon–Fri 09:00–17:00 (GMT+7)',spHours:'Mon–Fri 08:00–20:00 (GMT+7)'},
+  settings:{packages:{Silver:10,Gold:20,Platinum:30},sessionMin:50,topups:[{n:1,price:800000},{n:3,price:2250000},{n:5,price:3500000}],cancelHrs:24,reviewDays:3,lengths:{'S1-10':[1,2,3],'S1-11':[1,2],'S1-12':[1],'Gap year':[1],'S2':[1],'S3':[1]},reportHrs:24,hotline:'Mon–Fri 09:00–17:00 (GMT+7)',spHours:'Mon–Fri 08:00–20:00 (GMT+7)',spShifts:[{name:'Putri Ayu',from:'08:00',to:'14:00'},{name:'Fajar Nugroho',from:'14:00',to:'20:00'}]},
   mentors:[
     {id:'m1',name:'Lê Hoàng Nam',spec:'Business & Economics',countries:'Australia, UK, Singapore',langs:'Vietnamese, English',cap:12,since:'2023',edu:'MCom, University of Melbourne (Australia Awards scholar)',bio:'Helped 60+ Vietnamese students into Commerce and Economics programs in Australia and the UK. Focus on personal statements and scholarship essays.',rating:4.9,month:21},
     {id:'m2',name:'Phạm Minh Châu',spec:'Engineering & Computer Science',countries:'Canada, Australia',langs:'Vietnamese, English',cap:12,since:'2024',edu:'MEng, University of Toronto',bio:'Former software engineer. Guides students on STEM course choice, activity lists and Canadian applications.',rating:4.8,month:14},
@@ -429,14 +434,14 @@ function navCount(v){if(v==='inbox')return S.questions.filter(q=>q.status==='Ope
 function drawRail(cur){const R=ROLES[S.role];
   $('#rail').innerHTML=`<div class="brand"><div class="brand-mark">S</div><div><b>Schoters Global</b><small>Internal dashboard</small></div></div>
   <span class="role-tag">${R.label}</span>
-  <nav class="nav" aria-label="Main">${R.nav.map(([v,l])=>{if(v[0]==='#')return `<div class="nav-group">${v.slice(1)}</div>`;const c=navCount(v);return `<a href="#${v}" ${cur===v||(cur==='student'&&v===(S.role==='mentor'?'mstudents':'students'))||(cur==='mentor'&&v==='mentorlist')||(cur==='matedit'&&v==='materials')?'aria-current="page"':''}>${svg(NAVICON[v])}<span class="lbl">${l}</span>${c?`<span class="count">${c}</span>`:''}</a>`;}).join('')}</nav>
+  <nav class="nav" aria-label="Main">${R.nav.map(([v,l])=>{if(v[0]==='#')return `<div class="nav-group">${v.slice(1)}</div>`+(v==='#Mentor workspace'&&isSup()?`<div class="rail-m"><label for="railM">Viewing mentor</label><select id="railM">${S.mentors.map(m=>`<option value="${m.id}" ${m.id===ME_M()?'selected':''}>${esc(m.name)}</option>`).join('')}</select></div>`:'');const c=navCount(v);return `<a href="#${v}" ${cur===v||(cur==='student'&&v===(S.role==='mentor'?'mstudents':'students'))||(cur==='mentor'&&v==='mentorlist')||((cur==='matedit'||cur==='matview')&&v==='materials')?'aria-current="page"':''}>${svg(NAVICON[v])}<span class="lbl">${l}</span>${c?`<span class="count">${c}</span>`:''}</a>`;}).join('')}</nav>
   <div class="rail-bottom">
     <div class="switch"><label for="roleSel">View as</label><select id="roleSel">${Object.entries(ROLES).map(([k,r])=>`<option value="${k}" ${k===S.role?'selected':''}>${r.label}</option>`).join('')}</select></div>
     <div class="me"><div class="avatar">${ini(R.user)}</div><div class="me-txt"><b>${esc(R.user)}</b><small>${esc(R.sub)}</small></div><button class="logout" data-act="logout" title="Log out">Log out</button></div>
   </div>`;}
 const V={};
-function route(){const h=location.hash.slice(1);if(h.startsWith('student-'))return {v:'student',id:h.slice(8)};if(h.startsWith('mat-'))return {v:'matedit',id:h.slice(4)};return {v:h};}
-function allowed(v){const R=ROLES[S.role];if(v==='student')return ['super','ops','mentor'].includes(S.role);if(v==='matedit')return can('materials');return R.nav.some(n=>n[0]===v);}
+function route(){const h=location.hash.slice(1);if(h.startsWith('student-'))return {v:'student',id:h.slice(8)};if(h.startsWith('matedit-'))return {v:'matedit',id:h.slice(8)};if(h.startsWith('mat-'))return {v:'matview',id:h.slice(4)};return {v:h};}
+function allowed(v){const R=ROLES[S.role];if(v==='student')return ['super','ops','mentor'].includes(S.role);if(v==='matedit'||v==='matview')return can('materials');return R.nav.some(n=>n[0]===v);}
 const can=v=>ROLES[S.role].nav.some(n=>n[0]===v);
 const ACCTS=[
   ['super','Andi Pratama','andi@schoters.example','Full access: every page of every role, user approvals and settings.'],
@@ -450,7 +455,7 @@ function render(){
   if(!S.role)drawLogin();
   $('#login').hidden=!!S.role;$('#app').hidden=!S.role;if(!S.role)return;
   let r=route();if(!allowed(r.v)){location.replace('#'+ROLES[S.role].home);r={v:ROLES[S.role].home};}
-  drawRail(r.v);$('#main').innerHTML=(isSup()?gsBar():'')+`<div class="page">${isSup()&&MVIEWS.includes(r.v)?mSwitch():''}${V[r.v](r.id)}</div>`;
+  drawRail(r.v);$('#main').innerHTML=`<div class="page">${isSup()&&MVIEWS.includes(r.v)?mSwitch():''}${V[r.v](r.id)}</div>`;
 }
 function rerender(){const m=$('#main');const t=m.scrollTop;render();m.scrollTop=t;}
 function modal(html,wide){layer.innerHTML=`<div class="overlay" data-close-bg><div class="modal" role="dialog" aria-modal="true" ${wide?'style="max-width:820px"':''}>${html}</div></div>`;const f=layer.querySelector('textarea,input,select');f&&f.focus();}
@@ -474,7 +479,7 @@ V.overview=()=>{
     ...reports.map(x=>({t:`Report not approved: ${x.title}`,m:`${men(x.m).name} · session ${fd(x.date)}`,go:'student-'+x.st,tone:'warn',l:'Open'}))
   ];
   const mSess=S.sessions.filter(x=>x.date.startsWith('2026-11')&&x.state!=='upcoming').length+31;
-  return `<div class="ph"><div><div class="eyebrow">Ops overview</div><h1>Good afternoon, ${meName().split(' ')[0]}</h1><p>Thursday 26 Nov 2026 · ${act.length} active students</p></div><div class="row-btns"><a class="btn primary" href="#new">+ New student</a></div></div>
+  return `<div class="ph"><div><div class="eyebrow">Ops overview</div><h1>Good afternoon, ${meName().split(' ')[0]}</h1><p>Thursday 26 Nov 2026 · ${act.length} active students</p></div><div class="row-btns"><button class="btn primary" data-act="newstudent">+ New student</button></div></div>
   <div class="stats">
     ${card(noMentor.length,'Students without a mentor','bad','mentorlist')}
     ${card(overdue.length,'Document reviews overdue','bad','students')}
@@ -500,7 +505,7 @@ V.overview=()=>{
 V.students=()=>{const F=S.filters;
   let L=S.students.filter(s=>{if(F.q&&!(s.name+s.email+s.id).toLowerCase().includes(F.q.toLowerCase()))return false;if(F.track&&s.track!==F.track)return false;if(F.pkg&&s.pkg!==F.pkg)return false;if(F.mentor&&(s.mentor||'none')!==F.mentor)return false;if(F.status&&stStatus(s)!==F.status)return false;if(F.low&&!(s.status==='Active'&&left(s)<=2))return false;return true;});
   const ro=false;
-  return `<div class="ph"><div><div class="eyebrow">Students</div><h1>All students</h1><p>${S.students.length} students · search by name, email or ID</p></div>${ro?'':'<a class="btn primary" href="#new">+ New student</a>'}</div>
+  return `<div class="ph"><div><div class="eyebrow">Students</div><h1>All students</h1><p>${S.students.length} students · search by name, email or ID</p></div>${ro?'':'<button class="btn primary" data-act="newstudent">+ New student</button>'}</div>
   <div class="toolbar"><input type="search" id="fq" placeholder="Search name, email or ID" value="${esc(F.q)}" aria-label="Search">
    <select data-f="track" aria-label="Track"><option value="">All tracks</option>${['S1','Gap year','S2','S3'].map(t=>`<option ${F.track===t?'selected':''}>${t}</option>`).join('')}</select>
    <select data-f="pkg" aria-label="Package"><option value="">All packages</option>${['Silver','Gold','Platinum'].map(t=>`<option ${F.pkg===t?'selected':''}>${t}</option>`).join('')}</select>
@@ -555,10 +560,9 @@ function stHistory(s){const L=S.audit.filter(a=>a.st===s.id);
 
 /* ---------- New student ---------- */
 const NF={name:'',email:'',phone:'',school:'',track:'S1',grade:'12',len:1,pkg:'Gold',start:'2026-12-01',grad:'2027-06-30',mentor:'',contract:''};
-V.new=()=>{const f=NF;const opts=lengthOptions(f.track,+f.grade);if(!opts.includes(+f.len))f.len=opts[0];
+function nsInner(){const f=NF;const opts=lengthOptions(f.track,+f.grade);if(!opts.includes(+f.len))f.len=opts[0];
   const end=calcEnd(f.track,+f.grade,+f.len,f.start,f.track==='S1'?f.grad:null);
-  return `<div class="ph"><div><div class="eyebrow">New student</div><h1>Set up a student</h1><p>From the signed contract. The student gets a login email when you save.</p></div></div>
-  <div class="grid"><section class="panel c8"><form class="form" id="nf" novalidate>
+  return `<form class="form" id="nf" novalidate>
     <div class="field full"><h3>Student</h3></div>
     <div class="field"><label for="n-name">Full name</label><input id="n-name" name="name" value="${esc(f.name)}" required placeholder="e.g. Nguyễn Thu Trang"></div>
     <div class="field"><label for="n-email">Email</label><input id="n-email" name="email" type="email" value="${esc(f.email)}" required placeholder="name@example.com"></div>
@@ -567,26 +571,23 @@ V.new=()=>{const f=NF;const opts=lengthOptions(f.track,+f.grade);if(!opts.includ
     <div class="field"><label for="n-contract">Contract number</label><input id="n-contract" name="contract" value="${esc(f.contract)}" placeholder="SC-2026-…"></div>
     <div class="field full"><h3 style="margin-top:6px">Program</h3></div>
     <div class="field"><label for="n-track">Track</label><select id="n-track" name="track">${['S1','Gap year','S2','S3'].map(t=>`<option ${f.track===t?'selected':''}>${t}</option>`).join('')}</select></div>
-    ${f.track==='S1'?`<div class="field"><label for="n-grade">Current grade</label><select id="n-grade" name="grade">${[10,11,12].map(g=>`<option ${+f.grade===g?'selected':''}>${g}</option>`).join('')}</select></div>`:`<div class="field"><label for="n-len">Program length</label><select id="n-len" name="len">${opts.map(o=>`<option value="${o}" ${+f.len===o?'selected':''}>${o} year${o>1?'s':''}</option>`).join('')}</select></div>`}
-    ${f.track==='S1'?`<div class="field"><label for="n-len">Program length</label><select id="n-len" name="len">${opts.map(o=>`<option value="${o}" ${+f.len===o?'selected':''}>${o} year${o>1?'s':''}</option>`).join('')}</select><span class="sub">Grade ${f.grade} can choose ${opts.join(', ')} year${opts.length>1?'s':''}</span></div>
-    <div class="field"><label for="n-grad">High-school graduation date</label><input id="n-grad" name="grad" type="date" value="${f.grad}"></div>`:''}
+    ${f.track==='S1'?`<div class="field"><label for="n-grade">Current grade</label><select id="n-grade" name="grade">${[10,11,12].map(g=>`<option ${+f.grade===g?'selected':''}>${g}</option>`).join('')}</select></div>`:''}
+    <div class="field"><label for="n-len">Program length</label><select id="n-len" name="len">${opts.map(o=>`<option value="${o}" ${+f.len===o?'selected':''}>${o} year${o>1?'s':''}</option>`).join('')}</select>${f.track==='S1'?`<span class="sub">Grade ${f.grade} can choose ${opts.join(', ')} year${opts.length>1?'s':''}</span>`:''}</div>
+    ${f.track==='S1'?`<div class="field"><label for="n-grad">High-school graduation date</label><input id="n-grad" name="grad" type="date" value="${f.grad}"></div>`:''}
     <div class="field"><label for="n-pkg">Package</label><select id="n-pkg" name="pkg">${['Silver','Gold','Platinum'].map(p=>`<option value="${p}" ${f.pkg===p?'selected':''}>${p} · ${S.settings.packages[p]} sessions</option>`).join('')}</select></div>
     <div class="field"><label for="n-start">Start date</label><input id="n-start" name="start" type="date" value="${f.start}"></div>
-    <div class="field"><label for="n-mentor">Mentor</label><select id="n-mentor" name="mentor"><option value="">Assign later</option>${S.mentors.map(m=>{const n=S.students.filter(s=>s.mentor===m.id&&s.status!=='Ended').length;return `<option value="${m.id}" ${f.mentor===m.id?'selected':''}>${m.name} · ${n} students · ${m.spec}</option>`;}).join('')}</select></div>
+    <div class="field full"><label for="n-mentor">Mentor</label><select id="n-mentor" name="mentor"><option value="">Assign later</option>${S.mentors.map(m=>{const n=S.students.filter(s=>s.mentor===m.id&&s.status!=='Ended').length;return `<option value="${m.id}" ${f.mentor===m.id?'selected':''}>${m.name} · ${n} students · ${m.spec}</option>`;}).join('')}</select></div>
+    <div class="full banner info" style="display:block;font-weight:500"><b>Program ends ${fd(end)}</b> · ${f.pkg}, ${S.settings.packages[f.pkg]} sessions · ${f.track}${f.track==='S1'?` grade ${f.grade}`:''}, ${f.len} year${f.len>1?'s':''}. ${f.track==='S1'&&+f.len===Math.max(...opts)?'Longest option for this grade, so it ends on the high-school graduation date.':'Start date plus the chosen length.'}</div>
     <div class="full err" id="nf-err" hidden></div>
-    <div class="full row-btns"><button class="btn primary" type="submit">Create student and send login</button><button class="btn" type="button" data-act="nfreset">Clear</button></div>
-  </form></section>
-  <aside class="panel c4" style="align-self:start"><h2>What the student will see</h2>
-    <dl class="kv"><dt>Package</dt><dd>${f.pkg} · ${S.settings.packages[f.pkg]} sessions</dd><dt>Track</dt><dd>${f.track}${f.track==='S1'?` · grade ${f.grade}`:''}</dd><dt>Length</dt><dd>${f.len} year${f.len>1?'s':''}</dd><dt>Program ends</dt><dd><b>${fd(end)}</b></dd></dl>
-    <p class="hint">${f.track==='S1'&&+f.len===Math.max(...opts)?'Longest option for this grade, so the program ends on the high-school graduation date.':'Start date plus the chosen length.'} Ops can change it later with a reason.</p>
-    <div class="banner info">Top-ups stay valid until ${fd(end)}.</div>
-  </aside></div>`;
-};
+    <div class="full modal-foot" style="margin:0"><button class="btn" type="button" data-close>Cancel</button><button class="btn primary" type="submit">Create student and send login</button></div>
+  </form>`;}
+function newStudentModal(){modal(`<div><div class="eyebrow">New student</div><h2>Set up a student</h2><p class="hint">From the signed contract. The student gets a login email when you save.</p></div><div id="nsbody">${nsInner()}</div>`,true);}
+function nsRedraw(){const b=$('#nsbody');if(!b)return;const a=document.activeElement&&document.activeElement.id;b.innerHTML=nsInner();if(a&&$('#'+a))$('#'+a).focus();}
 
 /* ---------- Mentor list ---------- */
 function mStats(m){const n=S.students.filter(s=>s.mentor===m.id&&s.status!=='Ended');const r=openReviews(m.id);return {n,wk:S.sessions.filter(x=>x.m===m.id&&x.state==='upcoming'&&days(x.date)<=7).length+(m.id==='m1'?3:m.id==='m2'?2:1),od:r.filter(x=>x.due<iso(TODAY)).length,rev:r.length,rep:S.sessions.filter(x=>x.m===m.id&&x.state==='report').length};}
 V.mentorlist=()=>{const un=S.students.filter(s=>!s.mentor&&s.status!=='Ended');const pend=S.users.filter(u=>u.role==='Mentor'&&u.status==='Pending');
-  return `<div class="ph"><div><div class="eyebrow">Mentor list</div><h1>Mentors</h1><p>One mentor per student. Only Operations and Super Admin can see this page; load is never shown to students.</p></div><button class="btn primary" data-act="reqmentor">+ Request new mentor</button></div>
+  return `<div class="ph"><div><div class="eyebrow">Mentor list</div><h1>Mentors</h1><p>One mentor per student. Only Operations and Super Admin can see this page; load is never shown to students.</p></div><button class="btn primary" data-act="reqmentor">+ New mentor</button></div>
   ${pend.length?`<div class="banner info">${pend.length} new mentor${pend.length>1?'s are':' is'} waiting for Super Admin approval: ${pend.map(u=>esc(u.name)).join(', ')}.</div>`:''}
   ${un.length?`<section class="panel flush"><div class="panel-h"><h2>Students waiting for a mentor</h2><span class="pill bad">${un.length}</span></div><div class="list">${un.map(s=>`<div class="item"><div class="grow"><div class="title">${esc(s.name)}</div><div class="sub">${trackLabel(s)} · ${s.pkg} · joined ${fd(s.start)} · target ${s.intake}</div></div><button class="btn sm primary" data-act="assign" data-id="${s.id}">Assign mentor</button></div>`).join('')}</div></section>`:''}
   <div class="toolbar"><input type="search" id="mlq" placeholder="Search mentor name, field or country" value="${esc(S.mlQ||'')}" aria-label="Search mentors"></div>
@@ -605,36 +606,9 @@ function mentorModal(id){const m=men(id);const k=mStats(m);
   <div class="modal-foot"><span></span><div class="row-btns">${isSup()?`<button class="btn primary" data-viewm="${m.id}">Open ${esc(fname(m.name))}'s workspace</button>`:''}<button class="btn" data-close>Close</button></div></div>`,true);}
 
 
-/* ---------- Super Admin: global search ---------- */
-const GST=[['all','Everything'],['student','Students'],['mentor','Mentors'],['sp','Student Priority'],['hotline','Hotline'],['ops','Operations'],['material','Materials']];
-S.gsType='all';
-function gsBar(){return `<div class="gsbar"><div class="gs" id="gs"><select id="gst" aria-label="Search in">${GST.map(([k,l])=>`<option value="${k}" ${S.gsType===k?'selected':''}>${l}</option>`).join('')}</select>${'<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>'}<input id="gsq" type="search" autocomplete="off" placeholder="Search students, mentors, Student Priority, Hotline, Operations, materials…" aria-label="Search everything"><kbd>Ctrl K</kbd><div class="gsres" id="gsres" hidden></div></div></div>`;}
-function hl(t,q){t=esc(t);if(!q)return t;const i=t.toLowerCase().indexOf(esc(q).toLowerCase());return i<0?t:t.slice(0,i)+'<mark>'+t.slice(i,i+esc(q).length)+'</mark>'+t.slice(i+esc(q).length);}
-function gsData(){const staff=r=>S.users.filter(u=>u.role===r&&u.status!=='Rejected');const G=[];
-  G.push({k:'student',g:'Students',items:S.students.map(s=>({id:'s:'+s.id,t:s.name,sub:`${trackLabel(s)} · ${s.pkg} · ${s.mentor?men(s.mentor).name:'no mentor'} · ${stStatus(s)}`,hay:s.name+' '+s.email+' '+s.id+' '+s.school,av:1}))});
-  G.push({k:'mentor',g:'Mentors',items:S.mentors.map(m=>{const k=mStats(m);return {id:'m:'+m.id,t:m.name,sub:`${m.spec} · ${k.n.length}/${m.cap} students · ${k.wk} sessions this week`,hay:m.name+' '+m.spec+' '+m.countries,av:1};})});
-  G.push({k:'sp',g:'Student Priority team',items:staff('Student Priority').map(u=>({id:'u:'+u.email,t:u.name,sub:`${u.email} · ${u.status}`,hay:u.name+' '+u.email,av:1}))});
-  G.push({k:'sp',g:'Student Priority questions',items:S.questions.filter(q=>q.ch==='sp').map(q=>({id:'q:'+q.id,t:q.q,sub:`${stu(q.st).name} · ${q.status}${q.assignee?' · '+q.assignee:''}`,hay:q.q+' '+stu(q.st).name}))});
-  G.push({k:'hotline',g:'Hotline team',items:staff('Hotline').map(u=>({id:'u:'+u.email,t:u.name,sub:`${u.email} · ${u.status}`,hay:u.name+' '+u.email,av:1}))});
-  G.push({k:'hotline',g:'Hotline questions',items:S.questions.filter(q=>q.ch==='hotline').map(q=>({id:'q:'+q.id,t:q.q,sub:`${stu(q.st).name} · ${q.status}${q.assignee?' · '+q.assignee:''}`,hay:q.q+' '+stu(q.st).name}))});
-  G.push({k:'ops',g:'Operations and admins',items:S.users.filter(u=>(u.role==='Operations'||u.role==='Super Admin')&&u.status!=='Rejected').map(u=>({id:'u:'+u.email,t:u.name,sub:`${u.role} · ${u.email} · ${u.status}`,hay:u.name+' '+u.email,av:1}))});
-  G.push({k:'material',g:'Materials',items:S.topics.flatMap(t=>t.items.map(i=>({id:'a:'+i.id,t:i.t,sub:`${t.name} · ${i.st}`,hay:i.t+' '+t.name})))});
-  return G;}
-function gsDraw(){const box=$('#gsres');if(!box)return;const q=($('#gsq').value||'').trim().toLowerCase();const ty=S.gsType;
-  if(!q&&ty==='all'){box.innerHTML=`<div class="gsg">Pick what to search</div>${GST.slice(1).map(([k,l])=>`<button class="gsi" data-gst="${k}"><div class="grow"><b>${l}</b><span class="sub">Show all ${l.toLowerCase()}</span></div></button>`).join('')}`;box.hidden=false;return;}
-  const G=gsData().filter(g=>ty==='all'||g.k===ty).map(g=>({...g,items:g.items.filter(i=>!q||i.hay.toLowerCase().includes(q))})).filter(g=>g.items.length);
-  const lim=ty==='all'?5:999;
-  box.innerHTML=G.map(g=>`<div class="gsg"><span>${g.g}</span><span>${g.items.length}</span></div>${g.items.slice(0,lim).map(i=>`<button class="gsi" data-gs="${esc(i.id)}">${i.av?`<div class="avatar">${ini(i.t)}</div>`:''}<div class="grow"><b>${hl(i.t,q)}</b><span class="sub">${esc(i.sub)}</span></div></button>`).join('')}${g.items.length>lim?`<button class="gsi" data-gst="${g.k}"><div class="grow"><span class="sub">Show all ${g.items.length} in ${esc(g.g)}</span></div></button>`:''}`).join('')||'<div class="empty">No match.</div>';
-  box.hidden=false;}
-function gsGo(id){const [k,v]=[id.slice(0,1),id.slice(2)];$('#gsres')&&($('#gsres').hidden=true);
-  if(k==='s'){S.studentTab='overview';location.hash='student-'+v;}
-  else if(k==='m')mentorModal(v);
-  else if(k==='u'){const u=S.users.find(x=>x.email===v);S.userQ=u?u.name:'';S.userRole='';if(location.hash==='#users')rerender();else location.hash='users';}
-  else if(k==='q'){const q=S.questions.find(x=>x.id===v);S.inboxSel=v;S.inboxCh=q.ch;S.inboxQ='';if(location.hash==='#inbox')rerender();else location.hash='inbox';}
-  else if(k==='a')location.hash='mat-'+v;}
 /* ---------- Super Admin: mentor switcher ---------- */
 function mSwitch(){const m=men(ME_M());const k=mStats(m);
-  return `<div class="mswitch"><div class="avatar">${ini(m.name)}</div><div><small>Viewing mentor workspace</small><b>${esc(m.name)}</b><div class="sub">${esc(m.spec)} · ${k.n.length}/${m.cap} students · ${k.wk} sessions this week · ${k.rev} reviews open${k.od?` (${k.od} late)`:''}</div></div>
+  return `<div class="mswitch"><div class="avatar">${ini(m.name)}</div><div><small>You're viewing</small><b>${esc(m.name)}'s workspace</b><div class="sub">${esc(m.spec)} · ${k.n.length}/${m.cap} students · ${k.wk} sessions this week · ${k.rev} reviews open${k.od?` (${k.od} late)`:''}</div></div>
   <div class="pk"><button class="btn" data-act="pkopen">Switch mentor ▾</button><div class="pkpop" id="pkpop" hidden><input id="pkq" type="search" placeholder="Search mentor name or field" aria-label="Search mentor" autocomplete="off"><div class="pklist" id="pklist"></div></div></div></div>`;}
 function pkDraw(){const q=($('#pkq').value||'').toLowerCase();const L=S.mentors.filter(m=>!q||(m.name+' '+m.spec+' '+m.countries).toLowerCase().includes(q));
   $('#pklist').innerHTML=L.map(m=>{const k=mStats(m);return `<button class="gsi ${m.id===ME_M()?'act':''}" data-viewm="${m.id}"><div class="avatar">${ini(m.name)}</div><div class="grow"><b>${hl(m.name,q)}</b><span class="sub">${esc(m.spec)} · ${k.n.length}/${m.cap} students · ${k.rev} reviews</span></div></button>`;}).join('')||'<div class="empty">No mentor found.</div>';}
@@ -645,15 +619,18 @@ V.inbox=()=>{if(ROLES[S.role].ch)S.inboxCh=ROLES[S.role].ch;const ch=S.inboxCh;c
   const target=ch==='sp'?8:4;
   return `<div class="ph"><div><div class="eyebrow">Support inbox</div><h1>${ROLES[S.role].ch==='sp'?'Student Priority questions':ROLES[S.role].ch==='hotline'?'Hotline questions':'Student questions'}</h1><p>Replies go to the student as "our team". ${ROLES[S.role].ch!=='hotline'?'Student Priority '+esc(S.settings.spHours):''}${ROLES[S.role].ch?'':' · '}${ROLES[S.role].ch!=='sp'?'Hotline '+esc(S.settings.hotline):''}</p></div>
    ${ROLES[S.role].ch?'':`<div class="seg" role="group"><button aria-pressed="${ch==='sp'}" data-ch="sp">Student Priority ${cnt('sp')?`(${cnt('sp')})`:''}</button><button aria-pressed="${ch==='hotline'}" data-ch="hotline">Hotline ${cnt('hotline')?`(${cnt('hotline')})`:''}</button></div>`}</div>
-  <div class="grid"><section class="panel flush c5"><div class="panel-h" style="padding-bottom:10px"><input type="search" id="iq" placeholder="Search question, student or assignee" value="${esc(S.inboxQ||'')}" aria-label="Search questions" style="flex:1;border:1px solid var(--line);border-radius:10px;padding:8px 10px"></div><div class="list">${L.map(q=>{const w=waitH(q);const s=stu(q.st);return `<div class="item click" data-q="${q.id}" style="${sel&&sel.id===q.id?'background:#f1f7fe':''}"><div class="grow"><div class="title" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(q.q)}</div><div class="sub">${esc(s.name)} · ${s.pkg}${q.assignee?' · '+esc(q.assignee):''}</div></div>${q.status==='Open'?`<span class="pill ${w>=target?'bad':'warn'} num">${w} h</span>`:`<span class="pill good">${q.status}</span>`}</div>`;}).join('')||'<div class="empty">No questions.</div>'}</div></section>
+  ${ch==='sp'?spShift():''}
+  <div class="grid"><section class="panel flush c5"><div class="panel-h" style="padding-bottom:10px"><input type="search" id="iq" placeholder="Search question or student" value="${esc(S.inboxQ||'')}" aria-label="Search questions" style="flex:1;border:1px solid var(--line);border-radius:10px;padding:8px 10px"></div><div class="list">${L.map(q=>{const w=waitH(q);const s=stu(q.st);return `<div class="item click" data-q="${q.id}" style="${sel&&sel.id===q.id?'background:#f1f7fe':''}"><div class="grow"><div class="title" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(q.q)}</div><div class="sub">${esc(s.name)} · ${s.pkg}${q.ch==='sp'?(q.status!=='Open'&&q.assignee?' · replied by '+esc(q.assignee):''):(q.assignee?' · '+esc(q.assignee):'')}</div></div>${q.status==='Open'?`<span class="pill ${w>=target?'bad':'warn'} num">${w} h</span>`:`<span class="pill good">${q.status}</span>`}</div>`;}).join('')||'<div class="empty">No questions.</div>'}</div></section>
   <section class="panel c7">${sel?inboxThread(sel):'<div class="empty">Pick a question.</div>'}</section></div>`;
 };
+function spShift(){const L=S.settings.spShifts;const now='16:00';const on=L.find(x=>x.from<=now&&now<x.to);
+  return `<div class="shift"><span class="dot"></span><b>On shift now: ${on?esc(on.name):'nobody'}</b><span class="sub">${L.map(x=>`${esc(x.name)} ${x.from}–${x.to}`).join(' · ')} (GMT+7, Mon–Fri)</span><span class="sub" style="margin-left:auto">Shift-based: whoever is on shift answers. No assigning.</span></div>`;}
 function inboxThread(q){const s=stu(q.st);const m=s.mentor?men(s.mentor):null;
   return `<div class="panel-h"><div><h2>${esc(s.name)}</h2><div class="sub">${s.pkg} · ${left(s)} sessions left · mentor ${m?esc(m.name):'not assigned'} · ends ${fd(s.end)}</div></div>${allowed('student')?`<a class="btn sm" href="#student-${s.id}">Profile</a>`:''}</div>
   <div class="thread"><div class="msg st"><small>${esc(s.name)} · ${q.at.replace('T',' ')} UTC</small>${esc(q.q)}</div>${q.msgs.map(x=>`<div class="msg ${x.note?'note':'us'}"><small>${x.note?'Internal note to '+esc(x.to)+' (student cannot see)':esc(x.by)} · ${x.at.replace('T',' ')}</small>${esc(x.t)}</div>`).join('')}</div>
   ${q.status==='Open'?`<div class="field"><label for="rep">Reply as "our team"</label><textarea id="rep" placeholder="Write a reply in English or Vietnamese"></textarea></div>
   <div class="toolbar"><select id="saved" aria-label="Saved reply"><option value="">Saved replies…</option>${S.saved.map((r,i)=>`<option value="${i}">${esc(r.t)} (EN)</option><option value="${i}v">${esc(r.t)} (VI)</option>`).join('')}</select>
-   <select id="asg" aria-label="Assign"><option value="">Assign to…</option>${S.users.filter(u=>u.role===(q.ch==='sp'?'Student Priority':'Hotline')&&u.status==='Active').map(u=>`<option ${q.assignee===u.name?'selected':''}>${esc(u.name)}</option>`).join('')}</select></div>
+   ${q.ch==='sp'?'':`<select id="asg" aria-label="Assign"><option value="">Assign to…</option>${S.users.filter(u=>u.role===(q.ch==='sp'?'Student Priority':'Hotline')&&u.status==='Active').map(u=>`<option ${q.assignee===u.name?'selected':''}>${esc(u.name)}</option>`).join('')}</select>`}</div>
   <div class="row-btns"><button class="btn primary" data-act="reply" data-id="${q.id}">Send reply</button>${m?`<button class="btn" data-act="askmentor" data-id="${q.id}">Ask the mentor</button>`:''}${S.role==='super'&&q.ch==='hotline'&&/session|mentor/i.test(q.q)?`<button class="btn" data-act="adjust" data-id="${s.id}">Correct balance</button>`:''}</div>
   <p class="hint">The student only ever sees replies from "our team".</p>`:`<div class="banner info">This question is ${q.status.toLowerCase()}.</div>`}`;}
 
@@ -662,19 +639,19 @@ V.mday=()=>{const mine=S.students.filter(s=>s.mentor===ME_M()&&s.status!=='Ended
   const up=S.sessions.filter(x=>x.m===ME_M()&&x.state==='upcoming').sort((a,b)=>a.date<b.date?-1:1);
   const rep=S.sessions.filter(x=>x.m===ME_M()&&x.state==='report');const rev=openReviews(ME_M());
   const dl=[];mine.forEach(s=>(S.apps[s.id]||[]).forEach(a=>{const d=days(a[2]);if(d>=0&&d<=45&&a[3]!=='Submitted')dl.push({s,a,d});}));dl.sort((a,b)=>a.d-b.d);
-  return `<div class="ph"><div><div class="eyebrow">${isSup()?'Mentor workspace':'My day'}</div><h1>${isSup()?esc(men(ME_M()).name)+'\'s day':'Good afternoon, '+esc(fname(men(ME_M()).name))}</h1><p>Thursday 26 Nov 2026 · ${mine.length} students</p></div><div class="row-btns"><span class="chip">${svg('cal')}Google Calendar synced</span></div></div>
+  return `<div class="ph"><div><div class="eyebrow">${isSup()?esc(men(ME_M()).name):'My day'}</div><h1>${isSup()?'Today':'Good afternoon, '+esc(fname(men(ME_M()).name))}</h1><p>Thursday 26 Nov 2026 · ${mine.length} student${mine.length===1?'':'s'}</p></div><div class="row-btns"><span class="chip">${svg('cal')}Google Calendar synced</span></div></div>
   <div class="stats">
    <button class="stat" data-go="msessions"><b class="num">${up.filter(x=>days(x.date)<=7).length}</b><span>Sessions this week</span></button>
    <button class="stat ${rep.length?'warn':'good'}" data-go="msessions"><b class="num">${rep.length}</b><span>Reports to approve</span></button>
    <button class="stat ${rev.some(r=>r.due<iso(TODAY))?'bad':rev.length?'warn':'good'}" data-go="mreview"><b class="num">${rev.length}</b><span>Documents to review</span></button>
-   <button class="stat" data-go="mstudents"><b class="num">${mine.length}</b><span>${isSup()?'Students':'My students'}</span></button></div>
+   <button class="stat" data-go="mstudents"><b class="num">${mine.length}</b><span>${isSup()?'Mentees':'My students'}</span></button></div>
   <div class="grid">
    <section class="panel flush c7"><div class="panel-h"><h2>Next sessions</h2><a class="btn sm" href="#mavail">Availability</a></div><div class="list">${up.map(x=>`<div class="item"><div style="text-align:center;width:44px"><b class="num" style="font-size:18px;font-family:var(--display)">${D(x.date).getUTCDate()}</b><div class="sub">${MON[D(x.date).getUTCMonth()]}</div></div><div class="grow"><div class="title">${esc(x.title)}</div><div class="sub">${esc(stu(x.st).name)} · ${x.time} GMT+7 · ${x.agenda?'agenda shared':'<b style="color:var(--warn)">no agenda yet</b>'}</div></div><button class="btn sm" data-act="agenda" data-id="${x.id}">Agenda</button>${days(x.date)<=1?`<button class="btn sm primary" data-act="join" data-id="${x.id}">Join</button>`:''}</div>`).join('')||'<div class="empty">No sessions booked.</div>'}</div></section>
    <section class="panel flush c5"><div class="panel-h"><h2>Student deadlines</h2><span class="hint">Next 45 days</span></div><div class="list">${dl.map(o=>`<div class="item click" data-go="student-${o.s.id}"><div class="grow"><div class="title">${esc(o.a[0])}</div><div class="sub">${esc(o.s.name)} · ${o.a[3]}</div></div><span class="pill ${o.d<=14?'bad':'warn'} num">${o.d} days</span></div>`).join('')||'<div class="empty">No deadlines soon.</div>'}</div></section>
   </div>`;
 };
 V.msessions=()=>{const rep=S.sessions.filter(x=>x.m===ME_M()&&x.state==='report');const up=S.sessions.filter(x=>x.m===ME_M()&&x.state==='upcoming').sort((a,b)=>a.date<b.date?-1:1);const done=S.sessions.filter(x=>x.m===ME_M()&&x.state==='done');
-  return `<div class="ph"><div><div class="eyebrow">Sessions & reports</div><h1>${isSup()?esc(fname(men(ME_M()).name))+'\'s sessions':'My sessions'}</h1><p>Students pick the date and time; you set the agenda. The AI notetaker drafts the report and you approve it within ${S.settings.reportHrs} hours.</p></div></div>
+  return `<div class="ph"><div><div class="eyebrow">Sessions & reports</div><h1>${isSup()?'Sessions':'My sessions'}</h1><p>Students pick the date and time; you set the agenda. The AI notetaker drafts the report and you approve it within ${S.settings.reportHrs} hours.</p></div></div>
   <section class="panel flush"><div class="panel-h"><h2>Reports to approve</h2><span class="pill ${rep.length?'warn':'good'}">${rep.length}</span></div><div class="list">${rep.map(x=>`<div class="item"><span class="ai-badge">AI draft</span><div class="grow"><div class="title">${esc(x.title)}</div><div class="sub">${esc(stu(x.st).name)} · ${fd(x.date)} · ${days(x.date)<-1?'<b style="color:var(--bad)">over 24 h</b>':'within 24 h'}</div></div><button class="btn sm primary" data-act="report" data-id="${x.id}">Review and approve</button></div>`).join('')||'<div class="empty">All reports approved.</div>'}</div></section>
   <section class="panel flush"><div class="panel-h"><h2>Upcoming</h2></div><div class="list">${up.map(x=>`<div class="item"><div class="grow"><div class="title">${esc(x.title)}</div><div class="sub">${esc(stu(x.st).name)} · ${fd(x.date)} · ${x.time} GMT+7</div>${x.agenda?`<div class="sub" style="margin-top:4px">Agenda: ${esc(x.agenda)}</div>`:''}</div><button class="btn sm" data-act="agenda" data-id="${x.id}">${x.agenda?'Edit agenda':'Add agenda'}</button>${days(x.date)<=1?`<button class="btn sm" data-act="noshow" data-id="${x.id}">No-show</button><button class="btn sm primary" data-act="join" data-id="${x.id}">Join</button>`:''}</div>`).join('')}</div></section>
   <section class="panel flush"><div class="panel-h"><h2>Approved</h2></div><div class="list">${done.map(x=>`<div class="item"><div class="grow"><div class="title">${esc(x.title)}</div><div class="sub">${esc(stu(x.st).name)} · ${fd(x.date)}</div></div><span class="pill good">Visible to student</span></div>`).join('')||'<div class="empty">None yet.</div>'}</div></section>`;
@@ -692,7 +669,7 @@ function reviewPane(r){const d=r.d,v=r.v;const prev=d.versions[d.versions.length
   <div class="row-btns"><button class="btn primary" data-act="return" data-id="${d.id}">Return to student</button><button class="btn" data-act="final" data-id="${d.id}">Approve as final</button></div>
   <p class="hint">All versions are kept and none can be deleted. No price is shown on any document.</p>`;}
 V.mstudents=()=>{const L=S.students.filter(s=>s.mentor===ME_M());
-  return `<div class="ph"><div><div class="eyebrow">${isSup()?'Mentor\'s students':'My students'}</div><h1>${isSup()?'Students of '+esc(men(ME_M()).name):'My students'}</h1><p>${isSup()?'Only students assigned to this mentor.':'Only students assigned to you.'}</p></div></div>
+  return `<div class="ph"><div><div class="eyebrow">${isSup()?esc(men(ME_M()).name):'My students'}</div><h1>${isSup()?'Mentees':'My students'}</h1><p>${isSup()?'Only students assigned to this mentor.':'Only students assigned to you.'}</p></div></div>
   <section class="panel flush"><div class="tbl-wrap"><table><thead><tr><th>Student</th><th>Track</th><th>Sessions left</th><th>Next deadline</th><th>Program ends</th></tr></thead><tbody>${L.map(s=>{const nx=(S.apps[s.id]||[]).filter(a=>a[3]!=='Submitted'&&days(a[2])>=0).sort((a,b)=>a[2]<b[2]?-1:1)[0];return `<tr class="click" data-go="student-${s.id}"><td><b>${esc(s.name)}</b><div class="sub">${s.pkg}</div></td><td>${trackLabel(s)}</td><td class="num">${left(s)} <span class="sub">of ${total(s)}</span></td><td>${nx?`${esc(nx[0])}<div class="sub">${fd(nx[2])}</div>`:'<span class="sub">None</span>'}</td><td class="num">${fd(s.end)}</td></tr>`;}).join('')}</tbody></table></div></section>`;
 };
 V.mavail=()=>`<div class="ph"><div><div class="eyebrow">Availability</div><h1>${isSup()?'When students can book '+esc(fname(men(ME_M()).name)):'When students can book you'}</h1><p>Click a slot to open or close it. Times in GMT+7. Each session is ${S.settings.sessionMin} minutes.</p></div>
@@ -710,25 +687,34 @@ V.users=()=>{const pend=S.users.map((u,i)=>[u,i]).filter(x=>x[0].status==='Pendi
   <section class="panel flush"><div class="panel-h"><h2>Access by role</h2></div><div class="tbl-wrap"><table><thead><tr><th>Permission</th><th>Super Admin</th><th>Operations</th><th>Mentor</th><th>Student Priority</th><th>Hotline</th></tr></thead><tbody>
   ${ACCESS.map(r=>`<tr><td>${r[0]}</td>${r.slice(1).map(c=>`<td><span class="pill ${c==='No'?'':c==='Yes'||c==='All'||c==='Edit'?'good':'accent'}">${c}</span></td>`).join('')}</tr>`).join('')}</tbody></table></div></section>`;};
 V.materials=()=>{const t=S.topics.find(x=>x.id===S.matTopic)||S.topics[0];
-  return `<div class="ph"><div><div class="eyebrow">Materials</div><h1>Materials library</h1><p>Upload a Word or PDF file and it becomes an article. Save it as a draft or publish it. Students only see published items.</p></div><button class="btn primary" data-act="upload">Upload document</button></div>
+  return `<div class="ph"><div><div class="eyebrow">Materials</div><h1>Materials library</h1><p>Upload a Word or PDF file and it becomes an article, or upload a video. Save it as a draft or publish it. Students only see published items. Click a row to open it.</p></div><button class="btn primary" data-act="upload">Upload</button></div>
   <div class="grid"><section class="panel flush c4"><div class="list">${S.topics.map(x=>`<div class="item click" data-topic="${x.id}" style="${x.id===t.id?'background:#f1f7fe':''}"><div class="grow"><div class="title">${esc(x.name)}</div><div class="sub">${x.items.filter(i=>i.st==='Published').length} published · ${x.items.filter(i=>i.st==='Draft').length} draft</div></div></div>`).join('')}</div></section>
-  <section class="panel flush c8"><div class="panel-h"><h2>${esc(t.name)}</h2><button class="btn sm" data-act="upload">Upload to this topic</button></div><div class="list">${t.items.map(i=>`<div class="item"><div class="m-ico ${i.k==='Video'?'mk-video':'mk-doc'}">${i.k==='Video'?'▶':'¶'}</div><div class="grow"><div class="title">${esc(i.t)}</div><div class="sub">${i.k} · from ${esc(i.src)} · updated ${fd(i.upd)}</div></div><span class="pill ${i.st==='Published'?'good':''}">${i.st}</span>${i.k==='Article'?`<a class="btn sm" href="#mat-${i.id}">${i.st==='Draft'?'Edit':'Open'}</a>`:''}<button class="btn sm ${i.st==='Published'?'':'primary'}" data-act="pubask" data-id="${i.id}">${i.st==='Published'?'Unpublish':'Publish'}</button></div>`).join('')||'<div class="empty">Nothing here yet. Upload a document to start.</div>'}</div></section></div>`;
+  <section class="panel flush c8"><div class="panel-h"><h2>${esc(t.name)}</h2><button class="btn sm" data-act="upload">Upload</button></div><div class="list">${t.items.map(i=>`<div class="item click" data-go="mat-${i.id}"><div class="m-ico ${i.k==='Video'?'mk-video':'mk-doc'}">${i.k==='Video'?'▶':'¶'}</div><div class="grow"><div class="title">${esc(i.t)}</div><div class="sub">${i.k} · from ${esc(i.src)} · updated ${fd(i.upd)}</div></div><span class="pill ${i.st==='Published'?'good':''}">${i.st}</span><button class="btn sm" data-go="matedit-${i.id}">Edit</button><button class="btn sm ${i.st==='Published'?'':'primary'}" data-act="pubask" data-id="${i.id}">${i.st==='Published'?'Unpublish':'Publish'}</button></div>`).join('')||'<div class="empty">Nothing here yet. Upload a file to start.</div>'}</div></section></div>`;
 };
+function vidBox(i){return `<div class="vidbox"><span>▶</span><div><b>${esc(i.src)}</b><div class="sub">${i.k==='Video'?'Video · plays in the student app with English and Vietnamese subtitles':''}</div></div></div>`;}
+V.matview=id=>{const f=findMat(id);if(!f)return '<div class="empty">Material not found.</div>';const {t,i}=f;
+  return `<div class="ph"><div><a class="btn ghost" href="#materials">← Materials</a><div class="eyebrow" style="margin-top:6px">${esc(t.name)} · ${i.k} · from ${esc(i.src)} · updated ${fd(i.upd)}</div></div>
+   <div class="row-btns" style="align-items:center"><span class="pill ${i.st==='Published'?'good':''}">${i.st}</span><button class="btn" data-go="matedit-${i.id}">Edit</button><button class="btn ${i.st==='Published'?'':'primary'}" data-act="pubask" data-id="${i.id}">${i.st==='Published'?'Unpublish':'Publish'}</button></div></div>
+  <section class="panel article-ed">${i.k==='Video'?vidBox(i):''}<h1 style="font-size:1.6rem">${esc(i.t)}</h1><div class="art-view">${i.html}</div></section>
+  <p class="hint">${i.st==='Published'?'This is how students see it.':'Draft: students cannot see this yet.'}</p>`;};
 function findMat(id){for(const t of S.topics){const i=t.items.find(x=>x.id===id);if(i)return {t,i};}return null;}
 V.matedit=id=>{const f=findMat(id);if(!f)return '<div class="empty">Article not found.</div>';const {t,i}=f;
-  return `<div class="ph"><div><a class="btn ghost" href="#materials">← Materials</a><div class="eyebrow" style="margin-top:6px">${esc(t.name)} · from ${esc(i.src)}</div></div>
+  return `<div class="ph"><div><a class="btn ghost" href="#mat-${i.id}">← Done editing</a><div class="eyebrow" style="margin-top:6px">Editing · ${esc(t.name)} · from ${esc(i.src)}</div></div>
    <div class="row-btns" style="align-items:center"><span class="sub" id="savestate">${i.st==='Draft'?(S.savedAt&&S.savedAt[id]?'Draft saved at '+S.savedAt[id]:'Draft · changes save automatically'):'Published · edits save automatically'}</span><span class="pill ${i.st==='Published'?'good':''}">${i.st}</span><button class="btn ${i.st==='Published'?'':'primary'}" data-act="pubask" data-id="${i.id}">${i.st==='Published'?'Unpublish':'Publish'}</button></div></div>
-  <section class="panel article-ed"><input class="art-title" data-mat="${i.id}" data-k="t" value="${esc(i.t)}" aria-label="Title">
+   <section class="panel article-ed">${i.k==='Video'?vidBox(i):''}<input class="art-title" data-mat="${i.id}" data-k="t" value="${esc(i.t)}" aria-label="Title">
    <div class="field" style="max-width:320px"><label for="mtopic">Topic</label><select id="mtopic" data-mattopic="${i.id}">${S.topics.map(x=>`<option value="${x.id}" ${x.id===t.id?'selected':''}>${esc(x.name)}</option>`).join('')}</select></div>
-   <div class="art-body" contenteditable="true" data-mat="${i.id}" data-k="html" aria-label="Article text">${i.html}</div></section>
+   <div class="art-body" contenteditable="true" data-mat="${i.id}" data-k="html" aria-label="${i.k==='Video'?'Video description':'Article text'}">${i.html}</div></section>
   <p class="hint">This is how the article appears to students. The Vietnamese version is generated automatically after publishing.</p>`;
 };
 V.settings=()=>{const st=S.settings;const LR=[['S1-10','S1 · grade 10','High school'],['S1-11','S1 · grade 11','High school'],['S1-12','S1 · grade 12','High school'],['Gap year','Gap year','After high school'],['S2','S2 (master\'s)','Graduates'],['S3','S3 (PhD)','Master\'s graduates']];
   return `<div class="ph"><div><div class="eyebrow">Program settings</div><h1>Packages and rules</h1><p>Package changes apply to new students only; existing students keep their package.</p></div><button class="btn primary" data-act="savesettings">Save changes</button></div>
-  <div class="grid"><section class="panel c6"><h2>Packages</h2><p class="hint">Packages differ only in the number of video sessions.</p>
-   <div class="form">${Object.entries(st.packages).map(([k,v])=>`<div class="field"><label for="p-${k}">${k} sessions</label><input id="p-${k}" type="number" min="1" data-pkg="${k}" value="${v}"></div>`).join('')}<div class="field"><label for="smin">Session length (minutes)</label><input id="smin" type="number" value="${st.sessionMin}" data-set="sessionMin"></div></div></section>
+  <div class="grid"><section class="panel c12"><div><h2>Packages</h2><p class="hint">Packages differ only in the number of video sessions. Use − and + to change.</p></div>
+   <div class="pkgs">${Object.entries(st.packages).map(([k,v])=>`<div class="pkgc ${k.toLowerCase()}"><h3>${k}</h3><div class="stepper"><button type="button" data-step="p-${k}" data-d="-1" aria-label="Fewer ${k} sessions">−</button><input id="p-${k}" type="number" min="1" data-pkg="${k}" value="${v}" aria-label="${k} sessions"><button type="button" data-step="p-${k}" data-d="1" aria-label="More ${k} sessions">+</button></div><span class="sub">video sessions</span></div>`).join('')}
+   <div class="pkgc len"><h3>Session length</h3><div class="stepper"><button type="button" data-step="smin" data-d="-5" aria-label="Shorter">−</button><input id="smin" type="number" min="10" value="${st.sessionMin}" data-set="sessionMin" aria-label="Minutes per session"><button type="button" data-step="smin" data-d="5" aria-label="Longer">+</button></div><span class="sub">minutes per session, all packages</span></div></div></section>
   <section class="panel c6"><h2>Top-up bundles</h2><p class="hint">Only sessions can be topped up. Valid until the program ends.</p>
    <div class="tbl-wrap"><table><thead><tr><th>Sessions</th><th>Price (VND)</th><th>Per session</th></tr></thead><tbody>${st.topups.map((t,i)=>`<tr><td class="num">+${t.n}</td><td><input type="number" step="50000" data-topup="${i}" value="${t.price}" style="border:1px solid var(--line);border-radius:8px;padding:5px 8px;width:140px" aria-label="Price for ${t.n}"></td><td class="num sub">${fmt(Math.round(t.price/t.n))}</td></tr>`).join('')}</tbody></table></div><p class="demo-note">Sample prices.</p></section>
+  <section class="panel c6"><h2>Student Priority shifts</h2><p class="hint">Student Priority works in shifts. Questions are answered by whoever is on shift; there is no assigning.</p>
+   <div class="tbl-wrap"><table><thead><tr><th>Staff</th><th>From</th><th>To</th></tr></thead><tbody>${st.spShifts.map((x,i)=>`<tr><td><b>${esc(x.name)}</b></td><td><input type="time" data-shift="${i}" data-k="from" value="${x.from}" aria-label="${esc(x.name)} from" style="border:1px solid var(--line);border-radius:8px;padding:5px 8px"></td><td><input type="time" data-shift="${i}" data-k="to" value="${x.to}" aria-label="${esc(x.name)} to" style="border:1px solid var(--line);border-radius:8px;padding:5px 8px"></td></tr>`).join('')}</tbody></table></div></section>
   <section class="panel flush c12"><div class="panel-h"><div><h2>Program lengths</h2><p class="hint" style="margin-top:2px">Click to turn a length on or off. Ops can only pick the lengths that are on. For S1, the longest length ends on the high-school graduation date.</p></div></div>
    <div class="tbl-wrap"><table><thead><tr><th>Track</th><th>Who</th><th>Lengths the customer can choose</th><th>Program ends</th></tr></thead><tbody>${LR.map(([k,l,w])=>{const on=st.lengths[k]||[];const mx=Math.max(...on);return `<tr><td><b>${l}</b></td><td class="sub">${w}</td><td><div class="lenpick">${[1,2,3].map(n=>`<button class="lenbtn" data-len="${k}" data-n="${n}" aria-pressed="${on.includes(n)}">${n} year${n>1?'s':''}</button>`).join('')}</div></td><td class="sub">${k.startsWith('S1')?`${on.filter(n=>n<mx).map(n=>n+' yr: start + '+n+' yr').join(', ')}${on.filter(n=>n<mx).length?'; ':''}${mx} yr: HS graduation date`:'Start date + chosen length'}</td></tr>`;}).join('')}</tbody></table></div></section>
   <section class="panel c12"><h2>Rules and timers</h2><div class="form">
@@ -788,15 +774,15 @@ function agendaModal(id){const x=S.sessions.find(y=>y.id===id);
   <div class="field"><label for="ag">Agenda</label><textarea id="ag">${esc(x.agenda)}</textarea></div>
   <div class="banner info">Open action items: rewrite "Why Monash" with one unit; cut 70+ words.</div>
   <div class="modal-foot"><button class="btn" data-close>Cancel</button><button class="btn primary" data-act="saveagenda" data-id="${id}">Share with student</button></div>`);}
-function userModal(req){modal(`<div><div class="eyebrow">${req?'Request new mentor':'Add user'}</div><h2>${req?'New mentor':'New internal user'}</h2><p class="hint">${req?'Super Admin approves the request before the mentor can log in.':'As Super Admin, the account is active right away.'}</p></div>
+function userModal(req){const sa=isSup();modal(`<div><div class="eyebrow">${req?'Mentor list':'Add user'}</div><h2>${req?'New mentor':'New internal user'}</h2><p class="hint">${sa?'The account is active right away and the invite is sent.':'Super Admin approves the new mentor before they can log in.'}</p></div>
   <div class="form"><div class="field"><label for="un">Name</label><input id="un"></div><div class="field"><label for="ue">Schoters email</label><input id="ue" type="email" placeholder="name@schoters.example"></div>
   ${req?'<input type="hidden" id="ur" value="Mentor">':`<div class="field"><label for="ur">Role</label><select id="ur">${RLIST.map(r=>`<option>${r}</option>`).join('')}</select></div>`}
   <div class="field ${req?'':'full'}"><label for="unote">${req?'Specialty and why we need them':'Note'}</label><input id="unote"></div></div>
   <div class="err" id="uerr" hidden>Add a name and email.</div>
-  <div class="modal-foot"><button class="btn" data-close>Cancel</button><button class="btn primary" data-act="douser" data-req="${req?1:''}">${req?'Send for approval':'Create and send invite'}</button></div>`);}
-function uploadModal(){modal(`<div><div class="eyebrow">Upload document</div><h2>Turn a document into an article</h2><p class="hint">Upload a Word (.docx) or PDF file. The text, headings and lists become an article you can edit before publishing.</p></div>
+  <div class="modal-foot"><button class="btn" data-close>Cancel</button><button class="btn primary" data-act="douser" data-req="${req?1:''}">${sa?(req?'Add mentor':'Create and send invite'):'Add mentor'}</button></div>`);}
+function uploadModal(){modal(`<div><div class="eyebrow">Upload</div><h2>Add to the materials library</h2><p class="hint">A Word (.docx) or PDF file becomes an article you can edit. A video (.mp4, .mov, .webm) becomes a video item with a description.</p></div>
   <div class="field"><label for="utopic">Topic</label><select id="utopic">${S.topics.map(x=>`<option value="${x.id}" ${x.id===S.matTopic?'selected':''}>${esc(x.name)}</option>`).join('')}</select></div>
-  <label class="drop" for="ufile"><b>Choose a file</b><span class="sub">.docx or .pdf, up to 20 MB</span><input id="ufile" type="file" accept=".docx,.pdf,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="display:none"></label>
+  <label class="drop" for="ufile"><b>Choose a file</b><span class="sub">.docx, .pdf or video, up to 500 MB</span><input id="ufile" type="file" accept=".docx,.pdf,.mp4,.mov,.webm,video/*,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="display:none"></label>
   <div id="uprog" class="hint" hidden></div>
   <div class="modal-foot"><button class="btn" data-close>Cancel</button><span class="sub">Saved as a draft first</span></div>`);}
 function pubModal(id){const {i}=findMat(id);const pub=i.st!=='Published';
@@ -825,23 +811,23 @@ async function convertFile(file){const ext=file.name.toLowerCase().split('.').po
     flush();endUl();return out;}
   throw new Error('type');}
 async function handleUpload(file){const pr=$('#uprog');pr.hidden=false;const ext=file.name.toLowerCase().split('.').pop();
-  if(!['docx','pdf'].includes(ext)){pr.innerHTML='<span class="err">Only .docx or .pdf files.</span>';return;}
+  const nice=file.name.replace(/\.[^.]+$/,'').replace(/[-_]+/g,' ').replace(/^./,c=>c.toUpperCase());
+  if(['mp4','mov','webm','m4v'].includes(ext)||/^video\//.test(file.type)){const tp=S.topics.find(x=>x.id===$('#utopic').value);const id='u'+Date.now();tp.items.unshift({id,t:nice,k:'Video',st:'Draft',src:file.name,upd:iso(TODAY),html:'<p>Add a short description for students.</p>'});S.matTopic=tp.id;log(null,'Material uploaded','',`${nice} (${tp.name})`,file.name);close();location.hash='matedit-'+id;toast('Video uploaded. Saved as a draft.');return;}
+  if(!['docx','pdf'].includes(ext)){pr.innerHTML='<span class="err">Use a .docx, .pdf or video file.</span>';return;}
   pr.textContent=`Converting ${file.name}…`;let html,ok=true;
   try{html=await convertFile(file);if(!html)throw new Error('empty');}catch(err){ok=false;html=`<p>[Converted text from ${esc(file.name)} appears here.]</p>`;}
   const tp=S.topics.find(x=>x.id===$('#utopic').value);let title=file.name.replace(/\.[^.]+$/,'').replace(/[-_]+/g,' ').replace(/^./,c=>c.toUpperCase());{const d=document.createElement('div');d.innerHTML=html;const h=d.firstElementChild;if(h&&h.tagName==='H3'&&h.textContent.trim().length<90){title=h.textContent.trim();h.remove();html=d.innerHTML;}}
   const id='u'+Date.now();tp.items.unshift({id,t:title,k:'Article',st:'Draft',src:file.name,upd:iso(TODAY),html});S.matTopic=tp.id;
-  log(null,'Material uploaded','',`${title} (${tp.name})`,file.name);close();location.hash='mat-'+id;toast(ok?'Converted to an article. Saved as a draft.':'Could not read the file here; a placeholder draft was created.');}
+  log(null,'Material uploaded','',`${title} (${tp.name})`,file.name);close();location.hash='matedit-'+id;toast(ok?'Converted to an article. Saved as a draft.':'Could not read the file here; a placeholder draft was created.');}
 let saveT=null;
 function autosave(el){const f=findMat(el.dataset.mat);if(!f)return;const st=$('#savestate');if(st)st.textContent='Saving…';clearTimeout(saveT);
   saveT=setTimeout(()=>{f.i[el.dataset.k]=el.dataset.k==='html'?el.innerHTML:el.value;f.i.upd=iso(TODAY);const n=new Date(Date.now()+7*3600e3);const tm=String(n.getUTCHours()).padStart(2,'0')+':'+String(n.getUTCMinutes()).padStart(2,'0');S.savedAt=S.savedAt||{};S.savedAt[f.i.id]=tm;const s2=$('#savestate');if(s2)s2.textContent=(f.i.st==='Draft'?'Draft saved at ':'Saved at ')+tm;},700);}
 
 /* ---------- Events ---------- */
-document.addEventListener('click',e=>{const t=e.target.closest('[data-acct],[data-login],[data-go],[data-act],[data-tab],[data-ch],[data-q],[data-rev],[data-slot],[data-topic],[data-len],[data-close],[data-close-bg],[data-tbund],[data-gs],[data-gst],[data-viewm],[data-urf]');
-  if(!e.target.closest('#gs')){const b=$('#gsres');if(b)b.hidden=true;}
+document.addEventListener('click',e=>{const t=e.target.closest('[data-acct],[data-login],[data-go],[data-act],[data-tab],[data-ch],[data-q],[data-rev],[data-slot],[data-topic],[data-len],[data-close],[data-close-bg],[data-tbund],[data-viewm],[data-step],[data-urf]');
   if(!e.target.closest('.pk')){const b=$('#pkpop');if(b)b.hidden=true;}
   if(!t)return;
-  if(t.dataset.gs){gsGo(t.dataset.gs);return;}
-  if(t.dataset.gst){S.gsType=t.dataset.gst;$('#gst').value=S.gsType;$('#gsq').focus();gsDraw();return;}
+  if(t.dataset.step){const i=$('#'+t.dataset.step);i.value=Math.max(+i.min||1,(+i.value||0)+ +t.dataset.d);return;}
   if(t.dataset.viewm){S.viewM=t.dataset.viewm;S.reviewSel=null;close();if(MVIEWS.includes(route().v))rerender();else location.hash='mday';toast('Now viewing '+men(S.viewM).name+'\'s workspace.');return;}
   if(t.dataset.urf!==undefined){S.userRole=t.dataset.urf;rerender();return;}
   if(t.hasAttribute('data-close-bg')&&e.target!==t)return;
@@ -876,7 +862,7 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-acct],[dat
       else if(a==='ext'){const v=$('#pv-ext').value;log(id,'Program end changed',fd(s.end),fd(v),why);s.end=v;}
       else {log(id,'Program ended early',fd(s.end),fd(iso(TODAY)),why);s.end=iso(TODAY);s.status='Ended';}
       close();rerender();toast('Saved. The student sees the change right away.');break;}
-    case 'nfreset':Object.assign(NF,{name:'',email:'',phone:'',school:'',contract:'',mentor:''});rerender();break;
+    case 'newstudent':newStudentModal();break;
     case 'reply':{const q=S.questions.find(x=>x.id===id);const txt=$('#rep').value.trim();if(!txt){toast('Write a reply first.');return;}q.msgs.push({by:'Our team ('+meName()+')',t:txt,at:'2026-11-26T05:02'});q.status='Answered';q.assignee=q.assignee||meName();rerender();toast('Reply sent to the student.');break;}
     case 'askmentor':{const q=S.questions.find(x=>x.id===id);const s=stu(q.st);q.msgs.push({note:1,to:men(s.mentor).name,t:'Can you advise on this? I will reply to the student.',at:'2026-11-26T05:02'});rerender();toast('Internal note sent to the mentor.');break;}
     case 'agenda':agendaModal(id);break;
@@ -893,22 +879,21 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-acct],[dat
     case 'dayoff':{S.offs=S.offs||['2026-12-31','2027-01-01'];const v=$('#dayoff').value;if(v&&!S.offs.includes(v))S.offs.push(v);S.offs.sort();rerender();toast('Day off added. Those slots are closed.');break;}
     case 'adduser':userModal(false);break;
     case 'reqmentor':userModal(true);break;
-    case 'douser':{const n=$('#un').value.trim(),em=$('#ue').value.trim();if(!n||!em){$('#uerr').hidden=false;return;}const req=!!t.dataset.req&&S.role!=='super';const role=$('#ur').value;S.users.push({name:n,email:em,role,status:req?'Pending':'Active',by:meName(),on:iso(TODAY),note:$('#unote').value.trim()});log(null,req?'User requested':'User added','',`${n} (${role})`,req?'Waiting for Super Admin':'Added by Super Admin');close();rerender();toast(req?'Sent to Super Admin for approval.':'Account created and invite sent.');break;}
+    case 'douser':{const n=$('#un').value.trim(),em=$('#ue').value.trim();if(!n||!em){$('#uerr').hidden=false;return;}const req=!!t.dataset.req&&S.role!=='super';const role=$('#ur').value;if(!req&&role==='Mentor'&&!S.mentors.some(m=>m.name===n))S.mentors.push({id:'m'+(S.mentors.length+1),name:n,spec:($('#unote').value||'New mentor').split(',')[0].split('.')[0],countries:'To complete',langs:'Vietnamese, English',cap:10,since:'2026',edu:'To complete',bio:$('#unote').value||'Profile to complete.',rating:'new',month:0});S.users.push({name:n,email:em,role,status:req?'Pending':'Active',by:meName(),on:iso(TODAY),note:$('#unote').value.trim()});log(null,req?'User requested':'User added','',`${n} (${role})`,req?'Waiting for Super Admin':'Added by Super Admin');close();rerender();toast(req?'Sent to Super Admin for approval.':'Account created and invite sent.');break;}
     case 'approveuser':{const u=S.users[+t.dataset.i];u.status='Active';if(u.role==='Mentor'&&!S.mentors.some(m=>m.name===u.name))S.mentors.push({id:'m'+(S.mentors.length+1),name:u.name,spec:(u.note||'New mentor').split(',')[0].split('.')[0],countries:'To complete',langs:'Vietnamese, English',cap:10,since:'2026',edu:'To complete',bio:u.note||'Profile to complete.',rating:'new',month:0});log(null,'User approved','Pending',`${u.name} (${u.role})`,'Super Admin approval');rerender();toast(`${u.name} approved. Invite sent.`);break;}
     case 'rejectuser':{const u=S.users[+t.dataset.i];u.status='Rejected';log(null,'User rejected','Pending',`${u.name} (${u.role})`,'Super Admin');rerender();toast('Request rejected. The requester is notified.');break;}
     case 'toggleuser':{const u=S.users[+t.dataset.i];u.status=u.status==='Active'?'Deactivated':'Active';log(null,u.status==='Active'?'User reactivated':'User deactivated','',u.name,'Super Admin');rerender();toast(u.status==='Active'?'Reactivated.':`${u.name} lost access right away.`);break;}
-    case 'mprofile':mentorModal(id);break;
+    case 'mprofile':if(isSup()){S.viewM=id;drawRail(route().v);}mentorModal(id);break;
     case 'pkopen':{const p=$('#pkpop');p.hidden=!p.hidden;if(!p.hidden){pkDraw();$('#pkq').focus();}break;}
     case 'upload':uploadModal();break;
     case 'pubask':pubModal(id);break;
     case 'dopub':{const {i}=findMat(id);const ed=document.querySelector('.art-body');if(ed&&ed.dataset.mat===id){clearTimeout(saveT);i.html=ed.innerHTML;const ti=document.querySelector('.art-title');if(ti)i.t=ti.value;}i.st=i.st==='Published'?'Draft':'Published';i.upd=iso(TODAY);log(null,i.st==='Published'?'Material published':'Material unpublished','',i.t,'');close();rerender();toast(i.st==='Published'?'Published. Students can see it now.':'Unpublished. Students no longer see it.');break;}
-    case 'savesettings':{document.querySelectorAll('[data-pkg]').forEach(i=>S.settings.packages[i.dataset.pkg]=Math.max(1,+i.value||1));document.querySelectorAll('[data-topup]').forEach(i=>S.settings.topups[+i.dataset.topup].price=+i.value||0);document.querySelectorAll('[data-set]').forEach(i=>{const k=i.dataset.set;S.settings[k]=i.type==='number'?+i.value:i.value;});log(null,'Settings changed','','Packages, top-ups and rules','Super Admin');rerender();toast('Saved. Package changes apply to new students only.');break;}
+    case 'savesettings':{document.querySelectorAll('[data-pkg]').forEach(i=>S.settings.packages[i.dataset.pkg]=Math.max(1,+i.value||1));document.querySelectorAll('[data-shift]').forEach(i=>S.settings.spShifts[+i.dataset.shift][i.dataset.k]=i.value);document.querySelectorAll('[data-topup]').forEach(i=>S.settings.topups[+i.dataset.topup].price=+i.value||0);document.querySelectorAll('[data-set]').forEach(i=>{const k=i.dataset.set;S.settings[k]=i.type==='number'?+i.value:i.value;});log(null,'Settings changed','','Packages, top-ups and rules','Super Admin');rerender();toast('Saved. Package changes apply to new students only.');break;}
   }
 });
 document.addEventListener('input',e=>{const t=e.target;
   if(t.dataset&&t.dataset.mat){autosave(t);return;}
   if(t.id==='fq'){S.filters.q=t.value;const pos=t.selectionStart;rerender();const n=$('#fq');n.focus();n.setSelectionRange(pos,pos);}
-  if(t.id==='gsq'){gsDraw();return;}
   if(t.id==='pkq'){pkDraw();return;}
   for(const [id,key] of [['uq','userQ'],['mlq','mlQ'],['iq','inboxQ']])if(t.id===id){S[key]=t.value;const pos=t.selectionStart;rerender();const n=$('#'+id);n.focus();n.setSelectionRange(pos,pos);return;}
   if(t.id==='aq'){S.auditQ=t.value;const pos=t.selectionStart;rerender();const n=$('#aq');n.focus();n.setSelectionRange(pos,pos);}
@@ -917,8 +902,8 @@ document.addEventListener('input',e=>{const t=e.target;
 document.addEventListener('change',e=>{const t=e.target;
   if(t.id==='roleSel'){S.role=t.value;try{sessionStorage.setItem('lms-int-role',S.role)}catch(_){}location.hash=ROLES[S.role].home;render();return;}
   if(t.dataset.f){S.filters[t.dataset.f]=t.value;rerender();return;}
-  if(t.id==='gst'){S.gsType=t.value;$('#gsq').focus();gsDraw();return;}
-  if(t.closest&&t.closest('#nf')&&t.name){NF[t.name]=t.name==='len'?+t.value:t.value;if(t.name==='track'){NF.len=lengthOptions(t.value,+NF.grade)[0];}if(t.name==='grade'){NF.grad=(2026+13-(+t.value))+'-06-30';NF.len=Math.max(...lengthOptions('S1',+t.value));}if(t.tagName==='SELECT'||t.type==='date')rerender();return;}
+  if(t.id==='railM'){S.viewM=t.value;S.reviewSel=null;if(MVIEWS.includes(route().v))rerender();else location.hash='mday';toast('Now viewing '+men(S.viewM).name+'\'s workspace.');return;}
+  if(t.closest&&t.closest('#nf')&&t.name){NF[t.name]=t.name==='len'?+t.value:t.value;if(t.name==='track'){NF.len=lengthOptions(t.value,+NF.grade)[0];}if(t.name==='grade'){NF.grad=(2026+13-(+t.value))+'-06-30';NF.len=Math.max(...lengthOptions('S1',+t.value));}if(t.tagName==='SELECT'||t.type==='date')nsRedraw();return;}
   if(t.id==='saved'&&t.value!==''){const v=t.value;const r=S.saved[parseInt(v)];$('#rep').value=v.endsWith('v')?r.vi:r.en;return;}
   if(t.id==='asg'&&t.value){const q=S.questions.find(x=>x.id===(S.inboxSel||S.questions.filter(y=>y.ch===S.inboxCh)[0].id));q.assignee=t.value;rerender();toast('Assigned to '+t.value+'.');return;}
   if(t.id==='ufile'&&t.files[0]){handleUpload(t.files[0]);return;}
@@ -937,16 +922,14 @@ document.addEventListener('submit',e=>{if(e.target.id==='loginForm'){e.preventDe
   log(id,'Student created','',`${f.track}${f.track==='S1'?', grade '+f.grade:''}, ${len} yr, ${f.pkg}, ends ${fd(end)}`,f.contract?'Contract '+f.contract:'Contract');
   if(f.mentor)log(id,'Mentor assigned','',men(f.mentor).name,'At setup');
   Object.assign(NF,{name:'',email:'',phone:'',school:'',contract:'',mentor:''});
-  S.studentTab='overview';location.hash='student-'+id;toast('Student created. Login email sent.');
+  close();S.studentTab='overview';location.hash='student-'+id;toast('Student created. Login email sent.');
 });
-document.addEventListener('focusin',e=>{if(e.target.id==='gsq')gsDraw();});
 document.addEventListener('keydown',e=>{
-  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'&&$('#gsq')){e.preventDefault();$('#gsq').focus();return;}
-  const box=e.target.id==='gsq'?$('#gsres'):e.target.id==='pkq'?$('#pklist'):null;
+  const box=e.target.id==='pkq'?$('#pklist'):null;
   if(box&&(e.key==='ArrowDown'||e.key==='ArrowUp'||e.key==='Enter')){const it=[...box.querySelectorAll('.gsi')];if(!it.length)return;let i=it.findIndex(x=>x.classList.contains('kb'));
     if(e.key==='Enter'){e.preventDefault();(it[i]||it[0]).click();return;}
     e.preventDefault();it.forEach(x=>x.classList.remove('kb','act'));i=e.key==='ArrowDown'?(i+1)%it.length:(i<=0?it.length-1:i-1);it[i].classList.add('kb','act');it[i].scrollIntoView({block:'nearest'});return;}
-  if(e.key==='Escape'){const b=$('#gsres');if(b&&!b.hidden){b.hidden=true;return;}const p=$('#pkpop');if(p&&!p.hidden){p.hidden=true;return;}close();}});
+  if(e.key==='Escape'){const p=$('#pkpop');if(p&&!p.hidden){p.hidden=true;return;}close();}});
 window.addEventListener('hashchange',()=>{render();const m=$('#main');if(m)m.scrollTop=0;window.scrollTo(0,0);});
 try{S.role=sessionStorage.getItem('lms-int-role')||null;}catch(_){}
 if(S.role&&!ROLES[S.role])S.role=null;
