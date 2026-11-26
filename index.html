@@ -906,7 +906,7 @@ function videoModal(id){const m=S.topics.flatMap(x=>x.lessons).find(x=>x.id===id
     <div class="row" style="justify-content:space-between;flex-wrap:wrap;gap:8px"><span class="hint">Subtitles: English, Tiếng Việt</span><div class="row"><button class="btn" data-close>Close</button><button class="btn" data-go="ask" data-ch="sp">Ask a question</button></div></div>`);}
 
 V.billing=()=>{const pk=S.packages;const refundMonths=S.billing==='annual'?S.monthsPaid-S.monthsUsed-1:0;return `
-  <div class="topbar"><div><div class="eyebrow">Plan &amp; billing</div><h1>${S.pkg} package</h1><p class="sub">Bachelor's track · Program ends ${S.student.programEnd}, when you graduate high school</p></div><span class="proto">Prices to be set</span></div>
+  <div class="topbar"><div><div class="eyebrow">Plan &amp; billing</div><h1>${S.pkg} package</h1><div class="row" style="gap:8px;margin-top:10px"><span class="chip"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2.5" fill="none" stroke="var(--accent)" stroke-width="2"/><path d="M4 10h16M9 3v4M15 3v4" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/></svg>Program ends ${S.student.programEnd}</span></div></div><span class="proto">Prices to be set</span></div>
   <section class="panel"><div class="table-wrap"><table class="pk-table pk-cur-${Object.keys(pk).indexOf(S.pkg)+2}"><thead><tr><th>Feature</th>${Object.keys(pk).map(k=>`<th class="c">${k}</th>`).join('')}</tr></thead><tbody>
     <tr><td>Video sessions (50 min)</td>${Object.values(pk).map(p=>`<td class="c num">${p.sessions}</td>`).join('')}</tr>
     ${['Learning plan'].map(f=>`<tr><td>${f}</td>${Object.keys(pk).map(()=>'<td class="c">Yes</td>').join('')}</tr>`).join('')}
