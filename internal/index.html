@@ -161,14 +161,25 @@ tr.click{cursor:pointer}tr.click:hover td{background:#f7fbff}
 .lenpick{display:flex;gap:6px;flex-wrap:wrap}
 .lenbtn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:6px 12px;font-weight:600;color:var(--muted);cursor:pointer}
 .lenbtn[aria-pressed=true]{background:var(--accent-soft);border-color:#a9d1f5;color:#1a64ad}
-/* login */
-.login{position:fixed;inset:0;z-index:40;display:grid;place-items:center;background:var(--rail-grad);padding:16px}
-.login-card{background:#fff;border-radius:24px;padding:28px;max-width:440px;width:100%;display:flex;flex-direction:column;gap:16px;box-shadow:0 20px 60px rgba(0,0,0,.25)}
-.roles{display:flex;flex-direction:column;gap:8px}
-.role-opt{display:flex;gap:12px;align-items:center;border:1px solid var(--line);border-radius:14px;padding:12px 14px;cursor:pointer;background:#fff;text-align:left}
-.role-opt:hover{border-color:#a9d1f5;background:#f7fbff}
-.role-opt b{display:block}.role-opt span{color:var(--muted);font-size:13px}
-.role-ico{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;font-family:var(--display);font-weight:800;flex:none}
+/* login (same layout as the student login) */
+.login{position:fixed;inset:0;z-index:40;background:var(--bg);display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);overflow:auto}
+.login-side{background:linear-gradient(160deg,#cfe5fa,#f5faff);color:var(--ink);padding:48px;display:flex;flex-direction:column;justify-content:space-between;gap:32px}
+.login-side .brand{color:var(--ink);padding:0}.login-side .brand-mark{background:var(--rail-active);color:#fff}.login-side .brand small{color:var(--muted)}
+.login-side h2{font-size:2rem;line-height:1.15;font-weight:800;max-width:15ch}
+.login-side ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px;color:var(--muted)}
+.login-side li::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-right:10px;vertical-align:middle}
+.login-form{display:flex;flex-direction:column;justify-content:center;gap:16px;padding:40px 24px;max-width:440px;width:100%;margin:0 auto}
+.login-form .field input{border:1px solid var(--line);border-radius:12px;padding:11px 12px;background:var(--surface)}
+.divider{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12px}
+.divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--line)}
+.btn.lg{padding:12px 20px;font-size:15px;border-radius:14px}
+.gbtn{gap:10px}.gbtn svg{width:18px;height:18px}
+.rolepick{display:flex;flex-wrap:wrap;gap:6px}
+.rolepick button{border:1px solid var(--line);background:#fff;border-radius:99px;padding:7px 12px;font-weight:600;font-size:13px;color:var(--muted);cursor:pointer}
+.rolepick button[aria-pressed=true]{background:var(--accent-soft);border-color:#a9d1f5;color:#1a64ad}
+.role-desc{font-size:12.5px;color:var(--muted);min-height:18px}
+.check{display:flex;gap:8px;align-items:center;cursor:pointer;font-size:13.5px}.check input{accent-color:var(--accent)}
+@media (max-width:760px){.login{grid-template-columns:minmax(0,1fr)}.login-side{padding:28px 16px}.login-side h2{font-size:1.5rem}.login-side ul{display:none}}
 @media (max-width:1000px){.c3,.c4,.c5,.c6,.c7,.c8{grid-column:span 12}}
 @media (max-width:760px){
   .shell{grid-template-columns:1fr}
@@ -188,18 +199,23 @@ tr.click{cursor:pointer}tr.click:hover td{background:#f7fbff}
 </head>
 <body>
 <div class="login" id="login" hidden>
-  <div class="login-card">
-    <div style="display:flex;gap:10px;align-items:center"><div class="brand-mark" style="background:var(--rail-active);color:#fff">S</div><div><b style="font-family:var(--display);font-size:16px">Schoters LMS</b><div class="hint">Internal dashboard</div></div></div>
-    <div><h1>Staff log in</h1><p class="hint" style="margin-top:4px">Production uses Google login on the Schoters domain, and each account has one role. In this prototype, pick a role to try.</p></div>
-    <div class="roles">
-      <button class="role-opt" data-login="super"><div class="role-ico" style="background:#fdf3d3;color:#8a5a00">Sa</div><div><b>Super Admin</b><span>Andi Pratama: access to everything, user approvals, settings</span></div></button>
-      <button class="role-opt" data-login="ops"><div class="role-ico" style="background:var(--accent-soft);color:#1a64ad">Op</div><div><b>Operations</b><span>Dewi Lestari: students, program setup, mentor bank, materials</span></div></button>
-      <button class="role-opt" data-login="mentor"><div class="role-ico" style="background:#efe7fe;color:var(--violet)">Me</div><div><b>Mentor</b><span>Lê Hoàng Nam: availability, sessions, reports, document review</span></div></button>
-      <button class="role-opt" data-login="sp"><div class="role-ico" style="background:var(--good-soft);color:var(--good)">SP</div><div><b>Student Priority</b><span>Mai Phương: study and application questions in English</span></div></button>
-      <button class="role-opt" data-login="hotline"><div class="role-ico" style="background:var(--bad-soft);color:var(--bad)">Ho</div><div><b>Hotline</b><span>Rizky Hidayat: schedule, payment, account and urgent issues</span></div></button>
-    </div>
-    <p class="demo-note">Sample data only. Not real students. Changes reset when you refresh.</p>
+  <div class="login-side">
+    <div class="brand"><div class="brand-mark">S</div><div><b>Schoters Mentoring</b><small>Internal dashboard</small></div></div>
+    <h2>Run every student's program from one place</h2>
+    <ul><li>Set up students, packages and program end dates</li><li>Match each student with the right mentor</li><li>Answer Student Priority and Hotline questions on time</li><li>Publish learning materials from a Word or PDF file</li></ul>
+    <small style="color:var(--muted)">For Schoters staff only. Need access? Ask your Super Admin.</small>
   </div>
+  <form class="login-form" id="loginForm" novalidate>
+    <div><div class="eyebrow">Staff login</div><h1 style="font-size:2rem">Welcome back</h1><p class="sub">Log in with your Schoters account.</p></div>
+    <div class="field"><label>Log in as</label><div class="rolepick" role="group" aria-label="Role" id="rolepick"></div><div class="role-desc" id="roledesc"></div></div>
+    <button type="button" class="btn lg gbtn" data-act="google"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.5 12.3c0-.8-.1-1.5-.2-2.3H12v4.3h5.9a5 5 0 0 1-2.2 3.3v2.7h3.5c2.1-1.9 3.3-4.7 3.3-8z"/><path fill="#34A853" d="M12 23c3 0 5.5-1 7.2-2.7l-3.5-2.7c-1 .7-2.2 1-3.7 1-2.9 0-5.3-1.9-6.2-4.5H2.2v2.8A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.8 14.1a6.6 6.6 0 0 1 0-4.2V7.1H2.2a11 11 0 0 0 0 9.8z"/><path fill="#EA4335" d="M12 5.4c1.6 0 3.1.6 4.2 1.7l3.1-3.1A11 11 0 0 0 2.2 7.1l3.6 2.8C6.7 7.3 9.1 5.4 12 5.4z"/></svg>Continue with Google</button>
+    <div class="divider">or</div>
+    <div class="field"><label for="lemail">Email</label><input id="lemail" type="email" autocomplete="username"></div>
+    <div class="field"><label for="lpass">Password</label><input id="lpass" type="password" value="prototype" autocomplete="current-password"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><label class="check"><input type="checkbox" checked><span>Remember me</span></label><button type="button" class="btn ghost sm" data-act="forgot">Forgot password?</button></div>
+    <button type="submit" class="btn primary lg">Log in</button>
+    <p class="hint">Prototype: any email and password works. In production the role comes from your account, which Super Admin approves.</p>
+  </form>
 </div>
 <div class="shell" id="app" hidden>
   <aside class="rail" id="rail"></aside>
@@ -387,7 +403,12 @@ const V={};
 function route(){const h=location.hash.slice(1);if(h.startsWith('student-'))return {v:'student',id:h.slice(8)};if(h.startsWith('mat-'))return {v:'matedit',id:h.slice(4)};return {v:h};}
 function allowed(v){const R=ROLES[S.role];if(v==='student')return ['super','ops','mentor'].includes(S.role);if(v==='matedit')return can('materials');return R.nav.some(n=>n[0]===v);}
 const can=v=>ROLES[S.role].nav.some(n=>n[0]===v);
+const LOGIN={super:['andi@schoters.example','Access to everything, user approvals and settings'],ops:['dewi@schoters.example','Students, program setup, mentor bank and materials'],mentor:['nam.le@schoters.example','Your students, sessions, reports and document review'],sp:['phuong.mai@schoters.example','Study and application questions in English'],hotline:['rizky@schoters.example','Schedule, payment, account and urgent issues']};
+let pickRole='ops';
+function drawLogin(){$('#rolepick').innerHTML=Object.entries(ROLES).map(([k,r])=>`<button type="button" data-pick="${k}" aria-pressed="${k===pickRole}">${r.label}</button>`).join('');$('#roledesc').textContent=LOGIN[pickRole][1];$('#lemail').value=LOGIN[pickRole][0];}
+function doLogin(){S.role=pickRole;try{sessionStorage.setItem('lms-int-role',S.role)}catch(_){}location.hash=ROLES[S.role].home;render();}
 function render(){
+  if(!S.role)drawLogin();
   $('#login').hidden=!!S.role;$('#app').hidden=!S.role;if(!S.role)return;
   let r=route();if(!allowed(r.v)){location.replace('#'+ROLES[S.role].home);r={v:ROLES[S.role].home};}
   drawRail(r.v);$('#main').innerHTML=`<div class="page">${V[r.v](r.id)}</div>`;
@@ -741,8 +762,11 @@ function autosave(el){const f=findMat(el.dataset.mat);if(!f)return;const st=$('#
   saveT=setTimeout(()=>{f.i[el.dataset.k]=el.dataset.k==='html'?el.innerHTML:el.value;f.i.upd=iso(TODAY);const n=new Date(Date.now()+7*3600e3);const tm=String(n.getUTCHours()).padStart(2,'0')+':'+String(n.getUTCMinutes()).padStart(2,'0');S.savedAt=S.savedAt||{};S.savedAt[f.i.id]=tm;const s2=$('#savestate');if(s2)s2.textContent=(f.i.st==='Draft'?'Draft saved at ':'Saved at ')+tm;},700);}
 
 /* ---------- Events ---------- */
-document.addEventListener('click',e=>{const t=e.target.closest('[data-login],[data-go],[data-act],[data-tab],[data-ch],[data-q],[data-rev],[data-slot],[data-topic],[data-len],[data-close],[data-close-bg],[data-tbund]');if(!t)return;
+document.addEventListener('click',e=>{const t=e.target.closest('[data-pick],[data-login],[data-go],[data-act],[data-tab],[data-ch],[data-q],[data-rev],[data-slot],[data-topic],[data-len],[data-close],[data-close-bg],[data-tbund]');if(!t)return;
   if(t.hasAttribute('data-close-bg')&&e.target!==t)return;
+  if(t.dataset.pick){pickRole=t.dataset.pick;drawLogin();return;}
+  if(t.dataset.act==='google'){doLogin();return;}
+  if(t.dataset.act==='forgot'){toast('We sent a reset link to your email (simulated).');return;}
   if(t.dataset.login){S.role=t.dataset.login;try{sessionStorage.setItem('lms-int-role',S.role)}catch(_){}location.hash=ROLES[S.role].home;render();return;}
   if(t.hasAttribute('data-close')||t.hasAttribute('data-close-bg')){close();return;}
   if(t.dataset.tbund){t.parentNode.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b===t));return;}
@@ -818,7 +842,7 @@ document.addEventListener('change',e=>{const t=e.target;
   if(t.id==='pa'){$('#pv-up').hidden=t.value!=='up';$('#pv-ext').hidden=t.value!=='ext';return;}
   if(t.dataset.urole){const u=S.users[+t.dataset.urole];const o=u.role;u.role=t.value;log(null,'Role changed',`${u.name}: ${o}`,t.value,'Super Admin');toast(`${u.name} is now ${t.value}.`);return;}
 });
-document.addEventListener('submit',e=>{if(e.target.id!=='nf')return;e.preventDefault();const f=NF;const er=$('#nf-err');
+document.addEventListener('submit',e=>{if(e.target.id==='loginForm'){e.preventDefault();doLogin();return;}if(e.target.id!=='nf')return;e.preventDefault();const f=NF;const er=$('#nf-err');
   const fdat=new FormData(e.target);for(const [k,v] of fdat.entries())NF[k]=k==='len'?+v:v;
   if(!f.name.trim()||!/^\S+@\S+\.\S+$/.test(f.email)){er.textContent='Add the student\'s name and a valid email.';er.hidden=false;return;}
   if(f.track==='S1'&&f.grad<=f.start){er.textContent='The graduation date must be after the start date.';er.hidden=false;return;}
