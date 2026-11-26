@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light">
-<title>Schoters LMS Internal</title>
+<title>Schoters Global Internal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap">
 <style>
@@ -204,7 +204,7 @@ tr.click{cursor:pointer}tr.click:hover td{background:#f7fbff}
 <body>
 <div class="login" id="login" hidden>
   <div class="login-side">
-    <div class="brand"><div class="brand-mark">S</div><div><b>Schoters Mentoring</b><small>Internal dashboard</small></div></div>
+    <div class="brand"><div class="brand-mark">S</div><div><b>Schoters Global</b><small>Internal dashboard</small></div></div>
     <h2>One place to run every student's program.</h2>
   </div>
   <div class="login-right">
@@ -395,7 +395,7 @@ const layer=$('#layer');
 function svg(k){return `<svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[k]||''}</svg>`;}
 function navCount(v){if(v==='inbox')return S.questions.filter(q=>q.status==='Open'&&(!ROLES[S.role].ch||q.ch===ROLES[S.role].ch)).length;if(v==='mreview')return openReviews(ME_M).length;if(v==='msessions')return S.sessions.filter(x=>x.m===ME_M&&x.state==='report').length;if(v==='mentorbank')return S.students.filter(s=>!s.mentor&&s.status!=='Ended').length;if(v==='users')return S.users.filter(u=>u.status==='Pending').length;return 0;}
 function drawRail(cur){const R=ROLES[S.role];
-  $('#rail').innerHTML=`<div class="brand"><div class="brand-mark">S</div><div><b>Schoters LMS</b><small>Internal dashboard</small></div></div>
+  $('#rail').innerHTML=`<div class="brand"><div class="brand-mark">S</div><div><b>Schoters Global</b><small>Internal dashboard</small></div></div>
   <span class="role-tag">${R.label}</span>
   <nav class="nav" aria-label="Main">${R.nav.map(([v,l])=>{if(v[0]==='#')return `<div class="nav-group">${v.slice(1)}</div>`;const c=navCount(v);return `<a href="#${v}" ${cur===v||(cur==='student'&&v===(S.role==='mentor'?'mstudents':'students'))||(cur==='matedit'&&v==='materials')?'aria-current="page"':''}>${svg(NAVICON[v])}<span class="lbl">${l}</span>${c?`<span class="count">${c}</span>`:''}</a>`;}).join('')}</nav>
   <div class="rail-bottom">
