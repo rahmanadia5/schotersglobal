@@ -497,10 +497,10 @@ const S={
   sso:{name:'Trần Thu Hà',role:'Student Success Officer · Vietnam'},
   upcoming:[
     {id:1,title:'Essay brainstorm: Monash',d:27,m:'Nov',dow:'Thu',time:'19:00–19:50',with:'Lê Hoàng Nam',kind:'1-on-1'},
-    {id:2,title:'Quarterly sync with parents',d:12,m:'Dec',dow:'Sat',time:'09:00–09:50',with:'Nam, parents',kind:'Parent sync'}
+    {id:2,title:'Scholarship essay review: Monash',d:4,m:'Dec',dow:'Fri',time:'19:00–19:50',with:'Lê Hoàng Nam',kind:'1-on-1'}
   ],
   past:[
-    {title:'Kickoff: 3-year roadmap',date:'12 Sep',with:'All stakeholders',kind:'Kickoff'},
+    {title:'Goals and 3-year roadmap',date:'12 Sep',with:'Lê Hoàng Nam',kind:'1-on-1'},
     {title:'Profile review & major choice',date:'19 Sep',with:'Lê Hoàng Nam',kind:'1-on-1'},
     {title:'University shortlist',date:'3 Oct',with:'Lê Hoàng Nam',kind:'1-on-1'},
     {title:'Personal statement outline',date:'17 Oct',with:'Lê Hoàng Nam',kind:'1-on-1'},
@@ -555,10 +555,10 @@ const S={
   ],
   recFilter:'all', planTab:'recs',
   plan:[
-    {when:'Months 1–3',name:'Foundation',state:'now',items:[['Kickoff and 3-year roadmap',true],['Profile review and major choice',true],['Shortlist 5 universities and 3 scholarships',true],['Request school transcripts and certificates',false]]},
-    {when:'Months 4–6',name:'Build applications',state:'next',items:[['Personal statement drafts (2 rounds of review)',false],['CV final',false],['Recommendation letters requested',false],['Quarterly sync #2 with parents',false]]},
-    {when:'Months 7–9',name:'Submit',state:'',items:[['Submit all university applications',false],['Scholarship interviews practice',false],['Quarterly sync #3',false]]},
-    {when:'Months 10–12',name:'Decide and prepare',state:'',items:[['Compare offers and scholarships',false],['Accept offer and pay deposit',false],['Visa and pre-departure',false],['Final sync and renewal decision',false]]}
+    {when:'Months 1–3',name:'Foundation',state:'now',items:[['Goals and 3-year roadmap with your mentor',true],['Profile review and major choice',true],['Shortlist 5 universities and 3 scholarships',true],['Request school transcripts and certificates',false]]},
+    {when:'Months 4–6',name:'Build applications',state:'next',items:[['Personal statement drafts (2 rounds of review)',false],['CV final',false],['Recommendation letters requested',false]]},
+    {when:'Months 7–9',name:'Submit',state:'',items:[['Submit all university applications',false],['Scholarship interviews practice',false]]},
+    {when:'Months 10–12',name:'Decide and prepare',state:'',items:[['Compare offers and scholarships',false],['Accept offer and pay deposit',false],['Visa and pre-departure',false],['Renewal decision',false]]}
   ],
   topics:[
    {id:'sch',name:'Scholarships',desc:'Find scholarships that fit you and write applications that win.',bg:'#fdf3d3',fg:'#8a5a00',ico:'S',lessons:[
@@ -586,12 +586,6 @@ const S={
     {id:'v2',title:'Budgeting your first year',mins:10,done:false,video:true,en:'Add tuition, rent, food, transport and a 10% buffer. Compare it with your scholarship and family budget before you accept an offer.',vi:'Cộng học phí, tiền thuê nhà, ăn uống, đi lại và 10% dự phòng. So sánh với học bổng và ngân sách gia đình trước khi nhận thư mời.'}]}
   ],
   topic:null, openLesson:null,
-  syncs:[
-    {q:'Q1',date:'12 Sep 2026',state:'done',title:'Kickoff with all stakeholders',notes:['Agreed target: Bachelor of Commerce in Australia or UK, start Feb 2028 intake at the latest.','Budget ceiling set by parents; scholarships are a priority.','First personal statement draft by early December.']},
-    {q:'Q2',date:'12 Dec 2026',state:'next',title:'Progress sync #2',notes:[]},
-    {q:'Q3',date:'13 Mar 2027',state:'',title:'Progress sync #3',notes:[]},
-    {q:'Q4',date:'12 Jun 2027',state:'',title:'Year review and next step',notes:[]}
-  ],
   billing:'annual', monthsPaid:12, monthsUsed:3, topups:[],
   langPref:{}, cal:null, askChannel:'sp', docFilter:'all'
 };
@@ -675,7 +669,7 @@ V.home=()=>{const sso=ssoStatus(); const tot=sessTotal(), left=sessLeft(); const
     <section class="panel span-5">
       <div class="panel-h"><h2>Coming up</h2></div>
       <div class="list">
-        ${S.upcoming.map(u=>`<div class="item"><div class="datebox"><b>${u.d}</b><span>${u.m}</span></div><div class="grow"><div class="title">${esc(u.title)}</div><div class="meta">${u.time} · ${esc(u.with)}</div></div>${u.kind==='Parent sync'?'<span class="pill accent">Parents</span>':''}</div>`).join('')}
+        ${S.upcoming.map(u=>`<div class="item"><div class="datebox"><b>${u.d}</b><span>${u.m}</span></div><div class="grow"><div class="title">${esc(u.title)}</div><div class="meta">${u.time} · ${esc(u.with)}</div></div></div>`).join('')}
         <div class="item"><div class="datebox"><b>6</b><span>Dec</span></div><div class="grow"><div class="title">Personal statement draft due</div><div class="meta">Learning plan milestone</div></div></div>
       </div>
     </section>
@@ -713,7 +707,6 @@ S.gcal=S.gcal||{on:false,sync:{s:true,d:true,m:true},last:''};
 function calEvents(){const ev=[];const add=(d,m,y,o)=>ev.push(Object.assign({key:y+'-'+m+'-'+d,y,m,d},o));
   S.past.forEach(p=>{const[d,mm]=p.date.split(' ');const mi=MON.indexOf(mm);add(+d,mi,yr(mi),{t:p.title,c:'s',past:true,time:'',with:p.with});});
   S.upcoming.forEach(u=>{const mi=MON.indexOf(u.m);add(u.d,mi,yr(mi),{t:u.title,c:'s',id:u.id,time:u.time,with:u.with});});
-  S.syncs.filter(x=>x.state==='').forEach(x=>{const[d,mm,y]=x.date.split(' ');add(+d,MON.indexOf(mm),+y,{t:'Parent sync '+x.q,c:'s',time:'09:00–09:50',with:'Parents, mentor'});});
   S.apps.forEach(a=>{const[d,mm,y]=a.deadline.split(' ');add(+d,MON.indexOf(mm),+y,{t:'Deadline: '+a.name,c:'d',past:a.days<0});});
   add(6,11,2026,{t:'Personal statement draft due',c:'m'});
   return ev;}
@@ -827,7 +820,7 @@ V.plan=()=>{const P=S.profile,f=S.recFilter;
     ${list.map(r=>{const d=r.dl==='rolling'?null:new Date(r.dl);const ci=d?GM.findIndex(([y,m])=>y===d.getUTCFullYear()&&m===d.getUTCMonth()):GM.length;const cls=r.kind==='Scholarship'?'sch':'uni';
       return `<button class="g-row" role="row" data-rec="${r.id}"><div class="g-name" role="cell"><span class="g-dot ${cls}"></span><span class="grow"><b>${esc(r.name)}</b><span class="hint">${r.prog?esc(r.prog)+' · ':r.kind+' · '}${r.country}</span></span></div>${GM.concat([[0,0]]).map((_,k)=>`<div role="cell" class="g-cell">${k===ci?`<span class="g-mark ${cls} ${recDays(r)!==null&&recDays(r)<0?'past':''}">${d?d.getUTCDate()+' '+MON[d.getUTCMonth()]:'Any time'}</span>`:''}</div>`).join('')}</button>`;}).join('')}</div>`;
   return head+`<div class="grid">
-    <section class="panel span-12 sp"><div class="sp-head"><div class="avatar lg">${P.name[0]}</div><div class="grow"><div class="eyebrow">Student profile</div><h2>${esc(P.name)}</h2><p class="hint">${P.grade} · target ${P.level}, intake ${P.intake}</p></div><span class="hint">From intake form and kickoff</span></div>
+    <section class="panel span-12 sp"><div class="sp-head"><div class="avatar lg">${P.name[0]}</div><div class="grow"><div class="eyebrow">Student profile</div><h2>${esc(P.name)}</h2><p class="hint">${P.grade} · target ${P.level}, intake ${P.intake}</p></div><span class="hint">From your intake form</span></div>
       <div class="sp-grid">
         <div class="sp-card"><h3>Academic</h3><dl>
           <div><dt>School</dt><dd>${esc(P.school)}</dd></div>
@@ -864,7 +857,7 @@ V.plan=()=>{const P=S.profile,f=S.recFilter;
       <p class="hint" style="margin:0">Deadlines are based on last year and your mentor double-checks them. Fit grade: A+ is the strongest match, C is a stretch.</p></section>
   </div>`;};
 function msView(){return `
-  <section class="panel"><div class="panel-h"><h2>3-year roadmap</h2><span class="hint">Agreed at kickoff, 12 Sep 2026</span></div>
+  <section class="panel"><div class="panel-h"><h2>3-year roadmap</h2><span class="hint">Agreed with your mentor, Sep 2026</span></div>
     <div class="timeline">
       <div class="yr now"><span class="eyebrow">Year 1 · 2026–27</span><b>Apply and get in</b><span class="hint">${S.recs.length} recommendations, ${S.apps.length} tracked</span></div>
       <div class="yr"><span class="eyebrow">Year 2 · 2027–28</span><b>Start Bachelor of Commerce</b><span class="hint">Settle in, first-year GPA 3.3+</span></div>
@@ -911,23 +904,6 @@ function videoModal(id){const m=S.topics.flatMap(x=>x.lessons).find(x=>x.id===id
   modal(`<div><div class="eyebrow">Video · ${m.mins} min</div><h2 style="font-size:1.2rem">${esc(m.title)}</h2></div>
     <div class="vplayer"><span class="vplay">${MICO.video}</span><span class="vbar"><i></i></span></div>
     <div class="row" style="justify-content:space-between;flex-wrap:wrap;gap:8px"><span class="hint">Subtitles: English, Tiếng Việt</span><div class="row"><button class="btn" data-close>Close</button><button class="btn" data-go="ask" data-ch="sp">Ask a question</button></div></div>`);}
-
-V.parents=()=>`
-  <div class="topbar"><div><div class="eyebrow">Parent sync</div><h1>Sync with your parents every 3 months</h1><p class="sub">Instead of a written report, you, your parents and your mentor meet once a quarter to review progress and agree on next steps.</p></div></div>
-  <div class="grid">
-    <section class="panel span-8"><div class="panel-h"><h2>This year's syncs</h2></div>
-      <div class="list">${S.syncs.map(s=>`<div class="item" style="align-items:flex-start"><span class="pill ${s.state==='done'?'good':s.state==='next'?'accent':''}">${s.q}</span><div class="grow"><div class="title">${s.title}</div><div class="meta">${s.date} · 50 min</div>
-        ${s.notes.length?`<ul style="margin:8px 0 0;padding-left:18px">${s.notes.map(n=>`<li>ZZZ</li>`).join('')}</ul>`:''}</div>
-        ${s.state==='next'?'<button class="btn sm primary" data-act="cal">Add to calendar</button>':s.state==='done'?'<button class="btn sm" data-act="notes">Full notes</button>':''}</div>`).join('')}</div></section>
-    <section class="panel span-12" style="order:3"><div class="panel-h"><h2>Session reports</h2><span class="hint">AI summaries approved by the mentor, shared with parents</span></div>
-      <div class="list">${S.past.slice().reverse().map(p=>{const r=p.report||aiReport(p.title);return `<div class="item" style="align-items:flex-start"><div class="datebox"><b>${p.date.split(' ')[0]}</b><span>${p.date.split(' ')[1]}</span></div><div class="grow"><div class="title">${esc(p.title)}</div><div class="meta">${esc(r.summary)}</div></div>${p.status==='Pending'?'<span class="pill warn">Pending</span>':'<span class="pill good">Approved</span>'}<button class="btn sm" data-report="${esc(p.title)}">Read</button></div>`;}).join('')}</div></section>
-    <section class="panel span-4"><div class="panel-h"><h2>Who joins</h2></div>
-      <div class="list">
-        <div class="item"><div class="grow"><div class="title">${S.student.parentName}</div><div class="meta">${S.student.parentEmail}</div></div><span class="pill good">Invited</span></div>
-        <div class="item"><div class="grow"><div class="title">${S.mentor.name}</div><div class="meta">Mentor</div></div></div>
-      </div>
-      <p class="note">Master's students do not have parent syncs. Their quarterly review is with their mentor only.</p></section>
-  </div>`;
 
 V.billing=()=>{const pk=S.packages;const refundMonths=S.billing==='annual'?S.monthsPaid-S.monthsUsed-1:0;return `
   <div class="topbar"><div><div class="eyebrow">Plan &amp; billing</div><h1>${S.pkg} package</h1></div><span class="proto">Prices to be set</span></div>
@@ -1004,7 +980,7 @@ function aiReport(title){
    'Personal statement outline':{summary:'Nadia chose her opening story and a 4-part outline for the personal statement.',topics:['Three possible stories','Outline: hook, interest, evidence, goal'],decisions:['Open with the café story'],actions:['Nadia: write first draft by 31 Oct']},
    'University shortlist':{summary:'The shortlist is 5 universities: 2 reach, 2 match, 1 safe.',topics:['Australia vs. UK cost','Entry grades for Commerce'],decisions:['Add NUS as a reach option'],actions:['Nadia: add deadlines to Applications']},
    'Profile review & major choice':{summary:'Nadia will apply for Commerce with an Economics major.',topics:['Grades and strengths in Maths','Business vs. Economics'],decisions:['Commerce (Economics major)'],actions:['Nadia: read 3 course pages']},
-   'Kickoff: 3-year roadmap':{summary:'All stakeholders agreed the 3-year roadmap and the year-1 targets.',topics:['Target countries and intake','Budget and scholarships','How sessions work'],decisions:['Australia or UK, Feb 2028 intake at the latest'],actions:['Schoters team: send learning plan','Parents: confirm budget ceiling']}
+   'Goals and 3-year roadmap':{summary:'Agreed the 3-year roadmap and the year-1 targets.',topics:['Target countries and intake','Budget and scholarships','How sessions work'],decisions:['Australia or UK, Feb 2028 intake at the latest'],actions:['Schoters team: send learning plan','Nadia: confirm budget with family']}
   };
   return Object.assign(base,R[title]||{summary:'Session summary generated by AI from the call, approved by the mentor.',topics:['Progress since last session','Next steps'],decisions:[],actions:['Follow the learning plan for this month']});
 }
@@ -1017,7 +993,7 @@ function reportHTML(r,status){return `<div class="report">
   </div>`;}
 function openReport(title){const p=S.past.find(x=>x.title===title)||{};const r=p.report||aiReport(title);
   modal(`<div><div class="eyebrow">${esc(p.date||'')} · ${esc(p.with||'')}</div><h2 style="font-size:1.25rem">${esc(title)}</h2></div>${reportHTML(r,p.status||'Approved')}
-  <p class="hint">Written by the AI notetaker during the call and approved by your mentor. Shared with parents in Parent sync. Recording kept for 90 days.</p>
+  <p class="hint">Written by the AI notetaker during the call and approved by your mentor. Recording kept for 90 days.</p>
   <div class="modal-foot"><span></span><button class="btn primary" data-close>Close</button></div>`);}
 
 /* ---------- Video call (mock) ---------- */
@@ -1049,7 +1025,7 @@ let aiShown=-1;
 const CAPS=['Mentor: Đoạn mở bài của em rất tốt, nhưng phần "Why Monash" cần ví dụ cụ thể hơn.','Mentor: Try naming one Monash course unit you want to take, and why.','Mentor: Em hãy giữ bài dưới 650 từ nhé.'];
 function drawCall(){const u=C.sess;const el=document.getElementById('call');el.hidden=false;const mentor=u.with.split(',')[0];const ini=mentor.split(' ').map(w=>w[0]).join('').slice(0,2);
   const e=elapsed();
-  el.innerHTML=`<div class="call-top"><div><div class="eyebrow">${u.kind==='Parent sync'?'Parent sync':'1-on-1 session'} · ${u.dow} ${u.d} ${u.m}</div><h2>${esc(u.title)}</h2></div>
+  el.innerHTML=`<div class="call-top"><div><div class="eyebrow">1-on-1 session · ${u.dow} ${u.d} ${u.m}</div><h2>${esc(u.title)}</h2></div>
     <div class="timer"><span class="rec">REC</span><b id="ctime">${mmss(Math.min(e,LIMIT))}</b><span class="hint">/ 50:00</span><div class="bar"><i id="cbar" style="width:${Math.min(100,e/LIMIT*100)}%"></i></div><span class="pill warn" id="cwarn" ${e<45*60?'hidden':''}>5 min left</span><button class="btn sm" data-act="skip" title="Prototype: jump to minute 45">Skip to 45:00</button></div></div>
   <div class="call-body">
     <div class="stage">
@@ -1090,7 +1066,7 @@ function endCall(){if(!C.on)return;C.on=false;clearInterval(C.timer);const e=Mat
   modal(`<div><div class="eyebrow">Session ended</div><h2 style="font-size:1.35rem">Nice work, Nadia!</h2><p class="sub">${esc(u.title)} with ${esc(u.with)}</p></div>
    <div class="recap-stats"><div><b class="num">${Math.round(e/60)} min</b><span class="hint">of 50</span></div><div><b class="num">${counted?'1':'0'}</b><span class="hint">session used</span></div><div><b class="num">${sessLeft()}</b><span class="hint">sessions left</span></div></div>
    ${reportHTML(rep,'Pending')}
-   <p class="hint">No extra report needed: the AI notes above go to your mentor to approve, then to you and your parents. Open action items move to your learning plan.</p>
+   <p class="hint">No extra report needed: the AI notes above go to your mentor to approve, then to you. Open action items move to your learning plan.</p>
    ${C.notes.trim()?`<div class="note">Your notes: ${esc(C.notes)}</div>`:''}
    <div><h3>How was this session?</h3><div class="stars" id="stars">${[1,2,3,4,5].map(i=>`<button data-star="${i}" aria-label="${i} stars"><svg viewBox="0 0 24 24"><path fill="var(--line)" d="M12 2l3 6.5 7 .8-5.2 4.8 1.4 7L12 17.6 5.8 21l1.4-7L2 9.3l7-.8z"/></svg></button>`).join('')}</div></div>
    <div class="modal-foot"><button class="btn" data-act="book" ${sessLeft()<1?'disabled':''}>Book next session</button><button class="btn primary" data-close>Back to home</button></div>`);
@@ -1176,7 +1152,7 @@ document.addEventListener('click',e=>{
     case 'skip':C.start=Date.now()-45*60*1000;tickCall();toast('Jumped to minute 45.');break;
     case 'endcall':endCall();break;
     case 'csend':{const i=document.getElementById('cmsg');const v=i.value.trim();if(!v)break;C.chat.push({who:'You',t:v});drawCall();setTimeout(()=>{if(C.on&&C.tab==='chat'){C.chat.push({who:C.sess.with.split(',')[0],t:'Got it, let me check.'});drawCall();}},1500);break;}
-    case 'notes':openReport('Kickoff: 3-year roadmap');break;
+    case 'notes':openReport('Goals and 3-year roadmap');break;
     case 'dl':toast('In the live LMS this opens the file with tracked changes.');break;
   }
 });
