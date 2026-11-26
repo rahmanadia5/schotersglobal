@@ -246,7 +246,7 @@ const ROLES={
   super:{label:'Super Admin',user:'Andi Pratama',sub:'Super Admin',nav:[['#Operations'],['overview','Overview'],['students','Students'],['new','New student'],['mentorbank','Mentor bank'],['materials','Materials'],['#Support'],['inbox','Support inbox'],['#Mentor workspace'],['mday','My day'],['msessions','Sessions & reports'],['mreview','Document review'],['mavail','Availability'],['#Admin'],['users','Users & approvals'],['settings','Program settings'],['audit','Audit log']],home:'overview'},
   ops:{label:'Operations',user:'Dewi Lestari',sub:'Operations',nav:[['overview','Overview'],['students','Students'],['new','New student'],['mentorbank','Mentor bank'],['materials','Materials']],home:'overview'},
   mentor:{label:'Mentor',user:'Lê Hoàng Nam',sub:'Mentor',nav:[['mday','My day'],['msessions','Sessions & reports'],['mreview','Document review'],['mstudents','My students'],['mavail','Availability']],home:'mday'},
-  sp:{label:'Student Priority',user:'Mai Phương',sub:'Student Priority',nav:[['inbox','Student Priority inbox']],home:'inbox',ch:'sp'},
+  sp:{label:'Student Priority',user:'Putri Ayu',sub:'Student Priority',nav:[['inbox','Student Priority inbox']],home:'inbox',ch:'sp'},
   hotline:{label:'Hotline',user:'Rizky Hidayat',sub:'Hotline',nav:[['inbox','Hotline inbox']],home:'inbox',ch:'hotline'}
 };
 const NAVICON={overview:'overview',students:'students',new:'add',mentorbank:'mentors',inbox:'inbox',mday:'overview',msessions:'sessions',mreview:'review',mstudents:'students',mavail:'avail',users:'users',materials:'materials',settings:'settings',audit:'audit'};
@@ -334,8 +334,8 @@ const S={
     {name:'Phạm Minh Châu',email:'chau.pham@schoters.example',role:'Mentor',status:'Active'},
     {name:'Đỗ Quang Huy',email:'huy.do@schoters.example',role:'Mentor',status:'Active'},
     {name:'Vũ Thị Lan',email:'lan.vu@schoters.example',role:'Mentor',status:'Active'},
-    {name:'Mai Phương',email:'phuong.mai@schoters.example',role:'Student Priority',status:'Active'},
-    {name:'Nguyễn Thanh Tâm',email:'tam.nguyen@schoters.example',role:'Student Priority',status:'Active'},
+    {name:'Putri Ayu',email:'putri.ayu@schoters.example',role:'Student Priority',status:'Active'},
+    {name:'Fajar Nugroho',email:'fajar@schoters.example',role:'Student Priority',status:'Active'},
     {name:'Rizky Hidayat',email:'rizky@schoters.example',role:'Hotline',status:'Active'},
     {name:'Trương Văn Phúc',email:'phuc.truong@schoters.example',role:'Mentor',status:'Pending',by:'Dewi Lestari',on:'2026-11-25',note:'Law & Social Sciences, UK. Needed for 3 new S1 students in December.'},
     {name:'Siti Rahma',email:'siti@schoters.example',role:'Operations',status:'Pending',by:'Dewi Lestari',on:'2026-11-26',note:'Second Ops person for the January intake.'},
@@ -410,7 +410,7 @@ const ACCTS=[
   ['super','Andi Pratama','andi@schoters.example','Full access: every page of every role, user approvals and settings.'],
   ['ops','Dewi Lestari','dewi@schoters.example','Sets up students and program end dates, assigns mentors, uploads materials.'],
   ['mentor','Lê Hoàng Nam','nam.le@schoters.example','Own students only: availability, sessions, reports and document review.'],
-  ['sp','Mai Phương','phuong.mai@schoters.example','Answers study and application questions in English.'],
+  ['sp','Putri Ayu','putri.ayu@schoters.example','Answers study and application questions in English.'],
   ['hotline','Rizky Hidayat','rizky@schoters.example','Handles schedule, payment, account and urgent issues.']];
 function drawLogin(){$('#demoList').innerHTML=ACCTS.map(([k,n,e,d])=>`<div class="demo-role">${ROLES[k].label}</div><p class="demo-desc">${d}</p><button type="button" class="acct" data-acct="${k}"><div class="avatar">${ini(n)}</div><div><b>${esc(n)}</b><span>${e}</span></div></button>`).join('');}
 function doLogin(role){S.role=role;try{sessionStorage.setItem('lms-int-role',S.role)}catch(_){}location.hash=ROLES[S.role].home;render();}
