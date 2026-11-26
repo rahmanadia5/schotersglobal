@@ -456,7 +456,7 @@ button.g-row:hover,button.g-row:hover .g-name{background:var(--surface-2)}
   <div class="login-side">
     <div class="brand"><div class="brand-mark">S</div><div><b>Schoters Mentoring</b><small>Student LMS</small></div></div>
     <h2>Your whole mentoring program in one place</h2>
-    <ul><li>Book 1-on-1 sessions with your mentor</li><li>Ask questions in Vietnamese or English</li><li>Track every university and scholarship application</li><li>Get feedback on every essay and CV draft</li></ul>
+    <ul><li>Book 1-on-1 sessions with your mentor</li><li>Get fast answers to your questions</li><li>Track every university and scholarship application</li><li>Get feedback on every essay and CV draft</li></ul>
     <small style="color:var(--muted)">Need help logging in? Hotline Mon–Fri 09:00–17:00 (GMT+7)</small>
   </div>
   <form class="login-form" id="loginForm" novalidate>
@@ -535,10 +535,8 @@ const S={
       {v:1,sent:'28 Oct',status:'Returned',back:'2 Nov',comments:6,note:'Move volunteering above hobbies. Use numbers for results.'}]}
   ],
   threads:[
-    {ch:'mentor',q:'Em nên chọn Kinh doanh hay Kinh tế cho hồ sơ Monash?',qEn:'Should I pick Business or Economics for my Monash application?',a:'Với điểm Toán của em, Kinh tế (Commerce major Economics) sẽ nổi bật hơn. Mình sẽ nói kỹ trong buổi thứ Năm.',by:'Lê Hoàng Nam',when:'20 Nov',status:'Answered'},
     {ch:'sp',q:'Can I send my IELTS result after the Manchester deadline?',a:'Yes. Manchester accepts English results after you apply, as a condition of your offer. Add your test date in the form.',by:'Student Priority team',when:'18 Nov',status:'Answered'},
     {ch:'hotline',q:'I did not receive the invoice for my annual payment.',a:'Sent again to your email just now. It is also under Plan & billing.',by:'Hotline',when:'10 Nov',status:'Resolved'},
-    {ch:'mentor',q:'Bài luận 650 từ có quá dài với Monash không?',qEn:'Is a 650-word essay too long for Monash?',a:null,by:'',when:'Today',status:'Waiting'}
   ],
   profile:{name:'Nadia Nguyễn',curriculum:'Vietnamese national curriculum (THPT)',age:'17 / 18',school:'THPT chuyên Lê Hồng Phong, Ho Chi Minh City',level:'Bachelor',grade:'Grade 12, graduating June 2027',
     majors:['Commerce / Business','Economics','Finance'],countries:['Australia','United Kingdom','Singapore','Canada'],avoid:'None',intake:'2027',gpa:'8.7 / 10',funding:'Partial or fully funded',lang:'IELTS Academic 6.5',langMin:'6.5',test:'Not planned (SAT optional for her targets)',updated:'20 Nov 2026',by:'SAA team · reviewed by Lê Hoàng Nam'},
@@ -595,7 +593,7 @@ const S={
     {q:'Q4',date:'12 Jun 2027',state:'',title:'Year review and next step',notes:[]}
   ],
   billing:'annual', monthsPaid:12, monthsUsed:3, topups:[],
-  langPref:{}, cal:null, askChannel:'mentor', docFilter:'all'
+  langPref:{}, cal:null, askChannel:'sp', docFilter:'all'
 };
 const fmt=n=>n.toLocaleString('vi-VN')+' ₫';
 const sessTotal=()=>S.packages[S.pkg].sessions+S.sessionsExtra;
@@ -659,15 +657,14 @@ V.home=()=>{const sso=ssoStatus(); const tot=sessTotal(), left=sessLeft(); const
         <div class="row"><button class="btn violet" data-act="join">Join video call</button><button class="btn ghost" data-go="sessions">All sessions</button></div>`:'<p>No sessions booked.</p>'}
     </section>
     <section class="panel">
-      <div class="panel-h"><h2>Your mentor</h2><span class="pill ${sso.fast?'good':'warn'}"><span class="dot"></span>${sso.label}</span></div>
+      <div class="panel-h"><h2>Your mentor</h2></div>
       <div class="row" style="gap:12px;flex-wrap:nowrap"><div class="avatar" style="background:linear-gradient(135deg,#9fd0f7,#7b3aed);color:#fff">LN</div><div><div class="title" style="font-weight:600">${S.mentor.name}</div><div class="sub" style="font-size:13px">${S.mentor.role}</div></div></div>
-      <p class="hint">${sso.detail}. Fast reply Mon–Fri 09:00–17:00 (GMT+7).</p>
-      <button class="btn" data-go="ask" data-ch="mentor">Message Nam</button>
+      <p class="hint">Runs your 1-on-1 sessions and reviews your documents.</p>
+      <button class="btn" data-act="book">Book a session with Nam</button>
     </section></div>
-    <section class="panel span-3 stat"><div class="eyebrow">Video sessions left</div><div class="big num">${left}<small> / ${tot}</small></div><div class="bar"><i style="width:${(tot-left)/tot*100}%"></i></div><button class="btn sm" data-act="book" ${left<1?'disabled':''}>Book a session</button></section>
-    <section class="panel span-3 stat"><div class="eyebrow">QnA tokens left</div><div class="big num">${tl}<small> / ${tt}</small></div><div class="bar"><i style="width:${(tt-tl)/tt*100}%"></i></div><button class="btn sm" data-go="ask" data-ch="mentor">Ask a mentor</button></section>
-    <section class="panel span-3 stat"><div class="eyebrow">Learning plan</div><div class="big num">${Math.round(done/all*100)}<small>%</small></div><div class="bar good"><i style="width:${done/all*100}%"></i></div><button class="btn sm" data-go="plan">Open plan</button></section>
-    <section class="panel span-3 stat"><div class="eyebrow">Documents in review</div><div class="big num">${S.docs.filter(d=>d.versions[d.versions.length-1].status!=='Returned').length}</div><p class="hint">Essays, CV and letters</p><button class="btn sm" data-go="documents">Open documents</button></section>
+    <section class="panel span-4 stat"><div class="eyebrow">Video sessions left</div><div class="big num">${left}<small> / ${tot}</small></div><div class="bar"><i style="width:${(tot-left)/tot*100}%"></i></div><button class="btn sm" data-act="book" ${left<1?'disabled':''}>Book a session</button></section>
+    <section class="panel span-4 stat"><div class="eyebrow">Learning plan</div><div class="big num">${Math.round(done/all*100)}<small>%</small></div><div class="bar good"><i style="width:${done/all*100}%"></i></div><button class="btn sm" data-go="plan">Open plan</button></section>
+    <section class="panel span-4 stat"><div class="eyebrow">Documents in review</div><div class="big num">${S.docs.filter(d=>d.versions[d.versions.length-1].status!=='Returned').length}</div><p class="hint">Essays, CV and letters</p><button class="btn sm" data-go="documents">Open documents</button></section>
     <section class="panel promo span-12"><div class="feature"><div style="display:flex;flex-direction:column;gap:12px"><h2 style="font-size:1.35rem">Need more time with your mentor before the deadlines?</h2>
       <ul><li><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg>Add extra 50-minute sessions any time</li><li><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg>Same mentor, same learning plan</li><li><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg>Valid until your program ends</li></ul></div>
       <button class="btn sun lg" data-act="topup">Top up sessions ›</button></div></section>
@@ -696,7 +693,7 @@ V.sessions=()=>{const left=sessLeft();return `
     <section class="panel span-4 stat"><div class="eyebrow">Left to book</div><div class="big num">${left}<small> / ${sessTotal()}</small></div><div class="bar"><i style="width:${(sessTotal()-left)/sessTotal()*100}%"></i></div><p class="hint">${S.pkg} package: ${S.packages[S.pkg].sessions} sessions${S.sessionsExtra?` + ${S.sessionsExtra} topped up`:''}</p></section>
     <section class="panel span-8"><div class="panel-h"><h2>Your mentor</h2></div>
       <div class="list">
-        <div class="item"><div class="grow"><div class="title">${S.mentor.name}</div><div class="meta">${S.mentor.role} · answers QnA in Vietnamese</div></div><span class="pill accent">Main mentor</span></div>
+        <div class="item"><div class="grow"><div class="title">${S.mentor.name}</div><div class="meta">${S.mentor.role}</div></div><span class="pill accent">Main mentor</span></div>
       </div></section>
     <section class="panel span-12"><div class="panel-h"><h2>Upcoming</h2></div>
       <div class="list">${S.upcoming.map(u=>`<div class="item"><div class="datebox"><b>${u.d}</b><span>${u.m}</span></div><div class="grow"><div class="title">${esc(u.title)}</div><div class="meta">${u.dow} · ${u.time} (GMT+7) · ${esc(u.with)}</div></div>
@@ -777,24 +774,22 @@ V.documents=()=>{const f=S.docFilter;const tn=id=>S.docTypes.find(t=>t.id===id).
   </div>`;};
 
 const CH={
-  mentor:{name:'Ask a mentor',lang:'Vietnamese',cost:'1 token per question',desc:'Study and application questions, answered by your mentor in Vietnamese.'},
-  sp:{name:'Student Priority',lang:'English',cost:'Free, no token · Fast reply',desc:'Study and application questions, answered fast by our team in English. No tokens needed.'},
+  sp:{name:'Student Priority',lang:'English',cost:'Free · Fast reply',desc:'Study and application questions, answered fast by our team in English.'},
   hotline:{name:'Hotline',lang:'English or Vietnamese',cost:'Free',desc:'Urgent, schedule, payment and account issues.'}
 };
 V.ask=()=>{const c=S.askChannel;const th=S.threads.filter(t=>t.ch===c);return `
-  <div class="topbar"><div><div class="eyebrow">Ask &amp; support</div><h1>Where should your question go?</h1></div><span class="pill accent num">${tokLeft()} QnA tokens left</span></div>
-  <div class="grid">${Object.entries(CH).map(([k,v])=>`<button class="channel span-4" aria-pressed="${c===k}" data-ch-set="${k}"><h3>${v.name}</h3><span class="hint">${v.desc}</span><span class="cost">${v.cost} · ${v.lang}</span></button>`).join('')}</div>
+  <div class="topbar"><div><div class="eyebrow">Ask &amp; support</div><h1>Where should your question go?</h1></div></div>
+  <div class="grid">${Object.entries(CH).map(([k,v])=>`<button class="channel span-6" aria-pressed="${c===k}" data-ch-set="${k}"><h3>${v.name}</h3><span class="hint">${v.desc}</span><span class="cost">${v.cost} · ${v.lang}</span></button>`).join('')}</div>
   <div class="grid">
     <section class="panel span-7"><div class="panel-h"><h2>${CH[c].name}: your questions</h2></div>
       <div class="list">${th.map(t=>`<div class="item" style="flex-direction:column;align-items:stretch;gap:8px">
         <div class="bubble me"><div class="who">You · ${t.when}</div>${esc(t.q)}${t.qEn?`<div class="hint" style="margin-top:4px">EN: ${esc(t.qEn)}</div>`:''}</div>
         ${t.a?`<div class="bubble"><div class="who">${esc(t.by)}</div>${esc(t.a)}</div>`:`<span class="pill warn" style="align-self:flex-start">Waiting for an answer</span>`}</div>`).join('')||'<p class="hint">No questions yet.</p>'}</div></section>
-    <section class="panel span-5"><div class="panel-h"><h2>New question</h2><span class="pill ${c==='mentor'?'accent':'good'}">${CH[c].cost}</span></div>
-      <div class="field"><label for="q">Your question</label><textarea id="q" placeholder="${c==='mentor'?'Bạn có thể viết bằng tiếng Việt':'Write in English'}"></textarea></div>
+    <section class="panel span-5"><div class="panel-h"><h2>New question</h2><span class="pill good">${CH[c].cost}</span></div>
+      <div class="field"><label for="q">Your question</label><textarea id="q" placeholder="Write in English"></textarea></div>
       ${c==='hotline'?`<div class="field"><label for="topic">Topic</label><select id="topic"><option>Session schedule</option><option>Payment or invoice</option><option>Account or login</option><option>Something urgent</option></select></div>`:''}
-      <button class="btn primary" data-act="send" ${c==='mentor'&&tokLeft()<1?'disabled':''}>Send${c==='mentor'?' · uses 1 token':''}</button>
+      <button class="btn primary" data-act="send">Send</button>
       ${c==='hotline'?`<p class="hint">Fast reply Mon–Fri 09:00–17:00 (GMT+7). Outside these hours we reply the next working day.</p>`:''}
-      ${c==='mentor'?`<p class="hint">Tokens cannot be topped up. For free quick help in English, use Student Priority.</p>`:''}
     </section>
   </div>`;};
 
@@ -911,11 +906,11 @@ V.materials=()=>{
       ${k==='video'?`<button class="btn sm" data-act="watch" data-id="${m.id}">Watch</button>`:k==='file'?`<button class="btn sm" data-act="dl">Download</button>`:`<button class="btn sm" data-lesson="${m.id}">${open?'Close':'Read'}</button>`}</div>
     ${open?`<div class="lesson-b"><div class="row" style="justify-content:space-between"><div class="tabs lang">${[['vi','Tiếng Việt'],['en','English']].map(([kk,tt])=>`<button aria-selected="${l===kk}" data-lang="${m.id}:${kk}">${tt}</button>`).join('')}</div>${l==='vi'?'<span class="pill">AI-translated · mentor checked</span>':''}</div>
       <div class="module-body">${esc(m[l])}</div>
-      <div class="row"><button class="btn sm ghost" data-go="ask" data-ch="mentor">Ask a mentor about this</button></div></div>`:''}</div>`;}).join('')}</section>`;};
+      <div class="row"><button class="btn sm ghost" data-go="ask" data-ch="sp">Ask a question about this</button></div></div>`:''}</div>`;}).join('')}</section>`;};
 function videoModal(id){const m=S.topics.flatMap(x=>x.lessons).find(x=>x.id===id);
   modal(`<div><div class="eyebrow">Video · ${m.mins} min</div><h2 style="font-size:1.2rem">${esc(m.title)}</h2></div>
     <div class="vplayer"><span class="vplay">${MICO.video}</span><span class="vbar"><i></i></span></div>
-    <div class="row" style="justify-content:space-between;flex-wrap:wrap;gap:8px"><span class="hint">Subtitles: English, Tiếng Việt</span><div class="row"><button class="btn" data-close>Close</button><button class="btn" data-go="ask" data-ch="mentor">Ask a mentor</button></div></div>`);}
+    <div class="row" style="justify-content:space-between;flex-wrap:wrap;gap:8px"><span class="hint">Subtitles: English, Tiếng Việt</span><div class="row"><button class="btn" data-close>Close</button><button class="btn" data-go="ask" data-ch="sp">Ask a question</button></div></div>`);}
 
 V.parents=()=>`
   <div class="topbar"><div><div class="eyebrow">Parent sync</div><h1>Sync with your parents every 3 months</h1><p class="sub">Instead of a written report, you, your parents and your mentor meet once a quarter to review progress and agree on next steps.</p></div></div>
@@ -938,7 +933,6 @@ V.billing=()=>{const pk=S.packages;const refundMonths=S.billing==='annual'?S.mon
   <div class="topbar"><div><div class="eyebrow">Plan &amp; billing</div><h1>${S.pkg} package</h1></div><span class="proto">Prices to be set</span></div>
   <section class="panel"><div class="table-wrap"><table class="pk-table pk-cur-${Object.keys(pk).indexOf(S.pkg)+2}"><thead><tr><th>Feature</th>${Object.keys(pk).map(k=>`<th class="c">${k}</th>`).join('')}</tr></thead><tbody>
     <tr><td>Video sessions (50 min)</td>${Object.values(pk).map(p=>`<td class="c num">${p.sessions}</td>`).join('')}</tr>
-    <tr><td>QnA tokens (mentor, Vietnamese)</td>${Object.values(pk).map(p=>`<td class="c num">${p.tokens}</td>`).join('')}</tr>
     ${['Learning plan'].map(f=>`<tr><td>${f}</td>${Object.keys(pk).map(()=>'<td class="c">Yes</td>').join('')}</tr>`).join('')}
     <tr><td>Document review (essay, CV, letters)</td>${Object.keys(pk).map(()=>'<td class="c">Yes</td>').join('')}</tr>
     <tr><td>University applications</td>${Object.keys(pk).map(()=>'<td class="c">Unlimited*</td>').join('')}</tr>
@@ -947,7 +941,7 @@ V.billing=()=>{const pk=S.packages;const refundMonths=S.billing==='annual'?S.mon
   </tbody></table></div><p class="hint" style="margin:0">*Universities and scholarships that match your profile.</p></section>
   <div class="grid">
     <section class="panel span-12"><div class="panel-h"><h2>Top-ups</h2><button class="btn sm primary" data-act="topup">Top up sessions</button></div>
-      <p class="hint">Only video sessions can be topped up. QnA tokens are not sold as top-ups.</p>
+      <p class="hint">Add extra 50-minute video sessions. They stay valid until your program ends.</p>
       <div class="list">${S.topups.length?S.topups.map(t=>`<div class="item"><div class="grow"><div class="title">+${t.n} sessions</div><div class="meta">Today</div></div><span class="num">${fmt(t.price)}</span></div>`).join(''):'<p class="hint">No top-ups yet.</p>'}</div>
     </section>
   </div>`;};
@@ -1010,7 +1004,7 @@ function aiReport(title){
    'Personal statement outline':{summary:'Nadia chose her opening story and a 4-part outline for the personal statement.',topics:['Three possible stories','Outline: hook, interest, evidence, goal'],decisions:['Open with the café story'],actions:['Nadia: write first draft by 31 Oct']},
    'University shortlist':{summary:'The shortlist is 5 universities: 2 reach, 2 match, 1 safe.',topics:['Australia vs. UK cost','Entry grades for Commerce'],decisions:['Add NUS as a reach option'],actions:['Nadia: add deadlines to Applications']},
    'Profile review & major choice':{summary:'Nadia will apply for Commerce with an Economics major.',topics:['Grades and strengths in Maths','Business vs. Economics'],decisions:['Commerce (Economics major)'],actions:['Nadia: read 3 course pages']},
-   'Kickoff: 3-year roadmap':{summary:'All stakeholders agreed the 3-year roadmap and the year-1 targets.',topics:['Target countries and intake','Budget and scholarships','How sessions and tokens work'],decisions:['Australia or UK, Feb 2028 intake at the latest'],actions:['Schoters team: send learning plan','Parents: confirm budget ceiling']}
+   'Kickoff: 3-year roadmap':{summary:'All stakeholders agreed the 3-year roadmap and the year-1 targets.',topics:['Target countries and intake','Budget and scholarships','How sessions work'],decisions:['Australia or UK, Feb 2028 intake at the latest'],actions:['Schoters team: send learning plan','Parents: confirm budget ceiling']}
   };
   return Object.assign(base,R[title]||{summary:'Session summary generated by AI from the call, approved by the mentor.',topics:['Progress since last session','Next steps'],decisions:[],actions:['Follow the learning plan for this month']});
 }
@@ -1155,9 +1149,8 @@ document.addEventListener('click',e=>{
         d={id:'d'+Date.now(),name:nm,type:ty,app:layer.querySelector('#dapp').value,versions:[{v:1,sent:today,status:'Waiting for mentor',back:'',comments:0,note:''}]};S.docs.unshift(d);}
       S.docFilter='all';close();location.hash='documents';render();toast(`Version ${d.versions.length} sent to your mentor.`);break;}
     case 'send':{const q=layer.querySelector('#q')||document.getElementById('q');const v=q.value.trim();if(!v){q.focus();toast('Write your question first.');break;}
-      if(S.askChannel==='mentor')S.tokensUsed++;
       S.threads.push({ch:S.askChannel,q:v,a:S.askChannel==='hotline'?'Thanks, we got your message. Our team will reply '+(ssoStatus().fast?'within 30 minutes.':'next working day from 09:00.'):null,by:S.askChannel==='hotline'?'Hotline':'',when:'Just now',status:'Waiting'});
-      render();toast(S.askChannel==='mentor'?`Sent. 1 token used, ${tokLeft()} left.`:'Sent.');break;}
+      render();toast('Sent.');break;}
     case 'topup':topupModal();break;
     case 'buy':S.sessionsExtra+=+t.dataset.n;S.topups.push({n:+t.dataset.n,price:+t.dataset.price});close();render();toast(`Added ${t.dataset.n} session${t.dataset.n>1?'s':''}.`);break;
     case 'watch':videoModal(t.dataset.id);break;
