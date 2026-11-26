@@ -161,25 +161,29 @@ tr.click{cursor:pointer}tr.click:hover td{background:#f7fbff}
 .lenpick{display:flex;gap:6px;flex-wrap:wrap}
 .lenbtn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:6px 12px;font-weight:600;color:var(--muted);cursor:pointer}
 .lenbtn[aria-pressed=true]{background:var(--accent-soft);border-color:#a9d1f5;color:#1a64ad}
-/* login (same layout as the student login) */
-.login{position:fixed;inset:0;z-index:40;background:var(--bg);display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);overflow:auto}
-.login-side{background:linear-gradient(160deg,#cfe5fa,#f5faff);color:var(--ink);padding:48px;display:flex;flex-direction:column;justify-content:space-between;gap:32px}
-.login-side .brand{color:var(--ink);padding:0}.login-side .brand-mark{background:var(--rail-active);color:#fff}.login-side .brand small{color:var(--muted)}
-.login-side h2{font-size:2rem;line-height:1.15;font-weight:800;max-width:15ch}
-.login-side ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px;color:var(--muted)}
-.login-side li::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-right:10px;vertical-align:middle}
-.login-form{display:flex;flex-direction:column;justify-content:center;gap:16px;padding:40px 24px;max-width:440px;width:100%;margin:0 auto}
-.login-form .field input{border:1px solid var(--line);border-radius:12px;padding:11px 12px;background:var(--surface)}
+/* login: brand panel left, form + demo accounts right */
+.login{position:fixed;inset:0;z-index:40;background:var(--bg);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.login-side{background:var(--rail-grad);color:#fff;padding:56px;display:flex;flex-direction:column;justify-content:center;gap:28px}
+.login-side .brand{padding:0;color:#fff}.login-side .brand b{font-size:20px}.login-side .brand small{color:var(--rail-ink);font-size:13px}
+.login-side .brand-mark{width:40px;height:40px;font-size:18px;border-radius:12px}
+.login-side h2{font-size:3rem;line-height:1.05;font-weight:800;max-width:13ch;letter-spacing:-.03em}
+.login-right{overflow-y:auto;height:100vh}
+.login-form{display:flex;flex-direction:column;gap:16px;padding:64px 32px;max-width:500px;width:100%;margin:0 auto}
+.login-form h1{font-size:1.5rem}
+.login-form .field input{border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--surface);font-size:15px}
 .divider{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12px}
 .divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--line)}
-.btn.lg{padding:12px 20px;font-size:15px;border-radius:14px}
+.btn.lg{padding:12px 20px;font-size:15px;border-radius:12px}
 .gbtn{gap:10px}.gbtn svg{width:18px;height:18px}
-.rolepick{display:flex;flex-wrap:wrap;gap:6px}
-.rolepick button{border:1px solid var(--line);background:#fff;border-radius:99px;padding:7px 12px;font-weight:600;font-size:13px;color:var(--muted);cursor:pointer}
-.rolepick button[aria-pressed=true]{background:var(--accent-soft);border-color:#a9d1f5;color:#1a64ad}
-.role-desc{font-size:12.5px;color:var(--muted);min-height:18px}
-.check{display:flex;gap:8px;align-items:center;cursor:pointer;font-size:13.5px}.check input{accent-color:var(--accent)}
-@media (max-width:760px){.login{grid-template-columns:minmax(0,1fr)}.login-side{padding:28px 16px}.login-side h2{font-size:1.5rem}.login-side ul{display:none}}
+.demo{border-top:1px solid var(--line);padding-top:22px;margin-top:8px;display:flex;flex-direction:column;gap:6px}
+.demo h2{font-size:1.1rem}
+.demo-role{margin-top:14px;font-weight:700;color:var(--muted);font-size:13.5px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.demo-desc{font-size:13.5px;color:var(--muted);margin:6px 0 4px}
+.acct{display:flex;gap:12px;align-items:center;width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer;margin-top:6px}
+.acct:hover{border-color:#a9d1f5;background:#f7fbff}
+.acct .avatar{background:var(--rail-active);color:#fff;width:36px;height:36px;font-size:12.5px}
+.acct b{display:block}.acct span{color:var(--muted);font-size:13px}
+@media (max-width:760px){.login{grid-template-columns:minmax(0,1fr);overflow-y:auto}.login-right{height:auto;overflow:visible}.login-side{padding:28px 16px;gap:14px}.login-side h2{font-size:1.7rem}.login-form{padding:28px 16px 40px}}
 @media (max-width:1000px){.c3,.c4,.c5,.c6,.c7,.c8{grid-column:span 12}}
 @media (max-width:760px){
   .shell{grid-template-columns:1fr}
@@ -201,21 +205,20 @@ tr.click{cursor:pointer}tr.click:hover td{background:#f7fbff}
 <div class="login" id="login" hidden>
   <div class="login-side">
     <div class="brand"><div class="brand-mark">S</div><div><b>Schoters Mentoring</b><small>Internal dashboard</small></div></div>
-    <h2>Run every student's program from one place</h2>
-    <ul><li>Set up students, packages and program end dates</li><li>Match each student with the right mentor</li><li>Answer Student Priority and Hotline questions on time</li><li>Publish learning materials from a Word or PDF file</li></ul>
-    <small style="color:var(--muted)">For Schoters staff only. Need access? Ask your Super Admin.</small>
+    <h2>One place to run every student's program.</h2>
   </div>
+  <div class="login-right">
   <form class="login-form" id="loginForm" novalidate>
-    <div><div class="eyebrow">Staff login</div><h1 style="font-size:2rem">Welcome back</h1><p class="sub">Log in with your Schoters account.</p></div>
-    <div class="field"><label>Log in as</label><div class="rolepick" role="group" aria-label="Role" id="rolepick"></div><div class="role-desc" id="roledesc"></div></div>
-    <button type="button" class="btn lg gbtn" data-act="google"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.5 12.3c0-.8-.1-1.5-.2-2.3H12v4.3h5.9a5 5 0 0 1-2.2 3.3v2.7h3.5c2.1-1.9 3.3-4.7 3.3-8z"/><path fill="#34A853" d="M12 23c3 0 5.5-1 7.2-2.7l-3.5-2.7c-1 .7-2.2 1-3.7 1-2.9 0-5.3-1.9-6.2-4.5H2.2v2.8A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.8 14.1a6.6 6.6 0 0 1 0-4.2V7.1H2.2a11 11 0 0 0 0 9.8z"/><path fill="#EA4335" d="M12 5.4c1.6 0 3.1.6 4.2 1.7l3.1-3.1A11 11 0 0 0 2.2 7.1l3.6 2.8C6.7 7.3 9.1 5.4 12 5.4z"/></svg>Continue with Google</button>
-    <div class="divider">or</div>
-    <div class="field"><label for="lemail">Email</label><input id="lemail" type="email" autocomplete="username"></div>
-    <div class="field"><label for="lpass">Password</label><input id="lpass" type="password" value="prototype" autocomplete="current-password"></div>
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><label class="check"><input type="checkbox" checked><span>Remember me</span></label><button type="button" class="btn ghost sm" data-act="forgot">Forgot password?</button></div>
+    <div><h1>Log in to the internal dashboard</h1><p class="sub" style="margin-top:4px">Use your Schoters work account.</p></div>
+    <div class="field"><label for="lemail">Email</label><input id="lemail" type="email" placeholder="name@schoters.example" autocomplete="username"></div>
+    <div class="field"><label for="lpass">Password</label><input id="lpass" type="password" autocomplete="current-password"></div>
+    <div class="err" id="lerr" hidden></div>
     <button type="submit" class="btn primary lg">Log in</button>
-    <p class="hint">Prototype: any email and password works. In production the role comes from your account, which Super Admin approves.</p>
+    <div class="divider">or</div>
+    <button type="button" class="btn lg gbtn" data-act="google"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.5 12.3c0-.8-.1-1.5-.2-2.3H12v4.3h5.9a5 5 0 0 1-2.2 3.3v2.7h3.5c2.1-1.9 3.3-4.7 3.3-8z"/><path fill="#34A853" d="M12 23c3 0 5.5-1 7.2-2.7l-3.5-2.7c-1 .7-2.2 1-3.7 1-2.9 0-5.3-1.9-6.2-4.5H2.2v2.8A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.8 14.1a6.6 6.6 0 0 1 0-4.2V7.1H2.2a11 11 0 0 0 0 9.8z"/><path fill="#EA4335" d="M12 5.4c1.6 0 3.1.6 4.2 1.7l3.1-3.1A11 11 0 0 0 2.2 7.1l3.6 2.8C6.7 7.3 9.1 5.4 12 5.4z"/></svg>Continue with Google</button>
+    <div class="demo"><h2>Demo accounts</h2><p class="demo-desc" style="margin:0">Pick an account to log in right away. Password for every account: <b>demo123</b></p><div id="demoList"></div></div>
   </form>
+  </div>
 </div>
 <div class="shell" id="app" hidden>
   <aside class="rail" id="rail"></aside>
@@ -403,10 +406,14 @@ const V={};
 function route(){const h=location.hash.slice(1);if(h.startsWith('student-'))return {v:'student',id:h.slice(8)};if(h.startsWith('mat-'))return {v:'matedit',id:h.slice(4)};return {v:h};}
 function allowed(v){const R=ROLES[S.role];if(v==='student')return ['super','ops','mentor'].includes(S.role);if(v==='matedit')return can('materials');return R.nav.some(n=>n[0]===v);}
 const can=v=>ROLES[S.role].nav.some(n=>n[0]===v);
-const LOGIN={super:['andi@schoters.example','Access to everything, user approvals and settings'],ops:['dewi@schoters.example','Students, program setup, mentor bank and materials'],mentor:['nam.le@schoters.example','Your students, sessions, reports and document review'],sp:['phuong.mai@schoters.example','Study and application questions in English'],hotline:['rizky@schoters.example','Schedule, payment, account and urgent issues']};
-let pickRole='ops';
-function drawLogin(){$('#rolepick').innerHTML=Object.entries(ROLES).map(([k,r])=>`<button type="button" data-pick="${k}" aria-pressed="${k===pickRole}">${r.label}</button>`).join('');$('#roledesc').textContent=LOGIN[pickRole][1];$('#lemail').value=LOGIN[pickRole][0];}
-function doLogin(){S.role=pickRole;try{sessionStorage.setItem('lms-int-role',S.role)}catch(_){}location.hash=ROLES[S.role].home;render();}
+const ACCTS=[
+  ['super','Andi Pratama','andi@schoters.example','Full access: every page of every role, user approvals and settings.'],
+  ['ops','Dewi Lestari','dewi@schoters.example','Sets up students and program end dates, assigns mentors, uploads materials.'],
+  ['mentor','Lê Hoàng Nam','nam.le@schoters.example','Own students only: availability, sessions, reports and document review.'],
+  ['sp','Mai Phương','phuong.mai@schoters.example','Answers study and application questions in English.'],
+  ['hotline','Rizky Hidayat','rizky@schoters.example','Handles schedule, payment, account and urgent issues.']];
+function drawLogin(){$('#demoList').innerHTML=ACCTS.map(([k,n,e,d])=>`<div class="demo-role">${ROLES[k].label}</div><p class="demo-desc">${d}</p><button type="button" class="acct" data-acct="${k}"><div class="avatar">${ini(n)}</div><div><b>${esc(n)}</b><span>${e}</span></div></button>`).join('');}
+function doLogin(role){S.role=role;try{sessionStorage.setItem('lms-int-role',S.role)}catch(_){}location.hash=ROLES[S.role].home;render();}
 function render(){
   if(!S.role)drawLogin();
   $('#login').hidden=!!S.role;$('#app').hidden=!S.role;if(!S.role)return;
@@ -762,11 +769,10 @@ function autosave(el){const f=findMat(el.dataset.mat);if(!f)return;const st=$('#
   saveT=setTimeout(()=>{f.i[el.dataset.k]=el.dataset.k==='html'?el.innerHTML:el.value;f.i.upd=iso(TODAY);const n=new Date(Date.now()+7*3600e3);const tm=String(n.getUTCHours()).padStart(2,'0')+':'+String(n.getUTCMinutes()).padStart(2,'0');S.savedAt=S.savedAt||{};S.savedAt[f.i.id]=tm;const s2=$('#savestate');if(s2)s2.textContent=(f.i.st==='Draft'?'Draft saved at ':'Saved at ')+tm;},700);}
 
 /* ---------- Events ---------- */
-document.addEventListener('click',e=>{const t=e.target.closest('[data-pick],[data-login],[data-go],[data-act],[data-tab],[data-ch],[data-q],[data-rev],[data-slot],[data-topic],[data-len],[data-close],[data-close-bg],[data-tbund]');if(!t)return;
+document.addEventListener('click',e=>{const t=e.target.closest('[data-acct],[data-login],[data-go],[data-act],[data-tab],[data-ch],[data-q],[data-rev],[data-slot],[data-topic],[data-len],[data-close],[data-close-bg],[data-tbund]');if(!t)return;
   if(t.hasAttribute('data-close-bg')&&e.target!==t)return;
-  if(t.dataset.pick){pickRole=t.dataset.pick;drawLogin();return;}
-  if(t.dataset.act==='google'){doLogin();return;}
-  if(t.dataset.act==='forgot'){toast('We sent a reset link to your email (simulated).');return;}
+  if(t.dataset.acct){doLogin(t.dataset.acct);return;}
+  if(t.dataset.act==='google'){const em=$('#lemail').value.trim().toLowerCase();const a=ACCTS.find(x=>x[2]===em);doLogin(a?a[0]:'ops');return;}
   if(t.dataset.login){S.role=t.dataset.login;try{sessionStorage.setItem('lms-int-role',S.role)}catch(_){}location.hash=ROLES[S.role].home;render();return;}
   if(t.hasAttribute('data-close')||t.hasAttribute('data-close-bg')){close();return;}
   if(t.dataset.tbund){t.parentNode.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b===t));return;}
@@ -842,7 +848,7 @@ document.addEventListener('change',e=>{const t=e.target;
   if(t.id==='pa'){$('#pv-up').hidden=t.value!=='up';$('#pv-ext').hidden=t.value!=='ext';return;}
   if(t.dataset.urole){const u=S.users[+t.dataset.urole];const o=u.role;u.role=t.value;log(null,'Role changed',`${u.name}: ${o}`,t.value,'Super Admin');toast(`${u.name} is now ${t.value}.`);return;}
 });
-document.addEventListener('submit',e=>{if(e.target.id==='loginForm'){e.preventDefault();doLogin();return;}if(e.target.id!=='nf')return;e.preventDefault();const f=NF;const er=$('#nf-err');
+document.addEventListener('submit',e=>{if(e.target.id==='loginForm'){e.preventDefault();const em=$('#lemail').value.trim().toLowerCase(),pw=$('#lpass').value;const a=ACCTS.find(x=>x[2]===em);const er=$('#lerr');if(!a||pw!=='demo123'){er.textContent=a?'Wrong password. For the demo accounts it is demo123.':'No staff account with this email. Pick a demo account below.';er.hidden=false;return;}doLogin(a[0]);return;}if(e.target.id!=='nf')return;e.preventDefault();const f=NF;const er=$('#nf-err');
   const fdat=new FormData(e.target);for(const [k,v] of fdat.entries())NF[k]=k==='len'?+v:v;
   if(!f.name.trim()||!/^\S+@\S+\.\S+$/.test(f.email)){er.textContent='Add the student\'s name and a valid email.';er.hidden=false;return;}
   if(f.track==='S1'&&f.grad<=f.start){er.textContent='The graduation date must be after the start date.';er.hidden=false;return;}
