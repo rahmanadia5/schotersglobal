@@ -209,13 +209,11 @@ tr.click{cursor:pointer}tr.click:hover td{background:#f7fbff}
   </div>
   <div class="login-right">
   <form class="login-form" id="loginForm" novalidate>
-    <div><h1>Log in to the internal dashboard</h1><p class="sub" style="margin-top:4px">Use your Schoters work account.</p></div>
+    <div><h1>Log in to the internal dashboard</h1><p class="sub" style="margin-top:4px">Use your Schoters account email and password.</p></div>
     <div class="field"><label for="lemail">Email</label><input id="lemail" type="email" placeholder="name@schoters.example" autocomplete="username"></div>
     <div class="field"><label for="lpass">Password</label><input id="lpass" type="password" autocomplete="current-password"></div>
     <div class="err" id="lerr" hidden></div>
     <button type="submit" class="btn primary lg">Log in</button>
-    <div class="divider">or</div>
-    <button type="button" class="btn lg gbtn" data-act="google"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.5 12.3c0-.8-.1-1.5-.2-2.3H12v4.3h5.9a5 5 0 0 1-2.2 3.3v2.7h3.5c2.1-1.9 3.3-4.7 3.3-8z"/><path fill="#34A853" d="M12 23c3 0 5.5-1 7.2-2.7l-3.5-2.7c-1 .7-2.2 1-3.7 1-2.9 0-5.3-1.9-6.2-4.5H2.2v2.8A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.8 14.1a6.6 6.6 0 0 1 0-4.2V7.1H2.2a11 11 0 0 0 0 9.8z"/><path fill="#EA4335" d="M12 5.4c1.6 0 3.1.6 4.2 1.7l3.1-3.1A11 11 0 0 0 2.2 7.1l3.6 2.8C6.7 7.3 9.1 5.4 12 5.4z"/></svg>Continue with Google</button>
     <div class="demo"><h2>Demo accounts</h2><p class="demo-desc" style="margin:0">Pick an account to log in right away. Password for every account: <b>demo123</b></p><div id="demoList"></div></div>
   </form>
   </div>
@@ -772,7 +770,6 @@ function autosave(el){const f=findMat(el.dataset.mat);if(!f)return;const st=$('#
 document.addEventListener('click',e=>{const t=e.target.closest('[data-acct],[data-login],[data-go],[data-act],[data-tab],[data-ch],[data-q],[data-rev],[data-slot],[data-topic],[data-len],[data-close],[data-close-bg],[data-tbund]');if(!t)return;
   if(t.hasAttribute('data-close-bg')&&e.target!==t)return;
   if(t.dataset.acct){doLogin(t.dataset.acct);return;}
-  if(t.dataset.act==='google'){const em=$('#lemail').value.trim().toLowerCase();const a=ACCTS.find(x=>x[2]===em);doLogin(a?a[0]:'ops');return;}
   if(t.dataset.login){S.role=t.dataset.login;try{sessionStorage.setItem('lms-int-role',S.role)}catch(_){}location.hash=ROLES[S.role].home;render();return;}
   if(t.hasAttribute('data-close')||t.hasAttribute('data-close-bg')){close();return;}
   if(t.dataset.tbund){t.parentNode.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b===t));return;}
