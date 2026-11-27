@@ -274,16 +274,18 @@ const ICONS={
   materials:'<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/>',
   settings:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',
   audit:'<path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h8M8 17h5"/>',
+  chat:'<path d="M4 5h12v9H8l-4 3z"/><path d="M16 9h4v9l-3-2h-6v-2"/>',
   cal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>'
 };
 const ROLES={
-  super:{label:'Super Admin',user:'Andi Pratama',sub:'Super Admin',nav:[['#Operations'],['overview','Overview'],['students','Students'],['mentorlist','Mentor list'],['materials','Materials'],['#Support'],['inbox','Support inbox'],['#Mentor workspace'],['mday','Today\'s classes'],['msessions','Sessions & reports'],['mreview','Document review'],['mstudents','Mentees'],['mavail','Availability'],['#Admin'],['users','Users & approvals'],['settings','Program settings'],['audit','Audit log']],home:'overview'},
+  super:{label:'Super Admin',user:'Andi Pratama',sub:'Super Admin',nav:[['#Operations'],['overview','Overview'],['students','Students'],['mentorlist','Mentor list'],['materials','Materials'],['#Support'],['inbox','Support inbox'],['chat','Mentor chat'],['#Mentor workspace'],['mday','Today\'s classes'],['msessions','Sessions & reports'],['mreview','Document review'],['mstudents','Mentees'],['mavail','Availability'],['#Admin'],['users','Users & approvals'],['settings','Program settings'],['audit','Audit log']],home:'overview'},
   ops:{label:'Operations',user:'Dewi Lestari',sub:'Operations',nav:[['overview','Overview'],['students','Students'],['mentorlist','Mentor list'],['materials','Materials']],home:'overview'},
   mentor:{label:'Mentor',user:'Lê Hoàng Nam',sub:'Mentor',nav:[['mday','My day'],['msessions','Sessions & reports'],['mreview','Document review'],['mstudents','My students'],['mavail','Availability']],home:'mday'},
   sp:{label:'Student Priority',user:'Putri Ayu',sub:'Student Priority',nav:[['inbox','Student Priority inbox']],home:'inbox',ch:'sp'},
-  hotline:{label:'Hotline',user:'Rizky Hidayat',sub:'Hotline',nav:[['inbox','Hotline inbox']],home:'inbox',ch:'hotline'}
+  hotline:{label:'Hotline',user:'Rizky Hidayat',sub:'Hotline',nav:[['inbox','Hotline inbox']],home:'inbox',ch:'hotline'},
+  async:{label:'Async Mentor',user:'Nguyễn Minh Khoa',sub:'Async Mentor',nav:[['chat','Student chats']],home:'chat'}
 };
-const NAVICON={overview:'overview',students:'students',new:'add',mentorlist:'mentors',inbox:'inbox',mday:'overview',msessions:'sessions',mreview:'review',mstudents:'students',mavail:'avail',users:'users',materials:'materials',settings:'settings',audit:'audit'};
+const NAVICON={chat:'chat',overview:'overview',students:'students',new:'add',mentorlist:'mentors',inbox:'inbox',mday:'overview',msessions:'sessions',mreview:'review',mstudents:'students',mavail:'avail',users:'users',materials:'materials',settings:'settings',audit:'audit'};
 
 /* ---------- Demo date and helpers ---------- */
 const TODAY=new Date(Date.UTC(2026,10,26));
@@ -300,7 +302,7 @@ function addWorkdays(s,n){const d=D(s);let k=0;while(k<n){d.setUTCDate(d.getUTCD
 /* ---------- Example data (not real people) ---------- */
 const S={
   role:null, studentTab:'overview', inboxCh:'sp', inboxSel:null, filters:{q:'',track:'',pkg:'',mentor:'',status:''}, reviewSel:null, auditQ:'', matTopic:'sch',
-  settings:{packages:{Silver:10,Gold:20,Platinum:30},sessionMin:50,topups:[{n:1,price:800000},{n:3,price:2250000},{n:5,price:3500000}],cancelHrs:24,reviewDays:3,lengths:{'S1-10':[1,2,3],'S1-11':[1,2],'S1-12':[1],'Gap year':[1],'S2':[1],'S3':[1]},reportHrs:24,hotline:'Mon–Fri 09:00–17:00 (GMT+7)',spHours:'Mon–Fri 08:00–20:00 (GMT+7)',spShifts:[{name:'Putri Ayu',from:'08:00',to:'14:00'},{name:'Fajar Nugroho',from:'14:00',to:'20:00'}]},
+  settings:{packages:{Silver:10,Gold:20,Platinum:30},sessionMin:50,topups:[{n:1,price:800000},{n:3,price:2250000},{n:5,price:3500000}],cancelHrs:24,reviewDays:3,lengths:{'S1-10':[1,2,3],'S1-11':[1,2],'S1-12':[1],'Gap year':[1],'S2':[1],'S3':[1]},reportHrs:24,hotline:'Mon–Fri 09:00–17:00 (GMT+7)',spHours:'Mon–Fri 08:00–20:00 (GMT+7)',chatHrs:24,spShifts:[{name:'Putri Ayu',from:'08:00',to:'14:00'},{name:'Fajar Nugroho',from:'14:00',to:'20:00'}]},
   mentors:[
     {id:'m1',name:'Lê Hoàng Nam',spec:'Business & Economics',countries:'Australia, UK, Singapore',langs:'Vietnamese, English',cap:12,since:'2023',edu:'MCom, University of Melbourne (Australia Awards scholar)',bio:'Helped 60+ Vietnamese students into Commerce and Economics programs in Australia and the UK. Focus on personal statements and scholarship essays.',rating:4.9,month:21},
     {id:'m2',name:'Phạm Minh Châu',spec:'Engineering & Computer Science',countries:'Canada, Australia',langs:'Vietnamese, English',cap:12,since:'2024',edu:'MEng, University of Toronto',bio:'Former software engineer. Guides students on STEM course choice, activity lists and Canadian applications.',rating:4.8,month:14},
@@ -355,6 +357,14 @@ const S={
     s3:[['University of Manchester','University','2027-01-28','In progress'],['University of Edinburgh','University','2027-01-28','In progress'],['NUS','University','2027-02-20','Submitted']],
     s5:[['Chevening Scholarship','Scholarship','2026-11-04','Submitted'],['LSE MSc Management','University','2027-01-15','In progress']]
   },
+  chats:[
+    {id:'c1',st:'s1',am:'a1',msgs:[{from:'st',t:'Hi, for the Monash essay should I write about my café job or the robotics club?',at:'2026-11-25T12:10'},{from:'am',t:'Both can work. Which one shows a change in how you think? Write 3 lines on each and send them here.',at:'2026-11-25T13:02'},{from:'st',t:'Café job: I learned to talk to strangers and handle complaints. Robotics: I led a team of 4. Which is stronger?',at:'2026-11-26T02:40'}]},
+    {id:'c2',st:'s3',am:'a1',msgs:[{from:'st',t:'Is it okay to send the UCAS application before my reference is uploaded?',at:'2026-11-26T01:15'}]},
+    {id:'c3',st:'s2',am:'a2',msgs:[{from:'st',t:'Which summer schools are good for engineering in Canada?',at:'2026-11-24T09:30'},{from:'am',t:'Look at Waterloo and UBC summer programs first. I will list 3 with deadlines tomorrow.',at:'2026-11-24T10:05'}]},
+    {id:'c4',st:'s5',am:'a2',msgs:[{from:'st',t:'Can you check if my Chevening reference letter needs to be signed?',at:'2026-11-25T03:00'}]},
+    {id:'c5',st:'s6',am:'a1',msgs:[{from:'st',t:'Thank you for the activity list template!',at:'2026-11-23T11:00'},{from:'am',t:'You are welcome. Fill in 3 activities before your next session.',at:'2026-11-23T11:20'}]},
+    {id:'c6',st:'s10',am:'a2',msgs:[{from:'st',t:'Do I need IELTS 7.0 in every band for the UCL MA?',at:'2026-11-26T03:30'}]}
+  ],
   questions:[
     {id:'q1',ch:'sp',st:'s1',q:'For the Monash scholarship, do I write a new essay or can I reuse my personal statement?',at:'2026-11-26T01:10',status:'Open',assignee:null,msgs:[]},
     {id:'q2',ch:'hotline',st:'s3',q:'I need to move my session on 28 Nov to 29 Nov, same time. Is that possible?',at:'2026-11-25T08:30',status:'Open',assignee:'Dewi Lestari',msgs:[]},
@@ -379,6 +389,8 @@ const S={
     {name:'Putri Ayu',email:'putri.ayu@schoters.example',role:'Student Priority',status:'Active'},
     {name:'Fajar Nugroho',email:'fajar@schoters.example',role:'Student Priority',status:'Active'},
     {name:'Rizky Hidayat',email:'rizky@schoters.example',role:'Hotline',status:'Active'},
+    {name:'Nguyễn Minh Khoa',email:'khoa.nguyen@schoters.example',role:'Async Mentor',status:'Active'},
+    {name:'Lý Hải Yến',email:'yen.ly@schoters.example',role:'Async Mentor',status:'Active'},
     {name:'Trương Văn Phúc',email:'phuc.truong@schoters.example',role:'Mentor',status:'Pending',by:'Dewi Lestari',on:'2026-11-25',note:'Law & Social Sciences, UK. Needed for 3 new S1 students in December.'},
     {name:'Siti Rahma',email:'siti@schoters.example',role:'Operations',status:'Pending',by:'Dewi Lestari',on:'2026-11-26',note:'Second Ops person for the January intake.'},
     {name:'Bima Saputra',email:'bima@schoters.example',role:'Operations',status:'Deactivated'}
@@ -443,7 +455,7 @@ function calcEnd(track,grade,len,start,grad){const sd=D(start);if(track==='S1'){
 const $=s=>document.querySelector(s);
 const layer=$('#layer');
 function svg(k){return `<svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[k]||''}</svg>`;}
-function navCount(v){if(v==='inbox')return S.questions.filter(q=>q.status==='Open'&&(!ROLES[S.role].ch||q.ch===ROLES[S.role].ch)).length;if(v==='mreview')return openReviews(ME_M()).length;if(v==='msessions')return S.sessions.filter(x=>inM(x.m)&&x.state==='report').length;if(v==='mentorlist')return S.students.filter(s=>!s.mentor&&s.status!=='Ended').length;if(v==='users')return S.users.filter(u=>u.status==='Pending').length;return 0;}
+function navCount(v){if(v==='chat')return S.chats.filter(c=>(!myAM()||c.am===myAM())&&chatWait(c)>0).length;if(v==='inbox')return S.questions.filter(q=>q.status==='Open'&&(!ROLES[S.role].ch||q.ch===ROLES[S.role].ch)).length;if(v==='mreview')return openReviews(ME_M()).length;if(v==='msessions')return S.sessions.filter(x=>inM(x.m)&&x.state==='report').length;if(v==='mentorlist')return S.students.filter(s=>!s.mentor&&s.status!=='Ended').length;if(v==='users')return S.users.filter(u=>u.status==='Pending').length;return 0;}
 function drawRail(cur){const R=ROLES[S.role];
   $('#rail').innerHTML=`<div class="brand"><div class="brand-mark">S</div><div><b>Schoters Global</b><small>Internal dashboard</small></div></div>
   <span class="role-tag">${R.label}</span>
@@ -461,9 +473,10 @@ const ACCTS=[
   ['ops','Dewi Lestari','dewi@schoters.example','Sets up students and program end dates, assigns mentors, uploads materials.'],
   ['mentor','Lê Hoàng Nam','nam.le@schoters.example','Own students only: availability, sessions, reports and document review.'],
   ['sp','Putri Ayu','putri.ayu@schoters.example','Answers study and application questions in English.'],
-  ['hotline','Rizky Hidayat','rizky@schoters.example','Handles schedule, payment, account and urgent issues.']];
+  ['hotline','Rizky Hidayat','rizky@schoters.example','Handles schedule, payment, account and urgent issues.'],
+  ['async','Nguyễn Minh Khoa','khoa.nguyen@schoters.example','Chats with students between sessions. Not the session mentor.']];
 function drawLogin(){$('#demoList').innerHTML=ACCTS.map(([k,n,e,d])=>`<div class="demo-role">${ROLES[k].label}</div><p class="demo-desc">${d}</p><button type="button" class="acct" data-acct="${k}"><div class="avatar">${ini(n)}</div><div><b>${esc(n)}</b><span>${e}</span></div></button>`).join('');}
-function doLogin(role){S.role=role;try{sessionStorage.setItem('lms-int-role',S.role)}catch(_){}location.hash=ROLES[S.role].home;render();}
+function doLogin(role){S.role=role;S.chatQ='';S.chatSel=null;try{sessionStorage.setItem('lms-int-role',S.role)}catch(_){}location.hash=ROLES[S.role].home;render();}
 function render(){
   if(!S.role)drawLogin();
   $('#login').hidden=!!S.role;$('#app').hidden=!S.role;if(!S.role)return;
@@ -625,6 +638,26 @@ function mSwitch(){if(route().v==='mday')return '';const m=ME_M()?men(ME_M()):nu
   <div class="pk"><button class="btn" data-act="pkopen">Switch mentor ▾</button><div class="pkpop" id="pkpop" hidden><input id="pkq" type="search" placeholder="Search mentor name or field" aria-label="Search mentor" autocomplete="off"><div class="pklist" id="pklist"></div></div></div></div>`;}
 function pkDraw(){const q=($('#pkq').value||'').toLowerCase();const L=S.mentors.filter(m=>!q||(m.name+' '+m.spec+' '+m.countries).toLowerCase().includes(q));
   $('#pklist').innerHTML=(q?'':`<button class="gsi ${!ME_M()?'act':''}" data-viewm="all"><div class="avatar">${S.mentors.length}</div><div class="grow"><b>All mentors</b><span class="sub">Everyone's sessions, reviews and mentees</span></div></button>`)+L.map(m=>{const k=mStats(m);return `<button class="gsi ${m.id===ME_M()?'act':''}" data-viewm="${m.id}"><div class="avatar">${ini(m.name)}</div><div class="grow"><b>${hl(m.name,q)}</b><span class="sub">${esc(m.spec)} · ${k.n.length}/${m.cap} students · ${k.rev} reviews</span></div></button>`;}).join('')||'<div class="empty">No mentor found.</div>';}
+/* ---------- Async mentor chat ---------- */
+const AMS=[{id:'a1',name:'Nguyễn Minh Khoa',email:'khoa.nguyen@schoters.example'},{id:'a2',name:'Lý Hải Yến',email:'yen.ly@schoters.example'}];
+const amOf=id=>AMS.find(a=>a.id===id);
+const myAM=()=>S.role==='async'?'a1':(S.chatAM||null);
+function chatWait(c){const last=c.msgs[c.msgs.length-1];return last.from==='st'?waitH({at:last.at}):0;}
+V.chat=()=>{const am=myAM();const q=(S.chatQ||'').toLowerCase();
+  const L=S.chats.filter(c=>(!am||c.am===am)&&(!q||(stu(c.st).name+' '+c.msgs.map(m=>m.t).join(' ')).toLowerCase().includes(q))).sort((a,b)=>chatWait(b)-chatWait(a));
+  const sel=S.chats.find(c=>c.id===S.chatSel&&L.includes(c))||L[0];if(sel)S.chatSel=sel.id;
+  const waiting=L.filter(c=>chatWait(c)>0).length;const T=S.settings.chatHrs;
+  return `<div class="ph"><div><div class="eyebrow">${isSup()?'Mentor chat':'Student chats'}</div><h1>${isSup()?'Async mentor chats':'Chats with my students'}</h1><p>Students chat with an async mentor between sessions. The async mentor is not the session mentor: they answer quick study and application questions and pass anything for the next session to the session mentor. Reply target: ${T} hours.</p></div>
+   ${isSup()?`<div class="seg" role="group" aria-label="Async mentor"><button data-chatam="" aria-pressed="${!am}">All</button>${AMS.map(a=>`<button data-chatam="${a.id}" aria-pressed="${am===a.id}">${esc(a.name)}</button>`).join('')}</div>`:''}</div>
+  <div class="grid"><section class="panel flush c5"><div class="panel-h" style="padding-bottom:10px"><input type="search" id="cq" placeholder="Search student or message" value="${esc(S.chatQ||'')}" aria-label="Search chats" style="flex:1;border:1px solid var(--line);border-radius:10px;padding:8px 10px"><span class="pill ${waiting?'warn':'good'}">${waiting} waiting</span></div>
+   <div class="list">${L.map(c=>{const s=stu(c.st);const w=chatWait(c);const last=c.msgs[c.msgs.length-1];return `<div class="item click" data-chat="${c.id}" style="${sel&&sel.id===c.id?'background:#f1f7fe':''}"><div class="avatar" style="width:34px;height:34px;font-size:12px">${ini(s.name)}</div><div class="grow" style="min-width:0"><div class="title">${esc(s.name)}</div><div class="sub" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${last.from==='am'?'You: ':''}${esc(last.t)}</div>${isSup()&&!am?`<div class="sub">Async mentor: ${esc(amOf(c.am).name)}</div>`:''}</div>${w?`<span class="pill ${w>=T?'bad':'warn'} num">${w} h</span>`:'<span class="pill good">Replied</span>'}</div>`;}).join('')||'<div class="empty">No chats.</div>'}</div></section>
+  <section class="panel c7">${sel?chatThread(sel):'<div class="empty">Pick a chat.</div>'}</section></div>`;};
+function chatThread(c){const s=stu(c.st);const m=s.mentor?men(s.mentor):null;const nx=S.sessions.filter(x=>x.st===s.id&&x.state==='upcoming').sort((a,b)=>a.date<b.date?-1:1)[0];
+  return `<div class="panel-h"><div><h2>${esc(s.name)}</h2><div class="sub">${s.pkg} · ${trackLabel(s)} · session mentor ${m?esc(m.name):'not assigned'}${nx?` · next session ${fd(nx.date)}`:''}</div>${isSup()?`<div class="sub">Async mentor: ${esc(amOf(c.am).name)}</div>`:''}</div>${allowed('student')?`<a class="btn sm" href="#student-${s.id}">Profile</a>`:''}</div>
+  <div class="thread">${c.msgs.map(x=>x.from==='note'?`<div class="msg note"><small>Note to session mentor ${esc(x.to)} · ${x.at.replace('T',' ')} (student cannot see)</small>${esc(x.t)}</div>`:`<div class="msg ${x.from==='st'?'st':'us'}"><small>${x.from==='st'?esc(s.name):esc(amOf(c.am).name)+' (async mentor)'} · ${x.at.replace('T',' ')}</small>${esc(x.t)}</div>`).join('')}</div>
+  <div class="field"><label for="crep">Reply to ${esc(fname(s.name))}</label><textarea id="crep" placeholder="Write in English or Vietnamese"></textarea></div>
+  <div class="row-btns"><button class="btn primary" data-act="chatsend" data-id="${c.id}">Send</button>${m?`<button class="btn" data-act="chatnote" data-id="${c.id}">Pass to session mentor</button>`:''}</div>
+  <p class="hint">The student sees the async mentor's name. Session topics, document reviews and the learning plan stay with the session mentor ${m?esc(m.name):''}.</p>`;}
 /* ---------- Support inbox ---------- */
 V.inbox=()=>{if(ROLES[S.role].ch)S.inboxCh=ROLES[S.role].ch;const ch=S.inboxCh;const iq=(S.inboxQ||'').toLowerCase();const L=S.questions.filter(q=>q.ch===ch&&(!iq||(q.q+' '+stu(q.st).name+' '+(q.assignee||'')).toLowerCase().includes(iq))).sort((a,b)=>(a.status==='Open'?0:1)-(b.status==='Open'?0:1)||waitH(b)-waitH(a));
   const sel=S.questions.find(q=>q.id===S.inboxSel)||L[0];
@@ -708,7 +741,7 @@ V.users=()=>{const pend=S.users.map((u,i)=>[u,i]).filter(x=>x[0].status==='Pendi
   return `<div class="ph"><div><div class="eyebrow">Users & approvals</div><h1>Internal users</h1><p>Every new internal user (Operations, Mentor, Student Priority, Hotline) needs Super Admin approval before they can log in.</p></div><button class="btn primary" data-act="adduser">+ Add user</button></div>
   <section class="panel flush"><div class="panel-h"><h2>Waiting for your approval</h2><span class="pill ${pend.length?'warn':'good'}">${pend.length}</span></div><div class="list">${pend.map(([u,i])=>`<div class="item"><div class="avatar" style="width:34px;height:34px;font-size:12px">${ini(u.name)}</div><div class="grow"><div class="title">${esc(u.name)} <span class="pill accent">${u.role}</span></div><div class="sub">${esc(u.email)} · requested by ${esc(u.by)} on ${fd(u.on)}</div>${u.note?`<div class="sub" style="margin-top:2px">“${esc(u.note)}”</div>`:''}</div><button class="btn sm danger" data-act="rejectuser" data-i="${i}">Reject</button><button class="btn sm primary" data-act="approveuser" data-i="${i}">Approve</button></div>`).join('')||'<div class="empty">No requests waiting.</div>'}</div></section>
   <section class="panel flush"><div class="panel-h"><h2>All users</h2><span class="hint">${rest.length} of ${all.length} accounts</span></div><div style="padding:12px 20px;display:flex;flex-direction:column;gap:10px;border-bottom:1px solid var(--line)"><input type="search" id="uq" placeholder="Search name or email" value="${esc(S.userQ||'')}" aria-label="Search users" style="border:1px solid var(--line);border-radius:10px;padding:8px 10px"><div class="rolechips" role="group" aria-label="Filter by role">${[['','All'],...RLIST.map(r=>[r,r])].map(([v,l])=>`<button data-urf="${v}" aria-pressed="${ur===v}">${l} <span class="num">${all.filter(([u])=>!v||u.role===v).length}</span></button>`).join('')}</div></div><div class="tbl-wrap"><table><thead><tr><th>Name</th><th>Role</th><th>Status</th><th></th></tr></thead><tbody>${rest.map(([u,i])=>`<tr><td><b>${esc(u.name)}</b><div class="sub">${esc(u.email)}</div></td><td><select data-urole="${i}" aria-label="Role" ${u.name===meName()?'disabled':''}>${RLIST.map(r=>`<option ${u.role===r?'selected':''}>${r}</option>`).join('')}</select></td><td>${u.status==='Active'?'<span class="pill good">Active</span>':'<span class="pill">Deactivated</span>'}</td><td style="text-align:right">${u.name===meName()?'<span class="sub">You</span>':`<button class="btn sm ${u.status==='Active'?'danger':''}" data-act="toggleuser" data-i="${i}">${u.status==='Active'?'Deactivate':'Reactivate'}</button>`}</td></tr>`).join('')||'<tr><td colspan="4"><div class="empty">No user matches.</div></td></tr>'}</tbody></table></div></section>
-  <section class="panel flush"><div class="panel-h"><h2>Access by role</h2></div><div class="tbl-wrap"><table><thead><tr><th>Permission</th><th>Super Admin</th><th>Operations</th><th>Mentor</th><th>Student Priority</th><th>Hotline</th></tr></thead><tbody>
+  <section class="panel flush"><div class="panel-h"><h2>Access by role</h2></div><div class="tbl-wrap"><table><thead><tr><th>Permission</th><th>Super Admin</th><th>Operations</th><th>Mentor</th><th>Async Mentor</th><th>Student Priority</th><th>Hotline</th></tr></thead><tbody>
   ${ACCESS.map(r=>`<tr><td>${r[0]}</td>${r.slice(1).map(c=>`<td><span class="pill ${c==='No'?'':c==='Yes'||c==='All'||c==='Edit'?'good':'accent'}">${c}</span></td>`).join('')}</tr>`).join('')}</tbody></table></div></section>`;};
 V.materials=()=>{const t=S.topics.find(x=>x.id===S.matTopic)||S.topics[0];
   return `<div class="ph"><div><div class="eyebrow">Materials</div><h1>Materials library</h1><p>Upload a Word or PDF file and it becomes an article, or upload a video. Save it as a draft or publish it. Students only see published items. Click a row to open it.</p></div></div>
@@ -750,8 +783,8 @@ V.settings=()=>{const st=S.settings;const LR=[['S1-10','S1 · grade 10','High sc
    <div class="field"><label for="r5">Student Priority fast-reply hours</label><input id="r5" data-set="spHours" value="${esc(st.spHours)}"><span class="sub">To confirm</span></div>
   </div></section></div>`;
 };
-const RLIST=['Super Admin','Operations','Mentor','Student Priority','Hotline'];
-const ACCESS=[['Create students, set track, package and dates','Yes','Yes','No','No','No'],['Mentor list and assignment','Yes','Yes','No','No','No'],['Session balance and top-ups','Edit','Edit','View own','No','No'],['Sessions and reports','All','View all','Own students','No','No'],['Document review','All','View','Own students','No','No'],['Student Priority questions','Yes','No','Internal notes','Yes','No'],['Hotline questions','Yes','No','Internal notes','No','Yes'],['Materials (upload, draft, publish)','Yes','Yes','No','No','No'],['Approve new users, settings, audit log','Yes','No','No','No','No']];
+const RLIST=['Super Admin','Operations','Mentor','Async Mentor','Student Priority','Hotline'];
+const ACCESS=[['Create students, set track, package and dates', 'Yes', 'Yes', 'No', 'No', 'No', 'No'], ['Mentor list and assignment', 'Yes', 'Yes', 'No', 'No', 'No', 'No'], ['Session balance and top-ups', 'Edit', 'Edit', 'View own', 'No', 'No', 'No'], ['Sessions and reports', 'All', 'View all', 'Own students', 'No', 'No', 'No'], ['Document review', 'All', 'View', 'Own students', 'No', 'No', 'No'], ['Student Priority questions', 'Yes', 'No', 'Internal notes', 'No', 'Yes', 'No'], ['Hotline questions', 'Yes', 'No', 'Internal notes', 'No', 'No', 'Yes'], ['Async mentor chats with students', 'All', 'No', 'Notes from async mentor', 'Own chats', 'No', 'No'], ['Materials (upload, draft, publish)', 'Yes', 'Yes', 'No', 'No', 'No', 'No'], ['Approve new users, settings, audit log', 'Yes', 'No', 'No', 'No', 'No', 'No']];
 function auditTable(L){return `<div class="tbl-wrap"><table><thead><tr><th>When</th><th>Who</th><th>Student</th><th>Action</th><th>Change</th><th>Reason</th></tr></thead><tbody>${L.map(a=>`<tr><td class="num sub" style="white-space:nowrap">${a.at}</td><td>${esc(a.by)}</td><td>${a.st?esc(stu(a.st).name):''}</td><td><b>${esc(a.act)}</b></td><td class="sub">${a.old?esc(a.old)+' → ':''}${esc(a.nw)}</td><td class="sub">${esc(a.why)}</td></tr>`).join('')||'<tr><td colspan="6"><div class="empty">No entries.</div></td></tr>'}</tbody></table></div>`;}
 V.audit=()=>{const q=S.auditQ.toLowerCase();const L=S.audit.filter(a=>!q||(a.by+a.act+a.why+(a.st?stu(a.st).name:'')).toLowerCase().includes(q));
   return `<div class="ph"><div><div class="eyebrow">Audit log</div><h1>Who changed what</h1><p>Read-only. Every change to a program, balance or mentor, and every view of a student document.</p></div></div>
@@ -852,9 +885,11 @@ function autosave(el){const f=findMat(el.dataset.mat);if(!f)return;const st=$('#
   saveT=setTimeout(()=>{f.i[el.dataset.k]=el.dataset.k==='html'?el.innerHTML:el.value;f.i.upd=iso(TODAY);const n=new Date(Date.now()+7*3600e3);const tm=String(n.getUTCHours()).padStart(2,'0')+':'+String(n.getUTCMinutes()).padStart(2,'0');S.savedAt=S.savedAt||{};S.savedAt[f.i.id]=tm;const s2=$('#savestate');if(s2)s2.textContent=(f.i.st==='Draft'?'Draft saved at ':'Saved at ')+tm;},700);}
 
 /* ---------- Events ---------- */
-document.addEventListener('click',e=>{const t=e.target.closest('[data-acct],[data-login],[data-go],[data-act],[data-tab],[data-ch],[data-q],[data-rev],[data-slot],[data-topic],[data-len],[data-close],[data-close-bg],[data-tbund],[data-viewm],[data-step],[data-urf]');
+document.addEventListener('click',e=>{const t=e.target.closest('[data-acct],[data-login],[data-go],[data-act],[data-tab],[data-ch],[data-q],[data-rev],[data-slot],[data-topic],[data-len],[data-close],[data-close-bg],[data-tbund],[data-viewm],[data-step],[data-chat],[data-chatam],[data-urf]');
   if(!e.target.closest('.pk')){const b=$('#pkpop');if(b)b.hidden=true;}
   if(!t)return;
+  if(t.dataset.chat){S.chatSel=t.dataset.chat;rerender();return;}
+  if(t.dataset.chatam!==undefined){S.chatAM=t.dataset.chatam||null;S.chatSel=null;rerender();return;}
   if(t.dataset.step){const i=$('#'+t.dataset.step);i.value=Math.max(+i.min||1,(+i.value||0)+ +t.dataset.d);return;}
   if(t.dataset.viewm){S.viewM=t.dataset.viewm==='all'?null:t.dataset.viewm;S.reviewSel=null;close();const to=t.dataset.go2;if(to&&route().v!==to)location.hash=to;else if(MVIEWS.includes(route().v))rerender();else location.hash='mday';if(!t.dataset.quiet&&!to&&S.viewM)toast('Now viewing '+men(S.viewM).name+'\'s workspace.');return;}
   if(t.dataset.urf!==undefined){S.userRole=t.dataset.urf;rerender();return;}
@@ -911,6 +946,8 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-acct],[dat
     case 'approveuser':{const u=S.users[+t.dataset.i];u.status='Active';if(u.role==='Mentor'&&!S.mentors.some(m=>m.name===u.name))S.mentors.push({id:'m'+(S.mentors.length+1),name:u.name,spec:(u.note||'New mentor').split(',')[0].split('.')[0],countries:'To complete',langs:'Vietnamese, English',cap:10,since:'2026',edu:'To complete',bio:u.note||'Profile to complete.',rating:'new',month:0});log(null,'User approved','Pending',`${u.name} (${u.role})`,'Super Admin approval');rerender();toast(`${u.name} approved. Invite sent.`);break;}
     case 'rejectuser':{const u=S.users[+t.dataset.i];u.status='Rejected';log(null,'User rejected','Pending',`${u.name} (${u.role})`,'Super Admin');rerender();toast('Request rejected. The requester is notified.');break;}
     case 'toggleuser':{const u=S.users[+t.dataset.i];u.status=u.status==='Active'?'Deactivated':'Active';log(null,u.status==='Active'?'User reactivated':'User deactivated','',u.name,'Super Admin');rerender();toast(u.status==='Active'?'Reactivated.':`${u.name} lost access right away.`);break;}
+    case 'chatsend':{const c=S.chats.find(x=>x.id===id);const v=$('#crep').value.trim();if(!v){toast('Write a reply first.');return;}c.msgs.push({from:'am',t:v,at:'2026-11-26T05:02'});rerender();toast('Sent to '+stu(c.st).name+'.');break;}
+    case 'chatnote':{const c=S.chats.find(x=>x.id===id);const s=stu(c.st);const v=$('#crep').value.trim()||c.msgs.filter(m=>m.from==='st').slice(-1)[0].t;c.msgs.push({from:'note',to:men(s.mentor).name,t:v,at:'2026-11-26T05:02'});rerender();toast('Passed to '+men(s.mentor).name+' for the next session.');break;}
     case 'mprofile':if(isSup()){S.viewM=id;drawRail(route().v);}mentorModal(id);break;
     case 'pkopen':{const p=$('#pkpop');p.hidden=!p.hidden;if(!p.hidden){pkDraw();$('#pkq').focus();}break;}
     case 'upload':uploadModal();break;
@@ -923,7 +960,7 @@ document.addEventListener('input',e=>{const t=e.target;
   if(t.dataset&&t.dataset.mat){autosave(t);return;}
   if(t.id==='fq'){S.filters.q=t.value;const pos=t.selectionStart;rerender();const n=$('#fq');n.focus();n.setSelectionRange(pos,pos);}
   if(t.id==='pkq'){pkDraw();return;}
-  for(const [id,key] of [['uq','userQ'],['mlq','mlQ'],['iq','inboxQ'],['tq','todayQ']])if(t.id===id){S[key]=t.value;const pos=t.selectionStart;rerender();const n=$('#'+id);n.focus();n.setSelectionRange(pos,pos);return;}
+  for(const [id,key] of [['uq','userQ'],['mlq','mlQ'],['iq','inboxQ'],['tq','todayQ'],['cq','chatQ']])if(t.id===id){S[key]=t.value;const pos=t.selectionStart;rerender();const n=$('#'+id);n.focus();n.setSelectionRange(pos,pos);return;}
   if(t.id==='aq'){S.auditQ=t.value;const pos=t.selectionStart;rerender();const n=$('#aq');n.focus();n.setSelectionRange(pos,pos);}
   if(t.closest&&t.closest('#nf')&&t.name&&t.tagName==='INPUT'&&t.type!=='date'){NF[t.name]=t.value;}
 });
