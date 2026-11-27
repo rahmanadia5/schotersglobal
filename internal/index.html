@@ -280,11 +280,10 @@ const ICONS={
 const ROLES={
   super:{label:'Super Admin',user:'Andi Pratama',sub:'Super Admin',nav:[['#Operations'],['overview','Overview'],['students','Students'],['mentorlist','Mentor list'],['materials','Materials'],['#Support'],['inbox','Support inbox'],['chat','Mentor chat'],['#Mentor workspace'],['mday','Today\'s classes'],['msessions','Sessions & reports'],['mreview','Document review'],['mstudents','Mentees'],['mavail','Availability'],['#Admin'],['users','Users & approvals'],['settings','Program settings'],['audit','Audit log']],home:'overview'},
   ops:{label:'Operations',user:'Dewi Lestari',sub:'Operations',nav:[['overview','Overview'],['students','Students'],['mentorlist','Mentor list'],['materials','Materials']],home:'overview'},
+  async:{label:'Async Mentor',user:'Nguyễn Minh Khoa',sub:'Async Mentor',nav:[['chat','Student chats']],home:'chat'},
   mentor:{label:'Mentor',user:'Lê Hoàng Nam',sub:'Mentor',nav:[['mday','My day'],['msessions','Sessions & reports'],['mreview','Document review'],['mstudents','My students'],['mavail','Availability']],home:'mday'},
   sp:{label:'Student Priority',user:'Putri Ayu',sub:'Student Priority',nav:[['inbox','Student Priority inbox']],home:'inbox',ch:'sp'},
-  hotline:{label:'Hotline',user:'Rizky Hidayat',sub:'Hotline',nav:[['inbox','Hotline inbox']],home:'inbox',ch:'hotline'},
-  async:{label:'Async Mentor',user:'Nguyễn Minh Khoa',sub:'Async Mentor',nav:[['chat','Student chats']],home:'chat'}
-};
+  hotline:{label:'Hotline',user:'Rizky Hidayat',sub:'Hotline',nav:[['inbox','Hotline inbox']],home:'inbox',ch:'hotline'}};
 const NAVICON={chat:'chat',overview:'overview',students:'students',new:'add',mentorlist:'mentors',inbox:'inbox',mday:'overview',msessions:'sessions',mreview:'review',mstudents:'students',mavail:'avail',users:'users',materials:'materials',settings:'settings',audit:'audit'};
 
 /* ---------- Demo date and helpers ---------- */
@@ -382,6 +381,8 @@ const S={
   users:[
     {name:'Andi Pratama',email:'andi@schoters.example',role:'Super Admin',status:'Active'},
     {name:'Dewi Lestari',email:'dewi@schoters.example',role:'Operations',status:'Active'},
+    {name:'Nguyễn Minh Khoa',email:'khoa.nguyen@schoters.example',role:'Async Mentor',status:'Active'},
+    {name:'Lý Hải Yến',email:'yen.ly@schoters.example',role:'Async Mentor',status:'Active'},
     {name:'Lê Hoàng Nam',email:'nam.le@schoters.example',role:'Mentor',status:'Active'},
     {name:'Phạm Minh Châu',email:'chau.pham@schoters.example',role:'Mentor',status:'Active'},
     {name:'Đỗ Quang Huy',email:'huy.do@schoters.example',role:'Mentor',status:'Active'},
@@ -389,8 +390,6 @@ const S={
     {name:'Putri Ayu',email:'putri.ayu@schoters.example',role:'Student Priority',status:'Active'},
     {name:'Fajar Nugroho',email:'fajar@schoters.example',role:'Student Priority',status:'Active'},
     {name:'Rizky Hidayat',email:'rizky@schoters.example',role:'Hotline',status:'Active'},
-    {name:'Nguyễn Minh Khoa',email:'khoa.nguyen@schoters.example',role:'Async Mentor',status:'Active'},
-    {name:'Lý Hải Yến',email:'yen.ly@schoters.example',role:'Async Mentor',status:'Active'},
     {name:'Trương Văn Phúc',email:'phuc.truong@schoters.example',role:'Mentor',status:'Pending',by:'Dewi Lestari',on:'2026-11-25',note:'Law & Social Sciences, UK. Needed for 3 new S1 students in December.'},
     {name:'Siti Rahma',email:'siti@schoters.example',role:'Operations',status:'Pending',by:'Dewi Lestari',on:'2026-11-26',note:'Second Ops person for the January intake.'},
     {name:'Bima Saputra',email:'bima@schoters.example',role:'Operations',status:'Deactivated'}
@@ -471,10 +470,10 @@ const can=v=>ROLES[S.role].nav.some(n=>n[0]===v);
 const ACCTS=[
   ['super','Andi Pratama','andi@schoters.example','Full access: every page of every role, user approvals and settings.'],
   ['ops','Dewi Lestari','dewi@schoters.example','Sets up students and program end dates, assigns mentors, uploads materials.'],
+  ['async','Nguyễn Minh Khoa','khoa.nguyen@schoters.example','Chats with students between sessions. Not the session mentor.'],
   ['mentor','Lê Hoàng Nam','nam.le@schoters.example','Own students only: availability, sessions, reports and document review.'],
   ['sp','Putri Ayu','putri.ayu@schoters.example','Answers study and application questions in English.'],
-  ['hotline','Rizky Hidayat','rizky@schoters.example','Handles schedule, payment, account and urgent issues.'],
-  ['async','Nguyễn Minh Khoa','khoa.nguyen@schoters.example','Chats with students between sessions. Not the session mentor.']];
+  ['hotline','Rizky Hidayat','rizky@schoters.example','Handles schedule, payment, account and urgent issues.']];
 function drawLogin(){$('#demoList').innerHTML=ACCTS.map(([k,n,e,d])=>`<div class="demo-role">${ROLES[k].label}</div><p class="demo-desc">${d}</p><button type="button" class="acct" data-acct="${k}"><div class="avatar">${ini(n)}</div><div><b>${esc(n)}</b><span>${e}</span></div></button>`).join('');}
 function doLogin(role){S.role=role;S.chatQ='';S.chatSel=null;try{sessionStorage.setItem('lms-int-role',S.role)}catch(_){}location.hash=ROLES[S.role].home;render();}
 function render(){
@@ -742,7 +741,7 @@ V.users=()=>{const pend=S.users.map((u,i)=>[u,i]).filter(x=>x[0].status==='Pendi
   return `<div class="ph"><div><div class="eyebrow">Users & approvals</div><h1>Internal users</h1><p>Every new internal user (Operations, Mentor, Student Priority, Hotline) needs Super Admin approval before they can log in.</p></div><button class="btn primary" data-act="adduser">+ Add user</button></div>
   <section class="panel flush"><div class="panel-h"><h2>Waiting for your approval</h2><span class="pill ${pend.length?'warn':'good'}">${pend.length}</span></div><div class="list">${pend.map(([u,i])=>`<div class="item"><div class="avatar" style="width:34px;height:34px;font-size:12px">${ini(u.name)}</div><div class="grow"><div class="title">${esc(u.name)} <span class="pill accent">${u.role}</span></div><div class="sub">${esc(u.email)} · requested by ${esc(u.by)} on ${fd(u.on)}</div>${u.note?`<div class="sub" style="margin-top:2px">“${esc(u.note)}”</div>`:''}</div><button class="btn sm danger" data-act="rejectuser" data-i="${i}">Reject</button><button class="btn sm primary" data-act="approveuser" data-i="${i}">Approve</button></div>`).join('')||'<div class="empty">No requests waiting.</div>'}</div></section>
   <section class="panel flush"><div class="panel-h"><h2>All users</h2><span class="hint">${rest.length} of ${all.length} accounts</span></div><div style="padding:12px 20px;display:flex;flex-direction:column;gap:10px;border-bottom:1px solid var(--line)"><input type="search" id="uq" placeholder="Search name or email" value="${esc(S.userQ||'')}" aria-label="Search users" style="border:1px solid var(--line);border-radius:10px;padding:8px 10px"><div class="rolechips" role="group" aria-label="Filter by role">${[['','All'],...RLIST.map(r=>[r,r])].map(([v,l])=>`<button data-urf="${v}" aria-pressed="${ur===v}">${l} <span class="num">${all.filter(([u])=>!v||u.role===v).length}</span></button>`).join('')}</div></div><div class="tbl-wrap"><table><thead><tr><th>Name</th><th>Role</th><th>Status</th><th></th></tr></thead><tbody>${rest.map(([u,i])=>`<tr><td><b>${esc(u.name)}</b><div class="sub">${esc(u.email)}</div></td><td><select data-urole="${i}" aria-label="Role" ${u.name===meName()?'disabled':''}>${RLIST.map(r=>`<option ${u.role===r?'selected':''}>${r}</option>`).join('')}</select></td><td>${u.status==='Active'?'<span class="pill good">Active</span>':'<span class="pill">Deactivated</span>'}</td><td style="text-align:right">${u.name===meName()?'<span class="sub">You</span>':`<button class="btn sm ${u.status==='Active'?'danger':''}" data-act="toggleuser" data-i="${i}">${u.status==='Active'?'Deactivate':'Reactivate'}</button>`}</td></tr>`).join('')||'<tr><td colspan="4"><div class="empty">No user matches.</div></td></tr>'}</tbody></table></div></section>
-  <section class="panel flush"><div class="panel-h"><h2>Access by role</h2></div><div class="tbl-wrap"><table><thead><tr><th>Permission</th><th>Super Admin</th><th>Operations</th><th>Mentor</th><th>Async Mentor</th><th>Student Priority</th><th>Hotline</th></tr></thead><tbody>
+  <section class="panel flush"><div class="panel-h"><h2>Access by role</h2></div><div class="tbl-wrap"><table><thead><tr><th>Permission</th><th>Super Admin</th><th>Operations</th><th>Async Mentor</th><th>Mentor</th><th>Student Priority</th><th>Hotline</th></tr></thead><tbody>
   ${ACCESS.map(r=>`<tr><td>${r[0]}</td>${r.slice(1).map(c=>`<td><span class="pill ${c==='No'?'':c==='Yes'||c==='All'||c==='Edit'?'good':'accent'}">${c}</span></td>`).join('')}</tr>`).join('')}</tbody></table></div></section>`;};
 V.materials=()=>{const t=S.topics.find(x=>x.id===S.matTopic)||S.topics[0];
   return `<div class="ph"><div><div class="eyebrow">Materials</div><h1>Materials library</h1><p>Upload a Word or PDF file and it becomes an article, or upload a video. Save it as a draft or publish it. Students only see published items. Click a row to open it.</p></div></div>
@@ -784,8 +783,8 @@ V.settings=()=>{const st=S.settings;const LR=[['S1-10','S1 · grade 10','High sc
    <div class="field"><label for="r5">Student Priority fast-reply hours</label><input id="r5" data-set="spHours" value="${esc(st.spHours)}"><span class="sub">To confirm</span></div>
   </div></section></div>`;
 };
-const RLIST=['Super Admin','Operations','Mentor','Async Mentor','Student Priority','Hotline'];
-const ACCESS=[['Create students, set track, package and dates', 'Yes', 'Yes', 'No', 'No', 'No', 'No'], ['Mentor list and assignment', 'Yes', 'Yes', 'No', 'No', 'No', 'No'], ['Session balance and top-ups', 'Edit', 'Edit', 'View own', 'No', 'No', 'No'], ['Sessions and reports', 'All', 'View all', 'Own students', 'No', 'No', 'No'], ['Document review', 'All', 'View', 'Own students', 'No', 'No', 'No'], ['Student Priority questions', 'Yes', 'No', 'Internal notes', 'No', 'Yes', 'No'], ['Hotline questions', 'Yes', 'No', 'Internal notes', 'No', 'No', 'Yes'], ['Async mentor chats with students', 'All', 'No', 'Notes from async mentor', 'Own chats', 'No', 'No'], ['Materials (upload, draft, publish)', 'Yes', 'Yes', 'No', 'No', 'No', 'No'], ['Approve new users, settings, audit log', 'Yes', 'No', 'No', 'No', 'No', 'No']];
+const RLIST=['Super Admin','Operations','Async Mentor','Mentor','Student Priority','Hotline'];
+const ACCESS=[['Create students, set track, package and dates', 'Yes', 'Yes', 'No', 'No', 'No', 'No'], ['Mentor list and assignment', 'Yes', 'Yes', 'No', 'No', 'No', 'No'], ['Session balance and top-ups', 'Edit', 'Edit', 'No', 'View own', 'No', 'No'], ['Sessions and reports', 'All', 'View all', 'No', 'Own students', 'No', 'No'], ['Document review', 'All', 'View', 'No', 'Own students', 'No', 'No'], ['Student Priority questions', 'Yes', 'No', 'No', 'Internal notes', 'Yes', 'No'], ['Hotline questions', 'Yes', 'No', 'No', 'Internal notes', 'No', 'Yes'], ['Async mentor chats with students', 'All', 'No', 'Own chats', 'Notes from async mentor', 'No', 'No'], ['Materials (upload, draft, publish)', 'Yes', 'Yes', 'No', 'No', 'No', 'No'], ['Approve new users, settings, audit log', 'Yes', 'No', 'No', 'No', 'No', 'No']];
 function auditTable(L){return `<div class="tbl-wrap"><table><thead><tr><th>When</th><th>Who</th><th>Student</th><th>Action</th><th>Change</th><th>Reason</th></tr></thead><tbody>${L.map(a=>`<tr><td class="num sub" style="white-space:nowrap">${a.at}</td><td>${esc(a.by)}</td><td>${a.st?esc(stu(a.st).name):''}</td><td><b>${esc(a.act)}</b></td><td class="sub">${a.old?esc(a.old)+' → ':''}${esc(a.nw)}</td><td class="sub">${esc(a.why)}</td></tr>`).join('')||'<tr><td colspan="6"><div class="empty">No entries.</div></td></tr>'}</tbody></table></div>`;}
 V.audit=()=>{const q=S.auditQ.toLowerCase();const L=S.audit.filter(a=>!q||(a.by+a.act+a.why+(a.st?stu(a.st).name:'')).toLowerCase().includes(q));
   return `<div class="ph"><div><div class="eyebrow">Audit log</div><h1>Who changed what</h1><p>Read-only. Every change to a program, balance or mentor, and every view of a student document.</p></div></div>
