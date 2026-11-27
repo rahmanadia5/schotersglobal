@@ -209,6 +209,8 @@ tr.click{cursor:pointer}tr.click:hover td{background:#f7fbff}
 .gsi mark{background:#fff2b3;color:inherit;border-radius:3px}
 .mswitch{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:linear-gradient(90deg,#eaf4fe,#f6faff);border:1px solid #cfe3f8;border-radius:16px;padding:12px 14px}
 .mswitch .avatar{width:40px;height:40px}
+.tday .ttime{width:58px;flex:none;display:flex;flex-direction:column;line-height:1.2}.tday .ttime b{font-size:16px;font-family:var(--display)}.tday .ttime span{font-size:12px;color:var(--muted)}.tday.is-live{background:#effaf3}
+@media (max-width:760px){.tday{flex-wrap:wrap}.tday .grow{min-width:60%}}
 .mswitch small{display:block;font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--accent)}
 .mswitch b{font-size:15px}
 .pk{position:relative;margin-left:auto}
@@ -275,7 +277,7 @@ const ICONS={
   cal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>'
 };
 const ROLES={
-  super:{label:'Super Admin',user:'Andi Pratama',sub:'Super Admin',nav:[['#Operations'],['overview','Overview'],['students','Students'],['mentorlist','Mentor list'],['materials','Materials'],['#Support'],['inbox','Support inbox'],['#Mentor workspace'],['mday','Today'],['msessions','Sessions & reports'],['mreview','Document review'],['mstudents','Mentees'],['mavail','Availability'],['#Admin'],['users','Users & approvals'],['settings','Program settings'],['audit','Audit log']],home:'overview'},
+  super:{label:'Super Admin',user:'Andi Pratama',sub:'Super Admin',nav:[['#Operations'],['overview','Overview'],['students','Students'],['mentorlist','Mentor list'],['materials','Materials'],['#Support'],['inbox','Support inbox'],['#Mentor workspace'],['mday','Today\'s classes'],['msessions','Sessions & reports'],['mreview','Document review'],['mstudents','Mentees'],['mavail','Availability'],['#Admin'],['users','Users & approvals'],['settings','Program settings'],['audit','Audit log']],home:'overview'},
   ops:{label:'Operations',user:'Dewi Lestari',sub:'Operations',nav:[['overview','Overview'],['students','Students'],['mentorlist','Mentor list'],['materials','Materials']],home:'overview'},
   mentor:{label:'Mentor',user:'Lê Hoàng Nam',sub:'Mentor',nav:[['mday','My day'],['msessions','Sessions & reports'],['mreview','Document review'],['mstudents','My students'],['mavail','Availability']],home:'mday'},
   sp:{label:'Student Priority',user:'Putri Ayu',sub:'Student Priority',nav:[['inbox','Student Priority inbox']],home:'inbox',ch:'sp'},
@@ -325,6 +327,14 @@ const S={
     {id:'x5',st:'s1',m:'m1',title:'Scholarship strategy',date:'2026-11-14',time:'19:00–19:50',agenda:'',state:'done'},
     {id:'x6',st:'s2',m:'m2',title:'Subject choice for grade 12',date:'2026-12-02',time:'20:00–20:50',agenda:'',state:'upcoming'},
     {id:'x7',st:'s5',m:'m4',title:'SOP structure',date:'2026-11-24',time:'19:30–20:20',agenda:'',state:'report'},
+    {id:'t1',st:'s4',m:'m3',title:'Visa document check',date:'2026-11-26',time:'09:00–09:50',agenda:'',state:'done'},
+    {id:'t2',st:'s10',m:'m4',title:'Research proposal outline',date:'2026-11-26',time:'10:00–10:50',agenda:'',state:'report'},
+    {id:'t3',st:'s6',m:'m2',title:'Activity planning for grade 10',date:'2026-11-26',time:'13:00–13:50',agenda:'',state:'done'},
+    {id:'t4',st:'s3',m:'m1',title:'UCAS reference follow-up',date:'2026-11-26',time:'15:30–16:20',agenda:'Check reference status with the school.',state:'upcoming'},
+    {id:'t5',st:'s5',m:'m4',title:'Chevening interview prep',date:'2026-11-26',time:'17:00–17:50',agenda:'',state:'upcoming'},
+    {id:'t6',st:'s1',m:'m1',title:'Scholarship shortlist review',date:'2026-11-26',time:'19:00–19:50',agenda:'',state:'upcoming'},
+    {id:'t7',st:'s4',m:'m3',title:'Accommodation options',date:'2026-11-26',time:'19:30–20:20',agenda:'',state:'upcoming'},
+    {id:'t8',st:'s2',m:'m2',title:'Summer school applications',date:'2026-11-26',time:'20:00–20:50',agenda:'',state:'upcoming'},
     {id:'x8',st:'s4',m:'m3',title:'Offer comparison',date:'2026-12-01',time:'17:00–17:50',agenda:'',state:'upcoming'}
   ],
   docs:[
@@ -409,7 +419,10 @@ const total=s=>S.settings.packages[s.pkg]+s.topups+s.adj;
 const left=s=>total(s)-s.used-s.booked;
 const meName=()=>ROLES[S.role].user;
 const myMentor=()=>S.mentors.find(m=>m.name===meName());
-const ME_M=()=>S.role==='super'?(S.viewM||'m1'):'m1';
+const ME_M=()=>S.role==='super'?(S.viewM||null):'m1';
+const inM=id=>!ME_M()||id===ME_M();
+const mLabel=()=>ME_M()?men(ME_M()).name:'All mentors';
+const withM=id=>isSup()&&!ME_M()?' · '+esc(men(id).name):'';
 const MVIEWS=['mday','msessions','mreview','mstudents','mavail'];
 const fname=n=>n.split(' ').pop();
 const isSup=()=>S.role==='super';
@@ -430,11 +443,11 @@ function calcEnd(track,grade,len,start,grad){const sd=D(start);if(track==='S1'){
 const $=s=>document.querySelector(s);
 const layer=$('#layer');
 function svg(k){return `<svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[k]||''}</svg>`;}
-function navCount(v){if(v==='inbox')return S.questions.filter(q=>q.status==='Open'&&(!ROLES[S.role].ch||q.ch===ROLES[S.role].ch)).length;if(v==='mreview')return openReviews(ME_M()).length;if(v==='msessions')return S.sessions.filter(x=>x.m===ME_M()&&x.state==='report').length;if(v==='mentorlist')return S.students.filter(s=>!s.mentor&&s.status!=='Ended').length;if(v==='users')return S.users.filter(u=>u.status==='Pending').length;return 0;}
+function navCount(v){if(v==='inbox')return S.questions.filter(q=>q.status==='Open'&&(!ROLES[S.role].ch||q.ch===ROLES[S.role].ch)).length;if(v==='mreview')return openReviews(ME_M()).length;if(v==='msessions')return S.sessions.filter(x=>inM(x.m)&&x.state==='report').length;if(v==='mentorlist')return S.students.filter(s=>!s.mentor&&s.status!=='Ended').length;if(v==='users')return S.users.filter(u=>u.status==='Pending').length;return 0;}
 function drawRail(cur){const R=ROLES[S.role];
   $('#rail').innerHTML=`<div class="brand"><div class="brand-mark">S</div><div><b>Schoters Global</b><small>Internal dashboard</small></div></div>
   <span class="role-tag">${R.label}</span>
-  <nav class="nav" aria-label="Main">${R.nav.map(([v,l])=>{if(v[0]==='#')return `<div class="nav-group">${v.slice(1)}</div>`+(v==='#Mentor workspace'&&isSup()?`<div class="rail-m"><label for="railM">Viewing mentor</label><select id="railM">${S.mentors.map(m=>`<option value="${m.id}" ${m.id===ME_M()?'selected':''}>${esc(m.name)}</option>`).join('')}</select></div>`:'');const c=navCount(v);return `<a href="#${v}" ${cur===v||(cur==='student'&&v===(S.role==='mentor'?'mstudents':'students'))||(cur==='mentor'&&v==='mentorlist')||((cur==='matedit'||cur==='matview')&&v==='materials')?'aria-current="page"':''}>${svg(NAVICON[v])}<span class="lbl">${l}</span>${c?`<span class="count">${c}</span>`:''}</a>`;}).join('')}</nav>
+  <nav class="nav" aria-label="Main">${R.nav.map(([v,l])=>{if(v[0]==='#')return `<div class="nav-group">${v.slice(1)}</div>`+(v==='#Mentor workspace'&&isSup()?`<div class="rail-m"><label for="railM">Viewing mentor</label><select id="railM"><option value="all" ${!ME_M()?'selected':''}>All mentors</option>${S.mentors.map(m=>`<option value="${m.id}" ${m.id===ME_M()?'selected':''}>${esc(m.name)}</option>`).join('')}</select></div>`:'');const c=navCount(v);return `<a href="#${v}" ${cur===v||(cur==='student'&&v===(S.role==='mentor'?'mstudents':'students'))||(cur==='mentor'&&v==='mentorlist')||((cur==='matedit'||cur==='matview')&&v==='materials')?'aria-current="page"':''}>${svg(NAVICON[v])}<span class="lbl">${l}</span>${c?`<span class="count">${c}</span>`:''}</a>`;}).join('')}</nav>
   <div class="rail-bottom">
     <div class="switch"><label for="roleSel">View as</label><select id="roleSel">${Object.entries(ROLES).map(([k,r])=>`<option value="${k}" ${k===S.role?'selected':''}>${r.label}</option>`).join('')}</select></div>
     <div class="me"><div class="avatar">${ini(R.user)}</div><div class="me-txt"><b>${esc(R.user)}</b><small>${esc(R.sub)}</small></div><button class="logout" data-act="logout" title="Log out">Log out</button></div>
@@ -607,11 +620,11 @@ function mentorModal(id){const m=men(id);const k=mStats(m);
 
 
 /* ---------- Super Admin: mentor switcher ---------- */
-function mSwitch(){const m=men(ME_M());const k=mStats(m);
-  return `<div class="mswitch"><div class="avatar">${ini(m.name)}</div><div><small>You're viewing</small><b>${esc(m.name)}'s workspace</b><div class="sub">${esc(m.spec)} · ${k.n.length}/${m.cap} students · ${k.wk} sessions this week · ${k.rev} reviews open${k.od?` (${k.od} late)`:''}</div></div>
+function mSwitch(){if(route().v==='mday')return '';const m=ME_M()?men(ME_M()):null;const k=m?mStats(m):null;
+  return `<div class="mswitch">${m?`<div class="avatar">${ini(m.name)}</div><div><small>You're viewing</small><b>${esc(m.name)}'s workspace</b><div class="sub">${esc(m.spec)} · ${k.n.length}/${m.cap} students · ${k.wk} sessions this week · ${k.rev} reviews open${k.od?` (${k.od} late)`:''}</div></div>`:`<div class="avatar">${S.mentors.length}</div><div><small>You're viewing</small><b>All mentors</b><div class="sub">Pick a mentor to see only their work</div></div>`}
   <div class="pk"><button class="btn" data-act="pkopen">Switch mentor ▾</button><div class="pkpop" id="pkpop" hidden><input id="pkq" type="search" placeholder="Search mentor name or field" aria-label="Search mentor" autocomplete="off"><div class="pklist" id="pklist"></div></div></div></div>`;}
 function pkDraw(){const q=($('#pkq').value||'').toLowerCase();const L=S.mentors.filter(m=>!q||(m.name+' '+m.spec+' '+m.countries).toLowerCase().includes(q));
-  $('#pklist').innerHTML=L.map(m=>{const k=mStats(m);return `<button class="gsi ${m.id===ME_M()?'act':''}" data-viewm="${m.id}"><div class="avatar">${ini(m.name)}</div><div class="grow"><b>${hl(m.name,q)}</b><span class="sub">${esc(m.spec)} · ${k.n.length}/${m.cap} students · ${k.rev} reviews</span></div></button>`;}).join('')||'<div class="empty">No mentor found.</div>';}
+  $('#pklist').innerHTML=(q?'':`<button class="gsi ${!ME_M()?'act':''}" data-viewm="all"><div class="avatar">${S.mentors.length}</div><div class="grow"><b>All mentors</b><span class="sub">Everyone's sessions, reviews and mentees</span></div></button>`)+L.map(m=>{const k=mStats(m);return `<button class="gsi ${m.id===ME_M()?'act':''}" data-viewm="${m.id}"><div class="avatar">${ini(m.name)}</div><div class="grow"><b>${hl(m.name,q)}</b><span class="sub">${esc(m.spec)} · ${k.n.length}/${m.cap} students · ${k.rev} reviews</span></div></button>`;}).join('')||'<div class="empty">No mentor found.</div>';}
 /* ---------- Support inbox ---------- */
 V.inbox=()=>{if(ROLES[S.role].ch)S.inboxCh=ROLES[S.role].ch;const ch=S.inboxCh;const iq=(S.inboxQ||'').toLowerCase();const L=S.questions.filter(q=>q.ch===ch&&(!iq||(q.q+' '+stu(q.st).name+' '+(q.assignee||'')).toLowerCase().includes(iq))).sort((a,b)=>(a.status==='Open'?0:1)-(b.status==='Open'?0:1)||waitH(b)-waitH(a));
   const sel=S.questions.find(q=>q.id===S.inboxSel)||L[0];
@@ -635,9 +648,20 @@ function inboxThread(q){const s=stu(q.st);const m=s.mentor?men(s.mentor):null;
   <p class="hint">The student only ever sees replies from "our team".</p>`:`<div class="banner info">This question is ${q.status.toLowerCase()}.</div>`}`;}
 
 /* ---------- MENTOR ---------- */
-V.mday=()=>{const mine=S.students.filter(s=>s.mentor===ME_M()&&s.status!=='Ended');
-  const up=S.sessions.filter(x=>x.m===ME_M()&&x.state==='upcoming').sort((a,b)=>a.date<b.date?-1:1);
-  const rep=S.sessions.filter(x=>x.m===ME_M()&&x.state==='report');const rev=openReviews(ME_M());
+function supToday(){const q=(S.todayQ||'').toLowerCase();const NOWT='16:00';
+  const all=S.sessions.filter(x=>x.date===iso(TODAY)).sort((a,b)=>a.time<b.time?-1:1);
+  const st=x=>{const [a,b]=x.time.split('–');if(x.state==='done')return ['Done','good'];if(x.state==='report')return ['Report pending','warn'];if(a<=NOWT&&NOWT<b)return ['Live now','live'];return a>NOWT?['Upcoming','accent']:['Done','good'];};
+  const L=all.filter(x=>(!ME_M()||x.m===ME_M())&&(!q||(men(x.m).name+' '+stu(x.st).name+' '+x.title).toLowerCase().includes(q)));
+  const busy=[...new Set(all.map(x=>x.m))];const live=all.filter(x=>st(x)[0]==='Live now').length;const left=all.filter(x=>st(x)[0]==='Upcoming').length;
+  return `<div class="ph"><div><div class="eyebrow">Mentor workspace</div><h1>Today's classes</h1><p>Thursday 26 Nov 2026 · ${all.length} sessions across ${busy.length} mentors · now ${NOWT} GMT+7</p></div></div>
+  <div class="stats"><div class="stat"><b class="num">${all.length}</b><span>Sessions today</span></div><div class="stat ${live?'good':''}"><b class="num">${live}</b><span>Live now</span></div><div class="stat"><b class="num">${left}</b><span>Still to come</span></div><div class="stat"><b class="num">${S.mentors.length-busy.length}</b><span>Mentors with no class today</span></div></div>
+  <section class="panel flush"><div style="padding:14px 20px;display:flex;flex-direction:column;gap:10px;border-bottom:1px solid var(--line)"><input type="search" id="tq" placeholder="Search mentor, student or session" value="${esc(S.todayQ||'')}" aria-label="Search today's classes" style="border:1px solid var(--line);border-radius:10px;padding:8px 10px">
+   <div class="rolechips" role="group" aria-label="Filter by mentor"><button data-viewm="all" aria-pressed="${!ME_M()}">All mentors <span class="num">${all.length}</span></button>${S.mentors.map(m=>`<button data-viewm="${m.id}" data-quiet="1" aria-pressed="${ME_M()===m.id}">${esc(m.name)} <span class="num">${all.filter(x=>x.m===m.id).length}</span></button>`).join('')}</div></div>
+   <div class="list">${L.map(x=>{const [l,c]=st(x);const m=men(x.m),s=stu(x.st);return `<div class="item tday ${c==='live'?'is-live':''}"><div class="ttime num"><b>${x.time.split('–')[0]}</b><span>${x.time.split('–')[1]}</span></div><div class="avatar" style="width:34px;height:34px;font-size:12px">${ini(m.name)}</div><div class="grow"><div class="title">${esc(m.name)} <span class="sub">with</span> ${esc(s.name)}</div><div class="sub">${esc(x.title)} · ${s.pkg}</div></div><span class="pill ${c==='live'?'good':c}">${c==='live'?'● ':''}${l}</span><button class="btn sm" data-viewm="${m.id}" data-go2="msessions">Open</button></div>`;}).join('')||`<div class="empty">${ME_M()?esc(men(ME_M()).name)+' has no class today.':'No class matches.'}</div>`}</div></section>`;}
+
+V.mday=()=>{if(isSup())return supToday();const mine=S.students.filter(s=>inM(s.mentor)&&s.status!=='Ended');
+  const up=S.sessions.filter(x=>inM(x.m)&&x.state==='upcoming').sort((a,b)=>a.date<b.date?-1:1);
+  const rep=S.sessions.filter(x=>inM(x.m)&&x.state==='report');const rev=openReviews(ME_M());
   const dl=[];mine.forEach(s=>(S.apps[s.id]||[]).forEach(a=>{const d=days(a[2]);if(d>=0&&d<=45&&a[3]!=='Submitted')dl.push({s,a,d});}));dl.sort((a,b)=>a.d-b.d);
   return `<div class="ph"><div><div class="eyebrow">${isSup()?esc(men(ME_M()).name):'My day'}</div><h1>${isSup()?'Today':'Good afternoon, '+esc(fname(men(ME_M()).name))}</h1><p>Thursday 26 Nov 2026 · ${mine.length} student${mine.length===1?'':'s'}</p></div><div class="row-btns"><span class="chip">${svg('cal')}Google Calendar synced</span></div></div>
   <div class="stats">
@@ -650,15 +674,15 @@ V.mday=()=>{const mine=S.students.filter(s=>s.mentor===ME_M()&&s.status!=='Ended
    <section class="panel flush c5"><div class="panel-h"><h2>Student deadlines</h2><span class="hint">Next 45 days</span></div><div class="list">${dl.map(o=>`<div class="item click" data-go="student-${o.s.id}"><div class="grow"><div class="title">${esc(o.a[0])}</div><div class="sub">${esc(o.s.name)} · ${o.a[3]}</div></div><span class="pill ${o.d<=14?'bad':'warn'} num">${o.d} days</span></div>`).join('')||'<div class="empty">No deadlines soon.</div>'}</div></section>
   </div>`;
 };
-V.msessions=()=>{const rep=S.sessions.filter(x=>x.m===ME_M()&&x.state==='report');const up=S.sessions.filter(x=>x.m===ME_M()&&x.state==='upcoming').sort((a,b)=>a.date<b.date?-1:1);const done=S.sessions.filter(x=>x.m===ME_M()&&x.state==='done');
+V.msessions=()=>{const rep=S.sessions.filter(x=>inM(x.m)&&x.state==='report');const up=S.sessions.filter(x=>inM(x.m)&&x.state==='upcoming').sort((a,b)=>a.date<b.date?-1:1);const done=S.sessions.filter(x=>inM(x.m)&&x.state==='done');
   return `<div class="ph"><div><div class="eyebrow">Sessions & reports</div><h1>${isSup()?'Sessions':'My sessions'}</h1><p>Students pick the date and time; you set the agenda. The AI notetaker drafts the report and you approve it within ${S.settings.reportHrs} hours.</p></div></div>
-  <section class="panel flush"><div class="panel-h"><h2>Reports to approve</h2><span class="pill ${rep.length?'warn':'good'}">${rep.length}</span></div><div class="list">${rep.map(x=>`<div class="item"><span class="ai-badge">AI draft</span><div class="grow"><div class="title">${esc(x.title)}</div><div class="sub">${esc(stu(x.st).name)} · ${fd(x.date)} · ${days(x.date)<-1?'<b style="color:var(--bad)">over 24 h</b>':'within 24 h'}</div></div><button class="btn sm primary" data-act="report" data-id="${x.id}">Review and approve</button></div>`).join('')||'<div class="empty">All reports approved.</div>'}</div></section>
-  <section class="panel flush"><div class="panel-h"><h2>Upcoming</h2></div><div class="list">${up.map(x=>`<div class="item"><div class="grow"><div class="title">${esc(x.title)}</div><div class="sub">${esc(stu(x.st).name)} · ${fd(x.date)} · ${x.time} GMT+7</div>${x.agenda?`<div class="sub" style="margin-top:4px">Agenda: ${esc(x.agenda)}</div>`:''}</div><button class="btn sm" data-act="agenda" data-id="${x.id}">${x.agenda?'Edit agenda':'Add agenda'}</button>${days(x.date)<=1?`<button class="btn sm" data-act="noshow" data-id="${x.id}">No-show</button><button class="btn sm primary" data-act="join" data-id="${x.id}">Join</button>`:''}</div>`).join('')}</div></section>
-  <section class="panel flush"><div class="panel-h"><h2>Approved</h2></div><div class="list">${done.map(x=>`<div class="item"><div class="grow"><div class="title">${esc(x.title)}</div><div class="sub">${esc(stu(x.st).name)} · ${fd(x.date)}</div></div><span class="pill good">Visible to student</span></div>`).join('')||'<div class="empty">None yet.</div>'}</div></section>`;
+  <section class="panel flush"><div class="panel-h"><h2>Reports to approve</h2><span class="pill ${rep.length?'warn':'good'}">${rep.length}</span></div><div class="list">${rep.map(x=>`<div class="item"><span class="ai-badge">AI draft</span><div class="grow"><div class="title">${esc(x.title)}</div><div class="sub">${esc(stu(x.st).name)}${withM(x.m)} · ${fd(x.date)} · ${days(x.date)<-1?'<b style="color:var(--bad)">over 24 h</b>':'within 24 h'}</div></div><button class="btn sm primary" data-act="report" data-id="${x.id}">Review and approve</button></div>`).join('')||'<div class="empty">All reports approved.</div>'}</div></section>
+  <section class="panel flush"><div class="panel-h"><h2>Upcoming</h2></div><div class="list">${up.map(x=>`<div class="item"><div class="grow"><div class="title">${esc(x.title)}</div><div class="sub">${esc(stu(x.st).name)}${withM(x.m)} · ${fd(x.date)} · ${x.time} GMT+7</div>${x.agenda?`<div class="sub" style="margin-top:4px">Agenda: ${esc(x.agenda)}</div>`:''}</div><button class="btn sm" data-act="agenda" data-id="${x.id}">${x.agenda?'Edit agenda':'Add agenda'}</button>${days(x.date)<=1?`<button class="btn sm" data-act="noshow" data-id="${x.id}">No-show</button><button class="btn sm primary" data-act="join" data-id="${x.id}">Join</button>`:''}</div>`).join('')}</div></section>
+  <section class="panel flush"><div class="panel-h"><h2>Approved</h2></div><div class="list">${done.map(x=>`<div class="item"><div class="grow"><div class="title">${esc(x.title)}</div><div class="sub">${esc(stu(x.st).name)}${withM(x.m)} · ${fd(x.date)}</div></div><span class="pill good">Visible to student</span></div>`).join('')||'<div class="empty">None yet.</div>'}</div></section>`;
 };
 V.mreview=()=>{const L=openReviews(ME_M());const sel=L.find(r=>r.d.id===S.reviewSel)||L[0];
   return `<div class="ph"><div><div class="eyebrow">Document review</div><h1>Review queue</h1><p>Sorted by due date. Return each version within ${S.settings.reviewDays} working days.</p></div></div>
-  <div class="grid"><section class="panel flush c5"><div class="list">${L.map(r=>{const od=r.due<iso(TODAY);return `<div class="item click" data-rev="${r.d.id}" style="${sel&&sel.d.id===r.d.id?'background:#f1f7fe':''}"><div class="grow"><div class="title">${esc(r.d.name)} <span class="sub">v${r.v.v}</span></div><div class="sub">${esc(stu(r.d.st).name)} · ${esc(r.d.type)}${r.d.appDl?' · app deadline '+fd(r.d.appDl):''}</div></div><span class="pill ${od?'bad':'warn'}">${od?'Overdue':'Due '+fd(r.due).slice(0,-5)}</span></div>`;}).join('')||'<div class="empty">Queue is empty.</div>'}</div></section>
+  <div class="grid"><section class="panel flush c5"><div class="list">${L.map(r=>{const od=r.due<iso(TODAY);return `<div class="item click" data-rev="${r.d.id}" style="${sel&&sel.d.id===r.d.id?'background:#f1f7fe':''}"><div class="grow"><div class="title">${esc(r.d.name)} <span class="sub">v${r.v.v}</span></div><div class="sub">${esc(stu(r.d.st).name)}${withM(r.d.m)} · ${esc(r.d.type)}${r.d.appDl?' · app deadline '+fd(r.d.appDl):''}</div></div><span class="pill ${od?'bad':'warn'}">${od?'Overdue':'Due '+fd(r.due).slice(0,-5)}</span></div>`;}).join('')||'<div class="empty">Queue is empty.</div>'}</div></section>
   <section class="panel c7">${sel?reviewPane(sel):'<div class="empty">Nothing to review.</div>'}</section></div>`;
 };
 function reviewPane(r){const d=r.d,v=r.v;const prev=d.versions[d.versions.length-2];
@@ -668,11 +692,11 @@ function reviewPane(r){const d=r.d,v=r.v;const prev=d.versions[d.versions.length
   <div class="field"><label for="rfile">Reviewed file with inline comments</label><input id="rfile" type="file"></div>
   <div class="row-btns"><button class="btn primary" data-act="return" data-id="${d.id}">Return to student</button><button class="btn" data-act="final" data-id="${d.id}">Approve as final</button></div>
   <p class="hint">All versions are kept and none can be deleted. No price is shown on any document.</p>`;}
-V.mstudents=()=>{const L=S.students.filter(s=>s.mentor===ME_M());
-  return `<div class="ph"><div><div class="eyebrow">${isSup()?esc(men(ME_M()).name):'My students'}</div><h1>${isSup()?'Mentees':'My students'}</h1><p>${isSup()?'Only students assigned to this mentor.':'Only students assigned to you.'}</p></div></div>
-  <section class="panel flush"><div class="tbl-wrap"><table><thead><tr><th>Student</th><th>Track</th><th>Sessions left</th><th>Next deadline</th><th>Program ends</th></tr></thead><tbody>${L.map(s=>{const nx=(S.apps[s.id]||[]).filter(a=>a[3]!=='Submitted'&&days(a[2])>=0).sort((a,b)=>a[2]<b[2]?-1:1)[0];return `<tr class="click" data-go="student-${s.id}"><td><b>${esc(s.name)}</b><div class="sub">${s.pkg}</div></td><td>${trackLabel(s)}</td><td class="num">${left(s)} <span class="sub">of ${total(s)}</span></td><td>${nx?`${esc(nx[0])}<div class="sub">${fd(nx[2])}</div>`:'<span class="sub">None</span>'}</td><td class="num">${fd(s.end)}</td></tr>`;}).join('')}</tbody></table></div></section>`;
+V.mstudents=()=>{const L=S.students.filter(s=>inM(s.mentor));
+  return `<div class="ph"><div><div class="eyebrow">${isSup()?esc(mLabel()):'My students'}</div><h1>${isSup()?'Mentees':'My students'}</h1><p>${isSup()?(ME_M()?'Only students assigned to this mentor.':'Every mentor\'s students.'):'Only students assigned to you.'}</p></div></div>
+  <section class="panel flush"><div class="tbl-wrap"><table><thead><tr><th>Student</th><th>Track</th><th>Sessions left</th><th>Next deadline</th><th>Program ends</th></tr></thead><tbody>${L.map(s=>{const nx=(S.apps[s.id]||[]).filter(a=>a[3]!=='Submitted'&&days(a[2])>=0).sort((a,b)=>a[2]<b[2]?-1:1)[0];return `<tr class="click" data-go="student-${s.id}"><td><b>${esc(s.name)}</b><div class="sub">${s.pkg}${s.mentor?withM(s.mentor):''}</div></td><td>${trackLabel(s)}</td><td class="num">${left(s)} <span class="sub">of ${total(s)}</span></td><td>${nx?`${esc(nx[0])}<div class="sub">${fd(nx[2])}</div>`:'<span class="sub">None</span>'}</td><td class="num">${fd(s.end)}</td></tr>`;}).join('')}</tbody></table></div></section>`;
 };
-V.mavail=()=>`<div class="ph"><div><div class="eyebrow">Availability</div><h1>${isSup()?'When students can book '+esc(fname(men(ME_M()).name)):'When students can book you'}</h1><p>Click a slot to open or close it. Times in GMT+7. Each session is ${S.settings.sessionMin} minutes.</p></div>
+V.mavail=()=>isSup()&&!ME_M()?`<div class="ph"><div><div class="eyebrow">Availability</div><h1>Pick a mentor</h1><p>Availability is per mentor. Choose one under "Viewing mentor" in the sidebar or with "Switch mentor" above.</p></div></div><div class="mgrid">${S.mentors.map(m=>`<button class="mcard" data-viewm="${m.id}" data-quiet="1"><div style="display:flex;gap:12px;align-items:center"><div class="avatar">${ini(m.name)}</div><div><b>${esc(m.name)}</b><div class="sub">${esc(m.spec)}</div></div></div></button>`).join('')}</div>`:`<div class="ph"><div><div class="eyebrow">Availability</div><h1>${isSup()?'When students can book '+esc(fname(men(ME_M()).name)):'When students can book you'}</h1><p>Click a slot to open or close it. Times in GMT+7. Each session is ${S.settings.sessionMin} minutes.</p></div>
   <div class="row-btns"><span class="chip">${svg('cal')}${S.gcal?'Google Calendar connected':'Not connected'}</span><button class="btn sm" data-act="gcal">${S.gcal?'Disconnect':'Connect Google Calendar'}</button></div></div>
   <section class="panel"><div class="slots"><div></div>${DAYS.map(d=>`<div class="h">${d}</div>`).join('')}
   ${TIMES.map(t=>`<div class="t num">${t}</div>${DAYS.map(d=>{const k=d+t;const BK=myBooked();if(BK[k])return `<button class="slot booked" title="Booked by ${BK[k]}" disabled><span style="display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 4px">${BK[k]}</span></button>`;if(S.gcal&&BUSY[k])return `<button class="slot busy" title="Busy in Google Calendar" disabled>Busy</button>`;const SL=mySlots();return `<button class="slot ${SL[k]?'on':''}" data-slot="${k}" aria-pressed="${!!SL[k]}">${SL[k]?'Open':'–'}</button>`;}).join('')}`).join('')}</div>
@@ -828,7 +852,7 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-acct],[dat
   if(!e.target.closest('.pk')){const b=$('#pkpop');if(b)b.hidden=true;}
   if(!t)return;
   if(t.dataset.step){const i=$('#'+t.dataset.step);i.value=Math.max(+i.min||1,(+i.value||0)+ +t.dataset.d);return;}
-  if(t.dataset.viewm){S.viewM=t.dataset.viewm;S.reviewSel=null;close();if(MVIEWS.includes(route().v))rerender();else location.hash='mday';toast('Now viewing '+men(S.viewM).name+'\'s workspace.');return;}
+  if(t.dataset.viewm){S.viewM=t.dataset.viewm==='all'?null:t.dataset.viewm;S.reviewSel=null;close();const to=t.dataset.go2;if(to&&route().v!==to)location.hash=to;else if(MVIEWS.includes(route().v))rerender();else location.hash='mday';if(!t.dataset.quiet&&!to&&S.viewM)toast('Now viewing '+men(S.viewM).name+'\'s workspace.');return;}
   if(t.dataset.urf!==undefined){S.userRole=t.dataset.urf;rerender();return;}
   if(t.hasAttribute('data-close-bg')&&e.target!==t)return;
   if(t.dataset.acct){doLogin(t.dataset.acct);return;}
@@ -895,14 +919,14 @@ document.addEventListener('input',e=>{const t=e.target;
   if(t.dataset&&t.dataset.mat){autosave(t);return;}
   if(t.id==='fq'){S.filters.q=t.value;const pos=t.selectionStart;rerender();const n=$('#fq');n.focus();n.setSelectionRange(pos,pos);}
   if(t.id==='pkq'){pkDraw();return;}
-  for(const [id,key] of [['uq','userQ'],['mlq','mlQ'],['iq','inboxQ']])if(t.id===id){S[key]=t.value;const pos=t.selectionStart;rerender();const n=$('#'+id);n.focus();n.setSelectionRange(pos,pos);return;}
+  for(const [id,key] of [['uq','userQ'],['mlq','mlQ'],['iq','inboxQ'],['tq','todayQ']])if(t.id===id){S[key]=t.value;const pos=t.selectionStart;rerender();const n=$('#'+id);n.focus();n.setSelectionRange(pos,pos);return;}
   if(t.id==='aq'){S.auditQ=t.value;const pos=t.selectionStart;rerender();const n=$('#aq');n.focus();n.setSelectionRange(pos,pos);}
   if(t.closest&&t.closest('#nf')&&t.name&&t.tagName==='INPUT'&&t.type!=='date'){NF[t.name]=t.value;}
 });
 document.addEventListener('change',e=>{const t=e.target;
   if(t.id==='roleSel'){S.role=t.value;try{sessionStorage.setItem('lms-int-role',S.role)}catch(_){}location.hash=ROLES[S.role].home;render();return;}
   if(t.dataset.f){S.filters[t.dataset.f]=t.value;rerender();return;}
-  if(t.id==='railM'){S.viewM=t.value;S.reviewSel=null;if(MVIEWS.includes(route().v))rerender();else location.hash='mday';toast('Now viewing '+men(S.viewM).name+'\'s workspace.');return;}
+  if(t.id==='railM'){S.viewM=t.value==='all'?null:t.value;S.reviewSel=null;if(MVIEWS.includes(route().v))rerender();else location.hash='mday';return;}
   if(t.closest&&t.closest('#nf')&&t.name){NF[t.name]=t.name==='len'?+t.value:t.value;if(t.name==='track'){NF.len=lengthOptions(t.value,+NF.grade)[0];}if(t.name==='grade'){NF.grad=(2026+13-(+t.value))+'-06-30';NF.len=Math.max(...lengthOptions('S1',+t.value));}if(t.tagName==='SELECT'||t.type==='date')nsRedraw();return;}
   if(t.id==='saved'&&t.value!==''){const v=t.value;const r=S.saved[parseInt(v)];$('#rep').value=v.endsWith('v')?r.vi:r.en;return;}
   if(t.id==='asg'&&t.value){const q=S.questions.find(x=>x.id===(S.inboxSel||S.questions.filter(y=>y.ch===S.inboxCh)[0].id));q.assignee=t.value;rerender();toast('Assigned to '+t.value+'.');return;}
